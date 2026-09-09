@@ -1,0 +1,101 @@
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.csproj.AssemblyReference.cache
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\bin\Debug\net9.0-windows\XControlComponents.deps.json
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\bin\Debug\net9.0-windows\XControlComponents.dll
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\bin\Debug\net9.0-windows\XControlComponents.pdb
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.AssemblyInfoInputs.cache
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.AssemblyInfo.cs
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.csproj.CoreCompileInputs.cache
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.dll
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\refint\XControlComponents.dll
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.pdb
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\ref\XControlComponents.dll
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\XControlComponentResources.baml
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\XControlComponents_MarkupCompile.cache
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.g.resources
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XTextBox.g.cs
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XTextBoxBorder.g.cs
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XTextBoxFolating.g.cs
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\GeneratedInternalTypeHelper.g.cs
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\XControlComponents_MarkupCompile.lref
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XTextBox.baml
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XTextBoxBorder.baml
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XTextBoxFolating.baml
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\UserControls\UC_Header.g.cs
+C:\Users\Pouya\source\repos\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\UserControls\UC_Header.baml
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\bin\Debug\net9.0-windows\XControlComponents.deps.json
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\bin\Debug\net9.0-windows\XControlComponents.dll
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\bin\Debug\net9.0-windows\XControlComponents.pdb
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.csproj.AssemblyReference.cache
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XComboBox.baml
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XComboBoxBorder.baml
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XComboBoxFloating.baml
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\XControlComponentResources.baml
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XCheckBox.g.cs
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XComboBox.g.cs
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XComboBoxBorder.g.cs
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XComboBoxFloating.g.cs
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XTextBox.g.cs
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XTextBoxBorder.g.cs
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XTextBoxFolating.g.cs
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\UserControls\UC_Header.g.cs
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\GeneratedInternalTypeHelper.g.cs
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\XControlComponents_MarkupCompile.cache
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\XControlComponents_MarkupCompile.lref
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XCheckBox.baml
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XTextBox.baml
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XTextBoxBorder.baml
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XTextBoxFolating.baml
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\UserControls\UC_Header.baml
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.g.resources
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.AssemblyInfoInputs.cache
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.AssemblyInfo.cs
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.csproj.CoreCompileInputs.cache
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.dll
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\refint\XControlComponents.dll
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.pdb
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\ref\XControlComponents.dll
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XDate.g.cs
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XDate.baml
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XTextBox1.g.cs
+D:\Projects\Wpf Main\WorkingTest\XControlComponent\obj\Debug\net9.0-windows\Controls\XTextBox1.baml
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.csproj.AssemblyReference.cache
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\Controls\XComboBox1.baml
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\Controls\XComboBoxBorder.baml
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\Controls\XComboBoxFloating.baml
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\XControlComponentResources.baml
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\Controls\XCheckBox.g.cs
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\Controls\XComboBox.g.cs
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\Controls\XComboBox1.g.cs
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\Controls\XComboBoxBorder.g.cs
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\Controls\XComboBoxFloating.g.cs
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\Controls\XDate.g.cs
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\Controls\XTextBox.g.cs
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\Controls\XTextBox1.g.cs
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\Controls\XTextBoxBorder.g.cs
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\Controls\XTextBoxFolating.g.cs
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\UserControls\UC_Header.g.cs
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\GeneratedInternalTypeHelper.g.cs
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\XControlComponents_MarkupCompile.cache
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\XControlComponents_MarkupCompile.lref
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\bin\Debug\net9.0-windows\XControlComponents.deps.json
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\bin\Debug\net9.0-windows\XControlComponents.dll
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\bin\Debug\net9.0-windows\XControlComponents.pdb
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\Controls\XCheckBox.baml
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\Controls\XComboBox.baml
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\Controls\XDate.baml
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\Controls\XTextBox.baml
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\Controls\XTextBox1.baml
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\Controls\XTextBoxBorder.baml
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\Controls\XTextBoxFolating.baml
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\UserControls\UC_Header.baml
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.g.resources
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.AssemblyInfoInputs.cache
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.AssemblyInfo.cs
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.csproj.CoreCompileInputs.cache
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.dll
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\refint\XControlComponents.dll
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\XControlComponents.pdb
+D:\Project Libraries\Wpf Main\MainComponentWpf\XControlComponent\obj\Debug\net9.0-windows\ref\XControlComponents.dll

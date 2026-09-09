@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "AAhXFvT5wZY=",
+  "success": true,
+  "projectFilePath": "C:\\Talei\\MainComponentWpf\\MainComponentWpf\\MainComponentWpf.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\p_talei\\.nuget\\packages\\extended.wpf.toolkit\\5.0.0\\extended.wpf.toolkit.5.0.0.nupkg.sha512",
+    "C:\\Users\\p_talei\\.nuget\\packages\\fontawesome5\\2.1.11\\fontawesome5.2.1.11.nupkg.sha512",
+    "C:\\Users\\p_talei\\.nuget\\packages\\materialdesigncolors\\5.3.0\\materialdesigncolors.5.3.0.nupkg.sha512",
+    "C:\\Users\\p_talei\\.nuget\\packages\\materialdesignthemes\\5.3.0\\materialdesignthemes.5.3.0.nupkg.sha512",
+    "C:\\Users\\p_talei\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.77\\microsoft.xaml.behaviors.wpf.1.1.77.nupkg.sha512"
+  ],
+  "logs": []
+}
