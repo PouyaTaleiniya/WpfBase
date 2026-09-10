@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="XControlComponents.Controls.XTextBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:XControlComponents.Controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/XControlComponents;component/XControlComponentResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <local:CharCountWithMaxConverter x:Key="CharCountWithMaxConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources> 
+    <Grid Height="27" Name="GR_TextBox" Focusable="True" FocusVisualStyle="{x:Null}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.02*"/>
+            <ColumnDefinition Width="140" Name="GR_Col_Lable"/>
+            <ColumnDefinition />
+            <ColumnDefinition Width="50" Name="GR_Col_Counter"/>
+            <ColumnDefinition Width="0.02*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0" Name="GR_Row_Label"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid Grid.Column="1" Grid.Row="1" Name="GR_Content">
+            <StackPanel Orientation="Horizontal">
+                <Label Name="Lb_Content"  Padding="10 0 0 0" VerticalAlignment="Center" FontSize="13.9"/>
+                <Label Name="Lb_Required" Content="*" Padding="5 0 0 0" VerticalAlignment="Center" Foreground="#de0030" FontSize="16" Visibility="Hidden"/>
+            </StackPanel>
+        </Grid>
+        <Border Name="BR_TextBox" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="1" Style="{StaticResource BorderInput}" Background="White" BorderThickness="1 1 0 1">
+             <TextBox 
+                Name="Txt_Data"
+                BorderThickness="0" 
+                Cursor="IBeam"
+                MaxLines="3"
+                materialDesign:TextFieldAssist.UnderlineBrush="Transparent"
+                Padding="5 0 5 0" SelectionBrush="{StaticResource Color_Gray_959595}" 
+                materialDesign:TextFieldAssist.CharacterCounterVisibility="Hidden"
+                PreviewTextInput="Txt_Data_PreviewTextInput"
+                PreviewKeyDown="Txt_Data_PreviewKeyDown"
+                DataObject.Pasting="Txt_Data_Pasting"
+                GotFocus="Txt_Data_GotFocus"
+                LostFocus="Txt_Data_LostFocus"
+                TextChanged="Txt_Data_TextChanged">
+                <materialDesign:HintAssist.Hint>
+                    <Label Name="Lb_PlaceHolder" Padding="0" />
+                </materialDesign:HintAssist.Hint>
+            </TextBox>
+        </Border>
+        <Border Name="BR_MaxLength" Grid.Row="1" Grid.Column="3" Style="{StaticResource BorderInput}" Background="White" BorderThickness="0 1 1 1">
+            <TextBlock
+                Name="Txt_MaxLength" 
+                VerticalAlignment="Top" 
+                HorizontalAlignment="Right"
+                Margin="0 5 5 0"
+                Foreground="Gray">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource CharCountWithMaxConverter}">
+                        <Binding Path="Text" ElementName="Txt_Data"/>
+                        <Binding Path="MaxLength" ElementName="Txt_Data"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </Border>
+    </Grid>
+</UserControl>

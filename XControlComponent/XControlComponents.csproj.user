@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Update="Controls\XCheckBox.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Controls\XComboBox.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Controls\XComboBox1.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Controls\XComboBoxBorder.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Controls\XComboBoxFloating.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Controls\XDate.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Controls\XTextBox1.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\XCheckBox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controls\XComboBox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controls\XComboBox1.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controls\XComboBoxBorder.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controls\XComboBoxFloating.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controls\XDate.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controls\XTextBox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controls\XTextBox1.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controls\XTextBoxBorder.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controls\XTextBoxFolating.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\UC_Header.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="XControlComponentResources.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,29 @@
+﻿<Application x:Class="MainComponentWpf.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:MainComponentWpf"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+
+                <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="Lime" />
+
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
+
+                <ResourceDictionary Source="pack://application:,,,/XControlComponents;component/XControlComponentResources.xaml" />
+
+            </ResourceDictionary.MergedDictionaries>
+
+            <!--Images-->
+            <ImageSource x:Key="Img_CloseWhite">/Images/CloseWhite.png</ImageSource>
+            <ImageSource x:Key="Img_Close">/Images/Close.png</ImageSource>
+
+            <!--Fonts-->
+            <FontFamily x:Key="Shabnam">pack://application:,,,/Fonts/#Shabnam</FontFamily>
+
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

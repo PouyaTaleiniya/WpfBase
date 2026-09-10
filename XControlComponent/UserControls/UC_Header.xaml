@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="XControlComponents.UserControls.UC_Header"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:XControlComponents.UserControls"
+             mc:Ignorable="d" 
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch" 
+             FlowDirection="LeftToRight"
+             d:DesignHeight="40" d:DesignWidth="800"
+             Loaded="UserControl_Loaded"
+             MouseLeftButtonDown="UserControl_Click">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/XControlComponents;component/XControlComponentResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Border Name="BR_Header" Style="{StaticResource BorderHeader}"> 
+        <Grid> 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.1*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="150" Name="GR_Col_Buttons"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Image Height="35" Name="Img_Header"/>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Label Name="Lb_Title" Style="{StaticResource LabelTemplate}"/>
+            </Grid>
+            <Grid Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" Name="GR_Col_Maximize"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="2" Name="BR_Close" CornerRadius="0 5 0 0" Background="Transparent" 
+                        MouseEnter="GR_Close_MouseEnter"
+                        MouseLeave="GR_Close_MouseLeave"
+                        MouseLeftButtonDown="GR_Close_Click">
+                    <Image Source="/Images/Close.png" Name="Img_Close" Height="20" />
+                </Border>
+                <Grid Grid.Column="1" Name="GR_Maximize" Background="Transparent" 
+                      MouseEnter="GR_Maximize_MouseEnter"
+                      MouseLeave="GR_Maximize_MouseLeave" 
+                      MouseLeftButtonDown="GR_Maximize_Click">
+                    <Image Source="/Images/Maximize.png" Name="Img_Maximize" Height="15"/>
+                </Grid>
+                <Grid Grid.Column="0" Name="GR_Minimize" Background="Transparent"
+                      MouseEnter="GR_Minimize_MouseEnter" 
+                      MouseLeave="GR_Minimize_MouseLeave" 
+                      MouseLeftButtonDown="GR_Minimize_Click">
+                    <Image Source="/Images/minus.png" Name="Img_minus" Height="20"/>
+                </Grid>
+            </Grid>
+            
+        </Grid>
+    </Border>
+</UserControl>
