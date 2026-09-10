@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/MainComponentWpf/bin/Debug/net9.0-windows
+/MainComponentWpf/obj
+/XControlComponent/bin/Debug/net9.0-windows
+/XControlComponent/obj
