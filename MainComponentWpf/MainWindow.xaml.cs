@@ -14,7 +14,7 @@ namespace MainComponentWpf
 
         private void BaseWindow_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            xComboBoxData.ite.Add("Item1"); xComboBoxData._DataSourceSelected
+            xComboBoxData._Items.Add("Item1");
         }
     }
 

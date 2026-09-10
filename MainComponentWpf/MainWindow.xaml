@@ -40,7 +40,7 @@
                     <!--<DatePicker Width="333" Height="27"/>-->
                     <!--<controls:XDate _LabelTop="True" />-->
                     <!--<TextBox Width="100" />-->
-                    <controls:XComboBox Name="xComboBoxData" _LabelVisibility="True"/>
+                    <controls:XComboBox1 Name="xComboBoxData" _LabelVisibility="True"/>
                 </Grid>
             </Grid>
         </Grid>

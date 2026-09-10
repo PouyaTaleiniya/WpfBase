@@ -1144,19 +1144,3 @@ public partial class XTextBox : UserControl
     }
 }
 
-public class CharCountWithMaxConverter : IMultiValueConverter
-{
-    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
-    {
-        if (values.Length < 2)
-            return "";
-
-        int currentLength = (values[0] as string)?.Length ?? 0;
-        int maxLength = values[1] is int i ? i : 0;
-
-        return $"{currentLength} / {maxLength}";
-    }
-
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-        => throw new NotImplementedException();
-}

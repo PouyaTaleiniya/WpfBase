@@ -1,7 +1,9 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System.ComponentModel;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using XControlHelper;
@@ -1524,4 +1526,22 @@ public partial class XTextBox1 : UserControl
             _TextChanged(sender, textBox.Text);
         }
     }
+}
+
+
+public class CharCountWithMaxConverter : IMultiValueConverter
+{
+    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (values.Length < 2)
+            return "";
+
+        int currentLength = (values[0] as string)?.Length ?? 0;
+        int maxLength = values[1] is int i ? i : 0;
+
+        return $"{currentLength} / {maxLength}";
+    }
+
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        => throw new NotImplementedException();
 }

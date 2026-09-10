@@ -22,6 +22,9 @@ public partial class XComboBox : XComboBoxDataControl
     private Border _bR_Popup;
     protected override Border bR_Popup => _bR_Popup;
 
+    private Border _bR_TextBox_Search;
+    protected override Border bR_TextBox_Search => _bR_TextBox_Search;
+
     private RowDefinition _gR_Row_Search;
     protected override RowDefinition gR_Row_Search => _gR_Row_Search;
 
@@ -37,7 +40,7 @@ public partial class XComboBox : XComboBoxDataControl
     private Popup _xComboBoxPopup;
     protected override Popup xComboBoxPopup => _xComboBoxPopup;
 
-    private bool IsEnternalEntered { get; set; }
+    protected override bool IsEnternalEntered { get; set; }
 
     //Border Box 
     private double _WidthEntered;
@@ -51,15 +54,8 @@ public partial class XComboBox : XComboBoxDataControl
     private double _TextFontSizeEntered;
     private double _PlaceHolderFontSizeEntered;
 
-    //Search
-    private double _PlaceHolderSearchFontSizeEntered;
-    private double _TextSearchFontSizeEntered;
-
     public XComboBox()
     {
-        InitializeComponent();
-        XComboBoxPopup.Tag = Guid.NewGuid().ToString();
-
         _gR_Popup = this.GR_Popup;
         _bR_Popup = this.BR_Popup;
         _gR_Row_Search = this.GR_Row_Search;
@@ -67,6 +63,10 @@ public partial class XComboBox : XComboBoxDataControl
         _txt_Data_Search = this.Txt_Data_Search;
         _lb_PlaceHolder_Search = this.Lb_PlaceHolder_Search;
         _xComboBoxPopup = this.XComboBoxPopup;
+        _bR_TextBox_Search = this.BR_TextBox_Search;
+
+        InitializeComponent();
+        XComboBoxPopup.Tag = Guid.NewGuid().ToString();
 
         //Border Box
         _Height = XComboBoxDefaults.Height;
@@ -596,11 +596,6 @@ public partial class XComboBox : XComboBoxDataControl
     #endregion
 
     #region Search 
-
-
-
-
-
 
 
     #endregion

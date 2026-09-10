@@ -17,13 +17,20 @@ namespace XControlComponents.Controls.Data
         protected List<object> getAllDataSources { get; set; }
         protected abstract Grid gR_Popup { get; }
         protected abstract Border bR_Popup { get; }
+        protected abstract Border bR_TextBox_Search { get; }
         protected abstract RowDefinition gR_Row_Search { get; }
         protected abstract TextBox txt_Data { get; }
         protected abstract TextBox txt_Data_Search { get; }
         protected abstract Label lb_PlaceHolder_Search { get; }
         protected abstract Popup xComboBoxPopup { get; }
 
+        protected abstract bool IsEnternalEntered { get; set; }
         protected bool SearchMode { get; set; }
+
+        //Search
+        private double _PlaceHolderSearchFontSizeEntered;
+        private double _TextSearchFontSizeEntered;
+
 
         [EditorBrowsable(EditorBrowsableState.Always)]
         public delegate void _ValueChangedEventHandler(object sender, XComboBoxValueEventArgs Data);
@@ -31,11 +38,7 @@ namespace XControlComponents.Controls.Data
 
         public XComboBoxDataControl()
         {
-            Loaded += XComboBoxDataControl_Loaded;
-        }
 
-        private void XComboBoxDataControl_Loaded(object sender, RoutedEventArgs e)
-        {
             _IsGenerateEmptyLabel = XComboBoxDefaults.IsGenerateEmptyLabel;
 
             //Popup
@@ -52,8 +55,14 @@ namespace XControlComponents.Controls.Data
 
             //Value
             _items = new List<string>();
+
+            Loaded += XComboBoxDataControl_Loaded;
         }
 
+        private void XComboBoxDataControl_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
 
         #region Border Box
         private bool? _isGenerateEmptyLabel;
@@ -285,7 +294,7 @@ namespace XControlComponents.Controls.Data
                 _borderBrushSearchColor = value;
                 if (_borderBrushSearchColor == null)
                     _borderBrushSearchColor = XComboBoxDefaults.BorderBrushSearchColor;
-                BR_TextBox_Search.BorderBrush = _borderBrushSearchColor;
+                bR_TextBox_Search.BorderBrush = _borderBrushSearchColor;
             }
         }
 
@@ -321,7 +330,7 @@ namespace XControlComponents.Controls.Data
                 if (_placeHolderSearchOpacity < 0.1)
                     _placeHolderSearchOpacity = 0.1;
 
-                Lb_PlaceHolder_Search.Opacity = _placeHolderSearchOpacity.Value;
+                lb_PlaceHolder_Search.Opacity = _placeHolderSearchOpacity.Value;
             }
         }
 
@@ -332,7 +341,7 @@ namespace XControlComponents.Controls.Data
             set
             {
                 _placeHolderSearchText = value;
-                Lb_PlaceHolder_Search.Content = _PlaceHolderSearchText;
+                lb_PlaceHolder_Search.Content = _PlaceHolderSearchText;
             }
         }
 
@@ -353,7 +362,7 @@ namespace XControlComponents.Controls.Data
                 if (!IsEnternalEntered)
                     _PlaceHolderSearchFontSizeEntered = _placeHolderSearchFontSize.Value;
 
-                Lb_PlaceHolder_Search.FontSize = _placeHolderSearchFontSize.Value;
+                lb_PlaceHolder_Search.FontSize = _placeHolderSearchFontSize.Value;
             }
         }
 
