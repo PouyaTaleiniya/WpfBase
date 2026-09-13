@@ -27,7 +27,7 @@
             <RowDefinition Height="0" Name="GR_Row_Label"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Border Grid.Row="1" Grid.Column="1" Name="GR_Content">
+        <Border Grid.Row="1" Grid.Column="1" Name="BR_Label">
             <StackPanel Orientation="Horizontal">
                 <Label Name="Lb_Content"  Padding="10 0 0 0" VerticalAlignment="Center" FontSize="13.9"/>
                 <Label Name="Lb_Required" Content="*" Padding="5 0 0 0"  Foreground="#de0030" FontSize="16" Visibility="Hidden"/>

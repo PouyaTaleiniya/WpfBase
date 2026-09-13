@@ -476,7 +476,7 @@ public partial class XComboBox2 : UserControl
                 return;
 
             HandleBackground();
-            //HandleBorder();
+            HandleBorder();
         }
     }
 
@@ -550,9 +550,9 @@ public partial class XComboBox2 : UserControl
         {
             _labelBackgroundColor = value;
             if (_labelBackgroundColor == null)
-                GR_Content.ClearValue(BackgroundProperty);
+                BR_Label.ClearValue(BackgroundProperty);
             else
-                GR_Content.Background = _labelBackgroundColor;
+                BR_Label.Background = _labelBackgroundColor;
         }
     }
 
@@ -1224,8 +1224,8 @@ public partial class XComboBox2 : UserControl
                 Lb_Content.Padding = new Thickness(0);
 
                 //GR_Content
-                Grid.SetRow(GR_Content, 0);
-                Grid.SetColumnSpan(GR_Content, 2);
+                Grid.SetRow(BR_Label, 0);
+                Grid.SetColumnSpan(BR_Label, 2);
 
                 //BR_TextBox
                 Grid.SetColumn(BR_TextBox, 1);
@@ -1247,8 +1247,8 @@ public partial class XComboBox2 : UserControl
             GR_Row_Label.Height = new GridLength(0);
 
             //GR_Content
-            Grid.SetRow(GR_Content, 1);
-            Grid.SetColumnSpan(GR_Content, 1);
+            Grid.SetRow(BR_Label, 1);
+            Grid.SetColumnSpan(BR_Label, 1);
 
             //BR_TextBox
             Grid.SetColumn(BR_TextBox, 2);
@@ -1291,6 +1291,38 @@ public partial class XComboBox2 : UserControl
 
         ////Max Legnth
         //HandleMaxLengthBackground();
+    }
+
+    private void HandleBorder()
+    {
+        if (_elementType == XElementTypes.Floating)
+            HandleFloatingModeBorder();
+        else if (_elementType == XElementTypes.Border)
+            HandleLabelModeBorder();
+        else
+            HandleNormalModeBorder();
+    }
+
+    private void HandleNormalModeBorder()
+    {
+        BR_Label.BorderThickness = new Thickness(0);
+        BR_TextBox.BorderThickness = new Thickness(1);
+        TextFieldAssist.SetUnderlineBrush(Txt_Data, XElementHelper.GetColor(Colors.Transparent));
+    }
+
+    private void HandleLabelModeBorder()
+    {
+        var BorderRight = _LabelVisibility.HasValue && _LabelVisibility.Value ? 0 : 1;
+
+        BR_Label.BorderThickness = new Thickness(1, 1, 0, 1);
+        BR_TextBox.BorderThickness = new Thickness(BorderRight, 1, 1, 1);
+        TextFieldAssist.SetUnderlineBrush(Txt_Data, XElementHelper.GetColor(Colors.Transparent));
+    }
+
+    private void HandleFloatingModeBorder()
+    {
+        BR_Label.BorderThickness = new Thickness(0, 0, 0, 0);
+        BR_TextBox.BorderThickness = new Thickness(0, 0, 0, 1);
     }
 
     private void HandlePopup()
