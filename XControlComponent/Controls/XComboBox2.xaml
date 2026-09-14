@@ -16,9 +16,9 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Height="27" Name="GR_TextBox" Focusable="True" FocusVisualStyle="{x:Null}">
+    <Grid Height="27" Name="GR_TextBox" Background="Transparent" Cursor="Hand">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.02*"/>
+            <ColumnDefinition Width="0.02*" Name="GR_Col_F"/>
             <ColumnDefinition Width="140" Name="GR_Col_Lable"/>
             <ColumnDefinition />
             <ColumnDefinition Width="0.02*"/>
@@ -27,7 +27,7 @@
             <RowDefinition Height="0" Name="GR_Row_Label"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Border Grid.Row="1" Grid.Column="1" Name="BR_Label">
+        <Border Grid.Row="1" Grid.Column="1" Name="BR_Label" Style="{StaticResource BorderInput}">
             <StackPanel Orientation="Horizontal">
                 <Label Name="Lb_Content"  Padding="10 0 0 0" VerticalAlignment="Center" FontSize="13.9"/>
                 <Label Name="Lb_Required" Content="*" Padding="5 0 0 0"  Foreground="#de0030" FontSize="16" Visibility="Hidden"/>
@@ -56,45 +56,45 @@
                 </TextBox>
                 <Grid Grid.Column="1" IsHitTestVisible ="False" >
                     <fa5:SvgAwesome IsHitTestVisible ="False" Icon="Solid_AngleDown" Width="8" VerticalAlignment="Center" Foreground="{StaticResource Color_Black_424242}" />
-                </Grid>
-                <Popup x:Name="XComboBoxPopup" 
-                       PlacementTarget="{Binding ElementName=BR_TextBox}"
-                       Placement="Bottom"
-                       AllowsTransparency="True"
-                       PopupAnimation="Slide"
-                       Focusable="True"
-                       Opened="XComboBoxPopup_Opened"
-                       Closed="XComboBoxPopup_Closed">
-                    <Border Name="BR_Popup" Padding="0 0 0 2" Tag="XBorderComboBoxPopup" BorderThickness="1 0 1 1">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Name="GR_Row_Search" Height="50"/>
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Grid Grid.Row="0" Margin="5">
-                                <Border Grid.Column="0" Name="BR_TextBox_Search" Style="{StaticResource BorderInput}" BorderThickness="0 0 0 1" IsHitTestVisible ="True">
-                                    <TextBox
-                                        Name="Txt_Data_Search"
-                                        BorderThickness="0" 
-                                        materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource Color_Blue_4a78b0}"
-                                        Padding="5 0 5 0"
-                                        Foreground="{StaticResource Color_Black_424242}"
-                                        Background="Transparent"
-                                        PreviewKeyDown="Txt_Data_PreviewKeyDown"
-                                        TextChanged="Txt_Data_Search_TextChanged">
-                                        <materialDesign:HintAssist.Hint>
-                                            <Label Name="Lb_PlaceHolder_Search" Content="جستجو ..." Padding="0" IsHitTestVisible ="True"/>
-                                        </materialDesign:HintAssist.Hint>
-                                    </TextBox>
-                                </Border>
-                            </Grid>
-                            <Grid Grid.Row="1" Name="GR_Popup">
-
-                            </Grid>
-                        </Grid>
-                    </Border>
-                </Popup>
-            </Grid>
+                </Grid> 
+            </Grid> 
         </Border>
+        <Popup x:Name="XComboBoxPopup" 
+           PlacementTarget="{Binding ElementName=GR_TextBox}"
+           Placement="Bottom"
+           AllowsTransparency="True"
+           PopupAnimation="Slide"
+           Focusable="True"
+           Opened="XComboBoxPopup_Opened"
+           Closed="XComboBoxPopup_Closed">
+            <Border Name="BR_Popup" Padding="0 0 0 2" Tag="XBorderComboBoxPopup" BorderThickness="1 0 1 1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Name="GR_Row_Search" Height="50"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Margin="5">
+                        <Border Grid.Column="0" Name="BR_TextBox_Search" Style="{StaticResource BorderInput}" BorderThickness="0 0 0 1" IsHitTestVisible ="True">
+                            <TextBox
+                            Name="Txt_Data_Search"
+                            BorderThickness="0" 
+                            materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource Color_Blue_4a78b0}"
+                            Padding="5 0 5 0"
+                            Foreground="{StaticResource Color_Black_424242}"
+                            Background="Transparent"
+                            PreviewKeyDown="Txt_Data_PreviewKeyDown"
+                            TextChanged="Txt_Data_Search_TextChanged">
+                                <materialDesign:HintAssist.Hint>
+                                    <Label Name="Lb_PlaceHolder_Search" Content="جستجو ..." Padding="0" IsHitTestVisible ="True"/>
+                                </materialDesign:HintAssist.Hint>
+                            </TextBox>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Row="1" Name="GR_Popup">
+
+                    </Grid>
+                </Grid>
+            </Border>
+        </Popup>
     </Grid>
 </UserControl>

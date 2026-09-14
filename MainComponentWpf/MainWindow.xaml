@@ -32,6 +32,7 @@
                     <!--<controls:XTextBox _LabelVerticalAlignment="Top" _MultiLine="True" _MaxLength="100"/>-->
                     <!--<controls:XTextBoxBorder _LabelTitle="Gender" _IsRequired="True" _MaxLength="1500" _MaxLengthGridWidth="90" _MaxLengthVisibility="True"  _MaxLengthOutbox="True" _LabelTop="True"  _LabelVisibility="True" _MultiLine="False" />-->
                     <!--<controls:XTextBox1 _ElementType="Normal" _LabelTop="True" _MaxLengthVisibility="True" _MaxLengthOutbox="False" _MaxLengthGridWidth="70" _MaxLength="20" _MultiLine="False"/>-->
+                    <controls:XComboBoxFloating Name="xComboBoxData1"  />
                 </Grid>
                 <Grid Grid.Row="2" >
                     <!--<controls:XComboBoxFloating  Name="XComboBox1" _IsGenerateEmptyLabel="True" _LabelVisibility="True" _BorderBrushFocused="True" _PlaceHolderOpacity="0.3"  _LabelTitle="نام" _IsRequired="True" _ValueChanged="XComboBox_ValueChanged"/>-->
@@ -40,7 +41,7 @@
                     <!--<DatePicker Width="333" Height="27"/>-->
                     <!--<controls:XDate _LabelTop="True" />-->
                     <!--<TextBox Width="100" />-->
-                    <controls:XComboBox2 Name="xComboBoxData" _LabelVisibility="True" _ElementType="Normal"/>
+                    <controls:XComboBox2 Name="xComboBoxData" _LabelVisibility="True" _ElementType="Border"/>
                 </Grid>
             </Grid>
         </Grid>

@@ -646,20 +646,20 @@ public partial class XComboBox2 : UserControl
         }
     }
 
-    private Brush _textBackgroundColor;
+    private Brush _textBoxBackgroundColor;
     public Brush _TextBoxBackgroundColor
     {
-        get => _textBackgroundColor;
+        get => _textBoxBackgroundColor;
         set
         {
-            _textBackgroundColor = value;
-            if (_textBackgroundColor == null)
+            _textBoxBackgroundColor = value;
+            if (_textBoxBackgroundColor == null)
             {
                 GR_Data.ClearValue(BackgroundProperty);
             }
             else
             {
-                GR_Data.Background = _textBackgroundColor;
+                GR_Data.Background = _textBoxBackgroundColor;
             }
         }
     }
@@ -1261,7 +1261,7 @@ public partial class XComboBox2 : UserControl
         var TextColor = XElementHelper.GetColor(Colors.White);
 
         //Label
-        //BR_Label.ClearValue(BackgroundProperty);
+        BR_Label.ClearValue(BackgroundProperty);
 
         if (_elementType == XElementTypes.Floating)
         {
@@ -1277,20 +1277,17 @@ public partial class XComboBox2 : UserControl
             else if (_backgroundColor != null)
                 LabelBackgroundColor = _backgroundColor;
 
-            //BR_Label.Background = LabelBackgroundColor;
+            BR_Label.Background = LabelBackgroundColor;
         }
 
         //Text Box
-        //var TextBackgroundColor = TextColor;
-        //if (_textBoxBackgroundColor != null)
-        //    TextBackgroundColor = _textBoxBackgroundColor;
-        //else if (_backgroundColor != null)
-        //    TextBackgroundColor = _backgroundColor;
+        var TextBackgroundColor = TextColor;
+        if (_textBoxBackgroundColor != null)
+            TextBackgroundColor = _textBoxBackgroundColor;
+        else if (_backgroundColor != null)
+            TextBackgroundColor = _backgroundColor;
 
-        //BR_TextBox.Background = TextBackgroundColor;
-
-        ////Max Legnth
-        //HandleMaxLengthBackground();
+        BR_TextBox.Background = TextBackgroundColor;
     }
 
     private void HandleBorder()
@@ -1305,6 +1302,8 @@ public partial class XComboBox2 : UserControl
 
     private void HandleNormalModeBorder()
     {
+        XComboBoxPopup.PlacementTarget = BR_TextBox;
+        XComboBoxPopup.Width = BR_TextBox.ActualWidth;
         BR_Label.BorderThickness = new Thickness(0);
         BR_TextBox.BorderThickness = new Thickness(1);
         TextFieldAssist.SetUnderlineBrush(Txt_Data, XElementHelper.GetColor(Colors.Transparent));
@@ -1314,6 +1313,9 @@ public partial class XComboBox2 : UserControl
     {
         var BorderRight = _LabelVisibility.HasValue && _LabelVisibility.Value ? 0 : 1;
 
+        //XComboBoxPopup.PlacementTarget = GR_TextBox;
+        //XComboBoxPopup.Width = 300;
+        //BR_Popup.Width = 300;
         BR_Label.BorderThickness = new Thickness(1, 1, 0, 1);
         BR_TextBox.BorderThickness = new Thickness(BorderRight, 1, 1, 1);
         TextFieldAssist.SetUnderlineBrush(Txt_Data, XElementHelper.GetColor(Colors.Transparent));
