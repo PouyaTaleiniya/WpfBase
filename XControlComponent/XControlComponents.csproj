@@ -42,9 +42,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Controls\XComboBox2.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Controls\XTextBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

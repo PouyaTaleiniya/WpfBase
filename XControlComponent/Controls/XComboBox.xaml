@@ -1,22 +1,20 @@
-﻿<local:XComboBoxDataControl  
-             x:Class="XControlComponents.Controls.XComboBox"
+﻿<UserControl x:Class="XControlComponents.Controls.XComboBox"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
-             xmlns:local="clr-namespace:XControlComponents.Controls.Data"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Loaded="UserControl_Loaded">
-    <!--<UserControl.Resources>
+    <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/XControlComponents;component/XControlComponentResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-    </UserControl.Resources>-->
+    </UserControl.Resources>
 
     <Grid Height="27" Name="GR_TextBox" Focusable="True" FocusVisualStyle="{x:Null}">
         <Grid.ColumnDefinitions>
@@ -29,12 +27,12 @@
             <RowDefinition Height="0" Name="GR_Row_Label"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="1" Grid.Column="1" Name="GR_Content">
+        <Border Grid.Row="1" Grid.Column="1" Name="GR_Content">
             <StackPanel Orientation="Horizontal">
                 <Label Name="Lb_Content"  Padding="10 0 0 0" VerticalAlignment="Center" FontSize="13.9"/>
                 <Label Name="Lb_Required" Content="*" Padding="5 0 0 0"  Foreground="#de0030" FontSize="16" Visibility="Hidden"/>
             </StackPanel>
-        </Grid>
+        </Border>
         <Border Grid.Row="1" Grid.Column="2" Name="BR_TextBox" Style="{StaticResource BorderInput}" Background="White" BorderThickness="1">
             <Grid Grid.Column="1" Name="GR_Data" Tag="GR_Data_XComboBox" Background="Transparent" Cursor="Hand"  MouseLeftButtonDown="GR_Data_MouseLeftButtonDown">
                 <Grid.ColumnDefinitions>
@@ -47,7 +45,7 @@
                     Cursor="Hand"
                     BorderThickness="0" 
                     materialDesign:TextFieldAssist.UnderlineBrush="Transparent"
-                    Padding="5 0 5 0"
+                    Padding="5 3 5 0"
                     IsReadOnly="True"
                     Foreground="{StaticResource Color_Black_424242}"
                     PreviewKeyDown="Txt_Data_PreviewKeyDown"
@@ -98,5 +96,5 @@
                 </Popup>
             </Grid>
         </Border>
-    </Grid> 
-</local:XComboBoxDataControl>
+    </Grid>
+</UserControl>

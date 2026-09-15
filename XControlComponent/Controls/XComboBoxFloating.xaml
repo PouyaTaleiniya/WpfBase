@@ -40,7 +40,7 @@
                     materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource Color_Blue_2196f3}"
                     Cursor="Hand"
                     BorderThickness="0" 
-                    Padding="5 0 5 0"
+                    Padding="5 3 5 0"
                     IsReadOnly="True"
                     Foreground="{StaticResource Color_Black_424242}"
                     PreviewKeyDown="Txt_Data_PreviewKeyDown"

@@ -22,9 +22,9 @@
             <usercontrols:UC_Header Name="ucHeader" _ImageUrl="/Images/Vpn.png" _ShowMaximumButton="True" _Title="مدیریت وی پی ان" Grid.Row="0" />
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="200"/>
+                    <RowDefinition Height="300"/>
                     <RowDefinition Height="100"/>
-                    <RowDefinition Height="200" Name="GR_Row_2"/>
+                    <RowDefinition Height="250" Name="GR_Row_2"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <!--<controls:XComboBox  Name="XComboBox"  _EqualSearchMode="False" _IsEnableSearch="True" _IsGenerateEmptyLabel="True" _LabelVisibility="True" _PlaceHolderOpacity="0.3"  _LabelTitle="نام" _IsRequired="True" _ValueChanged="XComboBox_ValueChanged"/>-->
@@ -32,16 +32,16 @@
                     <!--<controls:XTextBox _LabelVerticalAlignment="Top" _MultiLine="True" _MaxLength="100"/>-->
                     <!--<controls:XTextBoxBorder _LabelTitle="Gender" _IsRequired="True" _MaxLength="1500" _MaxLengthGridWidth="90" _MaxLengthVisibility="True"  _MaxLengthOutbox="True" _LabelTop="True"  _LabelVisibility="True" _MultiLine="False" />-->
                     <!--<controls:XTextBox1 _ElementType="Normal" _LabelTop="True" _MaxLengthVisibility="True" _MaxLengthOutbox="False" _MaxLengthGridWidth="70" _MaxLength="20" _MultiLine="False"/>-->
-                    <controls:XComboBoxFloating Name="xComboBoxData1"  />
+                    <controls:XComboBoxBorder Name="xComboBoxData1"  />
                 </Grid>
-                <Grid Grid.Row="2" >
+                <Grid Grid.Row="2" Background="AliceBlue">
                     <!--<controls:XComboBoxFloating  Name="XComboBox1" _IsGenerateEmptyLabel="True" _LabelVisibility="True" _BorderBrushFocused="True" _PlaceHolderOpacity="0.3"  _LabelTitle="نام" _IsRequired="True" _ValueChanged="XComboBox_ValueChanged"/>-->
 
                     <!--<controls:XCheckBox  Name="Ch_Gender" _CheckedChanged="Ch_Gender_CheckedChanged" _LabelGridWidth="250" _LabelTitle="Gender" Value="True"/>-->
                     <!--<DatePicker Width="333" Height="27"/>-->
                     <!--<controls:XDate _LabelTop="True" />-->
                     <!--<TextBox Width="100" />-->
-                    <controls:XComboBox2 Name="xComboBoxData" _LabelVisibility="True" _ElementType="Border"/>
+                    <controls:XTextBox Name="xTextBox" _TextBoxFontSize="13" _LabelVisibility="True" _LabelVerticalAlignment="Center"/>
                 </Grid>
             </Grid>
         </Grid>

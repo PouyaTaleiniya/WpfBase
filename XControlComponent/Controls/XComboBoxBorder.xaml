@@ -46,7 +46,7 @@
                        Cursor="Hand"
                        BorderThickness="0" 
                        materialDesign:TextFieldAssist.UnderlineBrush="Transparent"
-                       Padding="5 0 5 0"
+                       Padding="5 3 5 0"
                        IsReadOnly="True"
                        Foreground="{StaticResource Color_Black_424242}"
                        PreviewKeyDown="Txt_Data_PreviewKeyDown"

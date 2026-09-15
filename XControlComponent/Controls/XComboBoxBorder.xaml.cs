@@ -1,4 +1,5 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿
+using MaterialDesignThemes.Wpf;
 using System.Collections;
 using System.ComponentModel;
 using System.Reflection;
@@ -398,7 +399,7 @@ public partial class XComboBoxBorder : UserControl
             GR_Col_Lable.Width = new GridLength(_labelGridWidth.Value, GridUnitType.Pixel);
 
             var PaddingRight = _labelGridWidth == 0 ? 10 : 0;
-            Txt_Data.Padding = new Thickness(PaddingRight, 0, 5, 0);
+            Txt_Data.Padding = new Thickness(PaddingRight, 3, 5, 0);
         }
     }
 
@@ -734,7 +735,7 @@ public partial class XComboBoxBorder : UserControl
             if (_textSearchPadding == null)
                 _textSearchPadding = XComboBoxDefaults.TextSearchPadding;
 
-            Txt_Data.Padding = _textSearchPadding.Value;
+            Txt_Data_Search.Padding = _textSearchPadding.Value;
         }
     }
 

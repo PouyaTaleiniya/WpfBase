@@ -5,10 +5,10 @@
     <Compile Update="Controls\XCheckBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Controls\XComboBox.xaml.cs">
+    <Compile Update="Controls\Develope\XComboBox2.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Controls\XComboBox1.xaml.cs">
+    <Compile Update="Controls\XComboBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Controls\XComboBoxBorder.xaml.cs">
@@ -20,7 +20,7 @@
     <Compile Update="Controls\XDate.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Controls\XTextBox1.xaml.cs">
+    <Compile Update="Controls\Develope\XTextBox1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -28,10 +28,10 @@
     <Page Update="Controls\XCheckBox.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Controls\XComboBox.xaml">
+    <Page Update="Controls\Develope\XComboBox2.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Controls\XComboBox1.xaml">
+    <Page Update="Controls\XComboBox.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Controls\XComboBoxBorder.xaml">
@@ -46,7 +46,7 @@
     <Page Update="Controls\XTextBox.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Controls\XTextBox1.xaml">
+    <Page Update="Controls\Develope\XTextBox1.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Controls\XTextBoxBorder.xaml">

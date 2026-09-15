@@ -33,8 +33,13 @@ namespace XControlComponents.Tools
             Loaded += BaseWindow_Loaded;
             Deactivated += BaseWindow_Deactivated;
 
-            //Set And Change Default Of Controls
-            XTextBoxDefaults.Height = 27;
+            //Set Font Family
+            FontFamily = (FontFamily)FindResource("ShabnamBold");
+
+            #region Default Element
+            //XTextBoxDefaults.Height = 27;
+            #endregion
+
         }
 
         private void BaseWindow_Deactivated(object sender, EventArgs e)

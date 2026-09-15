@@ -1,10 +1,12 @@
 ﻿using MaterialDesignThemes.Wpf;
+using System.Collections;
+using System.ComponentModel;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using XControlComponents.Controls.Data;
 using XControlComponents.Tools;
 using XControlHelper;
 
@@ -13,34 +15,11 @@ namespace XControlComponents.Controls;
 /// <summary>
 /// Interaction logic for XComboBox.xaml
 /// </summary>
-public partial class XComboBox : XComboBoxDataControl
+public partial class XComboBox : UserControl
 {
-    //Parameters Element
-    private Grid _gR_Popup;
-    protected override Grid gR_Popup => _gR_Popup;
-
-    private Border _bR_Popup;
-    protected override Border bR_Popup => _bR_Popup;
-
-    private Border _bR_TextBox_Search;
-    protected override Border bR_TextBox_Search => _bR_TextBox_Search;
-
-    private RowDefinition _gR_Row_Search;
-    protected override RowDefinition gR_Row_Search => _gR_Row_Search;
-
-    private TextBox _txt_Data;
-    protected override TextBox txt_Data => _txt_Data;
-
-    private TextBox _txt_Data_Search;
-    protected override TextBox txt_Data_Search => _txt_Data_Search;
-
-    private Label _lb_PlaceHolder_Search;
-    protected override Label lb_PlaceHolder_Search => _lb_PlaceHolder_Search;
-
-    private Popup _xComboBoxPopup;
-    protected override Popup xComboBoxPopup => _xComboBoxPopup;
-
-    protected override bool IsEnternalEntered { get; set; }
+    private bool IsEnternalEntered { get; set; }
+    private List<object> getAllDataSources { get; set; }
+    private bool SearchMode { get; set; }
 
     //Border Box 
     private double _WidthEntered;
@@ -54,17 +33,16 @@ public partial class XComboBox : XComboBoxDataControl
     private double _TextFontSizeEntered;
     private double _PlaceHolderFontSizeEntered;
 
+    //Search
+    private double _PlaceHolderSearchFontSizeEntered;
+    private double _TextSearchFontSizeEntered;
+
+    [EditorBrowsable(EditorBrowsableState.Always)]
+    public delegate void _ValueChangedEventHandler(object sender, XComboBoxValueEventArgs Data);
+    public event _ValueChangedEventHandler _ValueChanged;
+
     public XComboBox()
     {
-        _gR_Popup = this.GR_Popup;
-        _bR_Popup = this.BR_Popup;
-        _gR_Row_Search = this.GR_Row_Search;
-        _txt_Data = this.Txt_Data;
-        _txt_Data_Search = this.Txt_Data_Search;
-        _lb_PlaceHolder_Search = this.Lb_PlaceHolder_Search;
-        _xComboBoxPopup = this.XComboBoxPopup;
-        _bR_TextBox_Search = this.BR_TextBox_Search;
-
         InitializeComponent();
         XComboBoxPopup.Tag = Guid.NewGuid().ToString();
 
@@ -78,6 +56,15 @@ public partial class XComboBox : XComboBoxDataControl
         _BorderBrushColor = XComboBoxDefaults.BorderBrushColor;
         _BorderBrushColorFocused = XComboBoxDefaults.BorderBrushColorFocused;
         _BorderBrushFocused = XComboBoxDefaults.BorderBrushFocused;
+        _IsGenerateEmptyLabel = XComboBoxDefaults.IsGenerateEmptyLabel;
+        _ElementType = XElementTypes.Normal;
+
+        //Popup
+        _PopupBackgroundColor = XComboBoxDefaults.PopupBackgroundColor;
+        _PopupBackgroundColorFocused = XComboBoxDefaults.PopupBackgroundColorFocused;
+        _PopupBorderBrushColor = XComboBoxDefaults.PopupBorderBrushColor;
+        _PopupTextColor = XComboBoxDefaults.PopupTextColor;
+        _popupTextFontSize = XComboBoxDefaults.PopupTextFontSize;
 
         //Label
         _LabelVisibility = true;
@@ -115,8 +102,10 @@ public partial class XComboBox : XComboBoxDataControl
         _PlaceHolderSearchFontSize = XComboBoxDefaults.PlaceHolderSearchFontSize;
         _PlaceHolderSearchOpacity = XComboBoxDefaults.PlaceHolderSearchOpacity;
         _PlaceHolderSearchText = XComboBoxDefaults.PlaceHolderSearchText;
-    }
 
+        //Value
+        _items = new List<string>();
+    }
 
     #region  Border Box
     private double? _height;
@@ -273,6 +262,120 @@ public partial class XComboBox : XComboBoxDataControl
                 _borderBrushColorFocused = _borderBrushColor;
         }
     }
+
+    private bool? _isGenerateEmptyLabel;
+    public bool? _IsGenerateEmptyLabel
+    {
+        get => _isGenerateEmptyLabel;
+        set
+        {
+            _isGenerateEmptyLabel = value;
+            if (_isGenerateEmptyLabel == null)
+                _isGenerateEmptyLabel = XComboBoxDefaults.IsGenerateEmptyLabel;
+
+            if (_dataSource != null)
+            {
+                _DataSource = _dataSource;
+                return;
+            }
+
+            if (_items != null && _items.Count() > 0)
+            {
+                _Items = _items;
+                return;
+            }
+        }
+    }
+    #endregion
+
+    #region Popup
+    private Brush _popupBackgroundColor;
+    public Brush _PopupBackgroundColor
+    {
+        get => _popupBackgroundColor;
+        set
+        {
+            _popupBackgroundColor = value;
+            if (_popupBackgroundColor == null)
+                _popupBackgroundColor = XComboBoxDefaults.PopupBackgroundColor;
+
+            BR_Popup.Background = _popupBackgroundColor;
+        }
+    }
+
+    private Brush _popupBackgroundColorFocused;
+    public Brush _PopupBackgroundColorFocused
+    {
+        get => _popupBackgroundColorFocused;
+        set
+        {
+            _popupBackgroundColorFocused = value;
+            if (_popupBackgroundColorFocused == null)
+                _popupBackgroundColorFocused = XComboBoxDefaults.PopupBackgroundColorFocused;
+        }
+    }
+
+    private Brush _popupBorderBrushColor;
+    public Brush _PopupBorderBrushColor
+    {
+        get => _popupBorderBrushColor;
+        set
+        {
+            _popupBorderBrushColor = value;
+            if (_popupBorderBrushColor == null)
+                _popupBorderBrushColor = XComboBoxDefaults.PopupBorderBrushColor;
+
+            BR_Popup.BorderBrush = _popupBorderBrushColor;
+        }
+    }
+
+    private Brush _popupTextColor;
+    public Brush _PopupTextColor
+    {
+        get => _popupTextColor;
+        set
+        {
+            _popupTextColor = value;
+            if (_popupTextColor == null)
+                _popupTextColor = XComboBoxDefaults.PopupTextColor;
+
+            if (_dataSource != null || (_items != null && _items.Count() > 0))
+            {
+                var getAllLabels = XElementHelper.FindChilds<Label>(GR_Popup);
+                if (getAllLabels.Count() > 0)
+                {
+                    getAllLabels.ForEach(item =>
+                    {
+                        ((Label)item).Foreground = _popupTextColor;
+                    });
+                }
+            }
+        }
+    }
+
+    private double? _popupTextFontSize;
+    public double? _PopupTextFontSize
+    {
+        get => _popupTextFontSize;
+        set
+        {
+            _popupTextFontSize = value;
+            if (_popupTextFontSize == null)
+                _popupTextFontSize = XComboBoxDefaults.PopupTextFontSize;
+
+            if (_dataSource != null || (_items != null && _items.Count() > 0))
+            {
+                var getAllLabels = XElementHelper.FindChilds<Label>(GR_Popup);
+                if (getAllLabels.Count() > 0)
+                {
+                    getAllLabels.ForEach(item =>
+                    {
+                        ((Label)item).FontSize = _popupTextFontSize.Value;
+                    });
+                }
+            }
+        }
+    }
     #endregion
 
     #region Label
@@ -301,7 +404,7 @@ public partial class XComboBox : XComboBoxDataControl
             GR_Col_Lable.Width = new GridLength(_labelGridWidth.Value, GridUnitType.Pixel);
 
             var PaddingRight = _labelGridWidth == 0 ? 10 : 5;
-            Txt_Data.Padding = new Thickness(PaddingRight, 0, 5, 0);
+            Txt_Data.Padding = new Thickness(PaddingRight, 3, 5, 0);
 
             HandleLabelTop();
         }
@@ -356,6 +459,24 @@ public partial class XComboBox : XComboBoxDataControl
                 _labelTopHeight = XTextBoxDefaults.LabelTopHeight;
 
             HandleLabelTop();
+        }
+    }
+
+    private XElementTypes? _elementType;
+    public XElementTypes? _ElementType
+    {
+        get => _elementType;
+        set
+        {
+            _elementType = value;
+            if (_elementType == null)
+                _elementType = XComboBoxDefaults.ElementType;
+
+            if (!_labelVisibility.HasValue)
+                return;
+
+            HandleBackground();
+            //HandleBorder();
         }
     }
 
@@ -418,6 +539,20 @@ public partial class XComboBox : XComboBoxDataControl
             if (_labelColor == null)
                 _labelColor = XComboBoxDefaults.LabelColor;
             Lb_Content.Foreground = _labelColor;
+        }
+    }
+
+    private Brush _labelBackgroundColor;
+    public Brush _LabelBackgroundColor
+    {
+        get => _labelBackgroundColor;
+        set
+        {
+            _labelBackgroundColor = value;
+            if (_labelBackgroundColor == null)
+                GR_Content.ClearValue(BackgroundProperty);
+            else
+                GR_Content.Background = _labelBackgroundColor;
         }
     }
 
@@ -595,9 +730,428 @@ public partial class XComboBox : XComboBoxDataControl
     }
     #endregion
 
-    #region Search 
+    #region Search
+    private double? _textSearchFontSize;
+    public double? _TextSearchFontSize
+    {
+        get => _textSearchFontSize;
+        set
+        {
+            _textSearchFontSize = value;
 
+            if (_textSearchFontSize == null)
+                _textSearchFontSize = XComboBoxDefaults.TextSearchFontSize;
 
+            if (_textSearchFontSize < 10)
+                _textSearchFontSize = 10;
+
+            if (!IsEnternalEntered)
+                _TextSearchFontSizeEntered = _textSearchFontSize.Value;
+
+            Txt_Data.FontSize = _textSearchFontSize.Value;
+        }
+    }
+
+    private double? _textSearchOpacity;
+    public double? _TextSearchOpacity
+    {
+        get => _textSearchOpacity;
+        set
+        {
+            _textSearchOpacity = value;
+            if (_textSearchOpacity == null)
+                _textSearchOpacity = XComboBoxDefaults.TextSearchOpacity;
+
+            if (_textSearchOpacity < 0.1)
+                _textSearchOpacity = 0.1;
+
+            Txt_Data.Opacity = _textSearchOpacity.Value;
+        }
+    }
+
+    private Brush _textSearchColor;
+    public Brush _TextSearchColor
+    {
+        get => _textSearchColor;
+        set
+        {
+            _textSearchColor = value;
+            if (_textSearchColor == null)
+                _textSearchColor = XComboBoxDefaults.TextSearchColor;
+            Txt_Data.Foreground = _textSearchColor;
+        }
+    }
+
+    private Thickness? _textSearchPadding;
+    public Thickness? _TextSearchPadding
+    {
+        get => _textSearchPadding;
+        set
+        {
+            _textSearchPadding = value;
+            if (_textSearchPadding == null)
+                _textSearchPadding = XComboBoxDefaults.TextSearchPadding;
+
+            Txt_Data.Padding = _textSearchPadding.Value;
+        }
+    }
+
+    private double? _fontSearchSize;
+    public double? _FontSearchSize
+    {
+        get => _fontSearchSize;
+        set
+        {
+            _fontSearchSize = value;
+
+            if (_fontSearchSize == null)
+                _FontSearchSize = XComboBoxDefaults.FontSearchSize;
+
+            if (_FontSearchSize < 10)
+                _FontSearchSize = 10;
+
+            IsEnternalEntered = true;
+            _TextSearchFontSize = _FontSearchSize == XComboBoxDefaults.FontSearchSize ? _TextSearchFontSizeEntered : _FontSearchSize;
+            _PlaceHolderSearchFontSize = _FontSearchSize == XComboBoxDefaults.FontSearchSize ? _PlaceHolderSearchFontSizeEntered : _FontSearchSize;
+            IsEnternalEntered = false;
+        }
+    }
+
+    private bool? _borderBrushSearchFocused;
+    public bool? _BorderBrushSearchFocused
+    {
+        get => _borderBrushSearchFocused;
+        set
+        {
+            _borderBrushSearchFocused = value;
+            if (_borderBrushSearchFocused == null)
+                _borderBrushSearchFocused = XComboBoxDefaults.BorderBrushSearchFocused;
+
+            if (_borderBrushSearchFocused.Value)
+                TextFieldAssist.SetUnderlineBrush(Txt_Data_Search, _borderBrushSearchColorFocused);
+            else
+                TextFieldAssist.SetUnderlineBrush(Txt_Data_Search, XElementHelper.GetColor(Colors.Transparent));
+        }
+    }
+
+    private bool? _isEnableSearch;
+    public bool? _IsEnableSearch
+    {
+        get => _isEnableSearch;
+        set
+        {
+            _isEnableSearch = value;
+            if (_isEnableSearch == null)
+                _isEnableSearch = XComboBoxDefaults.IsEnableSearch;
+
+            HandleSearch();
+        }
+    }
+
+    private bool? _equalSearchMode;
+    public bool? _EqualSearchMode
+    {
+        get => _equalSearchMode;
+        set
+        {
+            _equalSearchMode = value;
+            if (_equalSearchMode == null)
+                _equalSearchMode = XComboBoxDefaults.EqualSearchMode;
+        }
+    }
+
+    private bool? _caseSensitiveSearchMode;
+    public bool? _CaseSensitiveSearchMode
+    {
+        get => _caseSensitiveSearchMode;
+        set
+        {
+            _caseSensitiveSearchMode = value;
+            if (_caseSensitiveSearchMode == null)
+                _caseSensitiveSearchMode = XComboBoxDefaults.CaseSensitiveSearchMode;
+        }
+    }
+
+    private Brush _borderBrushSearchColor;
+    public Brush _BorderBrushSearchColor
+    {
+        get => _borderBrushSearchColor;
+        set
+        {
+            _borderBrushSearchColor = value;
+            if (_borderBrushSearchColor == null)
+                _borderBrushSearchColor = XComboBoxDefaults.BorderBrushSearchColor;
+            BR_TextBox_Search.BorderBrush = _borderBrushSearchColor;
+        }
+    }
+
+    private Brush _borderBrushSearchColorFocused;
+    public Brush _BorderBrushSearchColorFocused
+    {
+        get => _borderBrushSearchColorFocused;
+        set
+        {
+            _borderBrushSearchColorFocused = value;
+
+            if (_borderBrushSearchColorFocused == null)
+                _borderBrushSearchColorFocused = XComboBoxDefaults.BorderBrushSearchColorFocused;
+
+            var getColorTransparent = XElementHelper.GetColor(Colors.Transparent);
+            if (_borderBrushSearchColorFocused.FillStringSafe() == getColorTransparent.FillStringSafe())
+                _borderBrushSearchColorFocused = _borderBrushSearchColor;
+
+            TextFieldAssist.SetUnderlineBrush(Txt_Data_Search, _borderBrushSearchColorFocused);
+        }
+    }
+
+    private double? _placeHolderSearchOpacity;
+    public double? _PlaceHolderSearchOpacity
+    {
+        get => _placeHolderSearchOpacity;
+        set
+        {
+            _placeHolderSearchOpacity = value;
+            if (_placeHolderSearchOpacity == null)
+                _placeHolderSearchOpacity = XComboBoxDefaults.PlaceHolderSearchOpacity;
+
+            if (_placeHolderSearchOpacity < 0.1)
+                _placeHolderSearchOpacity = 0.1;
+
+            Lb_PlaceHolder_Search.Opacity = _placeHolderSearchOpacity.Value;
+        }
+    }
+
+    private string _placeHolderSearchText;
+    public string _PlaceHolderSearchText
+    {
+        get => _placeHolderSearchText;
+        set
+        {
+            _placeHolderSearchText = value;
+            Lb_PlaceHolder_Search.Content = _PlaceHolderSearchText;
+        }
+    }
+
+    private double? _placeHolderSearchFontSize;
+    public double? _PlaceHolderSearchFontSize
+    {
+        get => _placeHolderSearchFontSize;
+        set
+        {
+            _placeHolderSearchFontSize = value;
+
+            if (_placeHolderSearchFontSize == null)
+                _placeHolderSearchFontSize = XComboBoxDefaults.PlaceHolderSearchFontSize;
+
+            if (_placeHolderSearchFontSize < 10)
+                _placeHolderSearchFontSize = 10;
+
+            if (!IsEnternalEntered)
+                _PlaceHolderSearchFontSizeEntered = _placeHolderSearchFontSize.Value;
+
+            Lb_PlaceHolder_Search.FontSize = _placeHolderSearchFontSize.Value;
+        }
+    }
+    #endregion
+
+    #region Values  
+    private bool? _triggerValueChanged;
+    public bool? _TriggerValueChanged
+    {
+        get => _triggerValueChanged;
+        set
+        {
+            if (_triggerValueChanged == null)
+                _triggerValueChanged = false;
+            _triggerValueChanged = XComboBoxDefaults.TriggerValueChanged;
+        }
+    }
+
+    public object Value
+    {
+        get => Txt_Data.Tag.FillStringSafe();
+        set
+        {
+            if (_dataSource != null)
+            {
+                getAllDataSources.ForEach(item =>
+                {
+                    var getTypes = item.GetType();
+                    var getFields = getTypes.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+                    //key Field
+                    var keyFieldName = $"<{_keyField}>k__BackingField";
+                    var getkeyField = getFields.FirstOrDefault(a => a.Name == keyFieldName);
+                    var getkeyFieldValue = getkeyField.GetValue(item);
+
+                    //Display Field
+                    var keyDisplayField = $"<{_displayField}>k__BackingField";
+                    var getDisplayField = getFields.FirstOrDefault(a => a.Name == keyDisplayField);
+                    var getDisplayFieldValue = getDisplayField.GetValue(item);
+
+                    if (getkeyField.FillStringSafe() == value.FillStringSafe())
+                    {
+                        SetValueData(getkeyFieldValue, getDisplayFieldValue, _triggerValueChanged.Value);
+                    }
+                });
+                return;
+            }
+
+            if (_items != null && _items.Count() > 0)
+            {
+                var getItem = _items.FirstOrDefault(a => a == value.FillStringSafe());
+                if (getItem != null)
+                    SetValueData(getItem, getItem, _triggerValueChanged.Value);
+                return;
+            }
+        }
+    }
+
+    private object _dataSourceSelected;
+    public object _DataSourceSelected
+    {
+        get
+        {
+            _dataSourceSelected = null;
+            if (_dataSource != null)
+            {
+                getAllDataSources.ForEach(item =>
+                {
+                    if (_dataSourceSelected == null)
+                    {
+                        var getTypes = item.GetType();
+                        var getFields = getTypes.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+                        //key Field
+                        var keyFieldName = $"<{_keyField}>k__BackingField";
+                        var getkeyField = getFields.FirstOrDefault(a => a.Name == keyFieldName);
+                        var getkeyFieldValue = getkeyField.GetValue(item);
+
+                        if (getkeyFieldValue.FillStringSafe() == getkeyFieldValue.FillStringSafe())
+                            _dataSourceSelected = item;
+                    }
+                });
+
+                return _dataSourceSelected;
+            }
+
+            if (_items != null && _items.Count() > 0)
+            {
+                _items.ForEach(item =>
+                {
+                    if (_dataSourceSelected == null)
+                    {
+                        if (item.FillStringSafe() == Value.FillStringSafe())
+                        {
+                            _dataSourceSelected = item;
+                        }
+                    }
+                });
+            }
+
+            return _dataSourceSelected;
+        }
+    }
+    #endregion
+
+    #region Data Sources
+    private string _keyField;
+    public string _KeyField
+    {
+        set => _keyField = value;
+    }
+
+    private string _displayField;
+    public string _DisplayField
+    {
+        get => _displayField;
+        set => _displayField = value;
+    }
+
+    private object _dataSource;
+    public object _DataSource
+    {
+        set
+        {
+            _dataSource = value;
+            getAllDataSources = null;
+
+            //Clear Grid Content
+            GR_Popup.Children.Clear();
+            GR_Popup.RowDefinitions.Clear();
+
+            //Generate Empty Label
+            if (_IsGenerateEmptyLabel.Value && !SearchMode)
+                GenerateGridDataPanel(string.Empty, string.Empty, 0);
+
+            if (_dataSource != null && !_keyField.IsNullOrEmpty() && !_displayField.IsNullOrEmpty())
+            {
+                var IndexRow = _isGenerateEmptyLabel.Value && !SearchMode ? 1 : 0;
+                getAllDataSources = ((IEnumerable)_dataSource).Cast<object>().ToList();
+                getAllDataSources.ForEach(item =>
+                {
+                    var getTypes = item.GetType();
+                    var getFields = getTypes.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+                    //key Field
+                    var keyFieldName = $"<{_keyField}>k__BackingField";
+                    var getkeyField = getFields.FirstOrDefault(a => a.Name == keyFieldName);
+                    var getkeyFieldValue = getkeyField.GetValue(item);
+
+                    //Display Field
+                    var keyDisplayField = $"<{_displayField}>k__BackingField";
+                    var getDisplayField = getFields.FirstOrDefault(a => a.Name == keyDisplayField);
+                    var getDisplayFieldValue = getDisplayField.GetValue(item);
+
+                    if (getkeyField != null && getDisplayField != null)
+                    {
+                        if (IsAllowedGenerateLabel(getDisplayFieldValue))
+                        {
+                            GenerateGridDataPanel(getkeyFieldValue.FillStringSafe(), getDisplayFieldValue.FillStringSafe(), IndexRow);
+                            IndexRow++;
+                        }
+                    }
+                });
+            }
+
+            HandleSearch();
+        }
+    }
+
+    private List<string> _items;
+    public List<string> _Items
+    {
+        get => _items;
+        set
+        {
+            _items = value;
+            if (_items == null)
+                _items = new List<string>();
+
+            //Clear Grid Content
+            GR_Popup.Children.Clear();
+            GR_Popup.RowDefinitions.Clear();
+
+            //Generate Empty Label
+            if (_IsGenerateEmptyLabel.Value && !SearchMode)
+                GenerateGridDataPanel(string.Empty, string.Empty, 0);
+
+            if (_items.Count() > 0)
+            {
+                var IndexRow = _isGenerateEmptyLabel.Value && !SearchMode ? 1 : 0;
+                _items.ForEach(item =>
+                {
+                    if (IsAllowedGenerateLabel(item))
+                    {
+                        GenerateGridDataPanel(item, item, IndexRow);
+                        IndexRow++;
+                    }
+                });
+            }
+
+            HandleSearch();
+        }
+    }
     #endregion
 
     private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -651,6 +1205,12 @@ public partial class XComboBox : XComboBoxDataControl
         HandlePopup();
     }
 
+    private void HandleSearch()
+    {
+        var IsDataSource = (_dataSource != null && getAllDataSources.Count() > 0) || (_items != null && _items.Count() > 0);
+        GR_Row_Search.Height = new GridLength(_isEnableSearch.Value && IsDataSource ? 50 : 0, GridUnitType.Pixel);
+    }
+
     private void HandleLabelTop()
     {
         var Height = _HeightEntered;
@@ -694,6 +1254,43 @@ public partial class XComboBox : XComboBoxDataControl
             Grid.SetColumn(BR_TextBox, 2);
             Grid.SetColumnSpan(BR_TextBox, 1);
         }
+    }
+
+    private void HandleBackground()
+    {
+        var TextColor = XElementHelper.GetColor(Colors.White);
+
+        //Label
+        //BR_Label.ClearValue(BackgroundProperty);
+
+        if (_elementType == XElementTypes.Floating)
+        {
+            BR_TextBox.Background = XElementHelper.GetColor(Colors.Transparent);
+            return;
+        }
+
+        if (_elementType == XElementTypes.Border)
+        {
+            var LabelBackgroundColor = TextColor;
+            if (_labelBackgroundColor != null)
+                LabelBackgroundColor = _labelBackgroundColor;
+            else if (_backgroundColor != null)
+                LabelBackgroundColor = _backgroundColor;
+
+            //BR_Label.Background = LabelBackgroundColor;
+        }
+
+        //Text Box
+        //var TextBackgroundColor = TextColor;
+        //if (_textBoxBackgroundColor != null)
+        //    TextBackgroundColor = _textBoxBackgroundColor;
+        //else if (_backgroundColor != null)
+        //    TextBackgroundColor = _backgroundColor;
+
+        //BR_TextBox.Background = TextBackgroundColor;
+
+        ////Max Legnth
+        //HandleMaxLengthBackground();
     }
 
     private void HandlePopup()
@@ -751,6 +1348,45 @@ public partial class XComboBox : XComboBoxDataControl
     }
 
     #region GridData
+    private void GenerateGridDataPanel(string KeyField, string DisplayField, int IndexRow)
+    {
+        GR_Popup.RowDefinitions.Add(new RowDefinition
+        {
+            Height = new GridLength(30)
+        });
+
+        var innerGrid = new Grid
+        {
+            Cursor = Cursors.Hand,
+            Background = Brushes.Transparent
+        };
+
+        // رویدادها
+        innerGrid.MouseEnter += GridData_MouseEnter;
+        innerGrid.MouseLeave += GridData_MouseLeave;
+        innerGrid.MouseLeftButtonDown += GridData_MouseLeftButtonDown;
+
+        // ساخت لیبل
+        var lbl = new Label
+        {
+            Content = DisplayField,
+            Tag = KeyField,
+            Padding = new Thickness(10, 0, 0, 0),
+            VerticalAlignment = VerticalAlignment.Center,
+            Foreground = _popupTextColor,
+            FontSize = _popupTextFontSize.Value
+        };
+
+        // اضافه کردن لیبل به گرید
+        innerGrid.Children.Add(lbl);
+
+        // تعیین سطر
+        Grid.SetRow(innerGrid, IndexRow);
+
+        // اضافه کردن به گرید والد
+        GR_Popup.Children.Add(innerGrid);
+    }
+
     private void GridData_MouseEnter(object sender, MouseEventArgs e)
     {
         var getCurrentGrid = sender as Grid;
@@ -776,15 +1412,15 @@ public partial class XComboBox : XComboBoxDataControl
         Txt_Data.Tag = KeyField;
         XPopupManager.ClosePopupByTag(XComboBoxPopup.Tag.ToString());
 
-        //if (_ValueChanged != null && IsTriggerChanged)
-        //{
-        //    _ValueChanged(this, new XComboBoxValueEventArgs
-        //    {
-        //        Content = Txt_Data.Text.FillStringSafe(),
-        //        KeyField = Txt_Data.Tag.FillStringSafe(),
-        //        DataSource = _DataSourceSelected
-        //    });
-        //}
+        if (_ValueChanged != null && IsTriggerChanged)
+        {
+            _ValueChanged(this, new XComboBoxValueEventArgs
+            {
+                Content = Txt_Data.Text.FillStringSafe(),
+                KeyField = Txt_Data.Tag.FillStringSafe(),
+                DataSource = _DataSourceSelected
+            });
+        }
     }
     #endregion
 
@@ -816,6 +1452,25 @@ public partial class XComboBox : XComboBoxDataControl
         {
 
         }
+    }
+
+    private bool IsAllowedGenerateLabel(object DisplayField)
+    {
+        if (!SearchMode)
+            return true;
+
+        if (_equalSearchMode.Value)
+        {
+            if (_caseSensitiveSearchMode.Value)
+                return DisplayField.FillStringSafe() == Txt_Data_Search.Text.FillStringSafe();
+            else
+                return DisplayField.FillStringSafe().ToLower() == Txt_Data_Search.Text.FillStringSafe().ToLower();
+        }
+
+        if (_caseSensitiveSearchMode.Value)
+            return DisplayField.FillStringSafe().Contains(Txt_Data_Search.Text.FillStringSafe());
+        else
+            return DisplayField.FillStringSafe().ToLower().Contains(Txt_Data_Search.Text.FillStringSafe().ToLower());
     }
     #endregion
 }

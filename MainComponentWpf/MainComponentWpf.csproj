@@ -34,11 +34,35 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Fonts\Shabnam-Bold.ttf" />
+    <None Remove="Fonts\Shabnam-Light.ttf" />
+    <None Remove="Fonts\Shabnam.ttf" />
+    <None Remove="Images\Close.png" />
+    <None Remove="Images\CloseWhite.png" />
+    <None Remove="Images\Maximize.png" />
+    <None Remove="Images\minus.png" />
+    <None Remove="Images\Test.png" />
+    <None Remove="Images\Vpn.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="5.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\XControlComponent\XControlComponents.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Fonts\Shabnam-Bold.ttf" />
+    <Resource Include="Fonts\Shabnam-Light.ttf" />
+    <Resource Include="Fonts\Shabnam.ttf" />
+    <Resource Include="Images\Close.png" />
+    <Resource Include="Images\CloseWhite.png" />
+    <Resource Include="Images\Maximize.png" />
+    <Resource Include="Images\minus.png" />
+    <Resource Include="Images\Test.png" />
+    <Resource Include="Images\Vpn.png" />
   </ItemGroup>
 
 </Project>

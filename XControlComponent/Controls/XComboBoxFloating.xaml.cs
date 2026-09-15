@@ -390,7 +390,7 @@ public partial class XComboBoxFloating : UserControl
 
             if (_labelGridWidth == 0 && Txt_Data.Padding.Left == 0)
             {
-                Txt_Data.Padding = new Thickness(10, 0, 5, 0);
+                Txt_Data.Padding = new Thickness(10, 3, 5, 0);
             }
         }
     }
@@ -714,7 +714,7 @@ public partial class XComboBoxFloating : UserControl
             if (_textSearchPadding == null)
                 _textSearchPadding = XComboBoxDefaults.TextSearchPadding;
 
-            Txt_Data.Padding = _textSearchPadding.Value;
+            Txt_Data_Search.Padding = _textSearchPadding.Value;
         }
     }
 

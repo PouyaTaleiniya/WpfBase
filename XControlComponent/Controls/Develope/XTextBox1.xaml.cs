@@ -1349,9 +1349,10 @@ public partial class XTextBox1 : UserControl
         //Text Box
         var TextBackgroundColor = TextColor;
         if (_textBoxBackgroundColor != null)
-            TextBackgroundColor = _textBoxBackgroundColor;
-        else if (_backgroundColor != null)
-            TextBackgroundColor = _backgroundColor;
+            if (_textBoxBackgroundColor != null)
+                TextBackgroundColor = _textBoxBackgroundColor;
+            else if (_backgroundColor != null)
+                TextBackgroundColor = _backgroundColor;
 
         BR_TextBox.Background = TextBackgroundColor;
 

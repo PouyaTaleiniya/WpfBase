@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.Windows;
+using XControlHelper;
 
 namespace MainComponentWpf
 {
@@ -9,6 +10,10 @@ namespace MainComponentWpf
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+
+        }
     }
 
 }

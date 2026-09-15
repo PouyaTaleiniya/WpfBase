@@ -14,7 +14,7 @@ namespace MainComponentWpf
 
         private void BaseWindow_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            xComboBoxData._Items.Add("Item1");
+            xComboBoxData1._Items = new List<string>() { "ایتم 1", "ایتم 2", "ایتم 3" };
         }
     }
 
