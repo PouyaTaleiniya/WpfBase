@@ -25,7 +25,8 @@
     <SolidColorBrush x:Key="Color_White_f8f9ff" Color="#f8f9ff" />
     <SolidColorBrush x:Key="Color_Gray_949494" Color="#949494" />
     <SolidColorBrush x:Key="Color_Gray_959595" Color="#959595" />
-    <SolidColorBrush x:Key="Color_Gray_d9d9d9" Color="#d9d9d9" /> 
+    <SolidColorBrush x:Key="Color_Gray_d9d9d9" Color="#d9d9d9" />
+    <SolidColorBrush x:Key="Color_Gray_D1D1D1" Color="#D1D1D1" />
     <SolidColorBrush x:Key="Color_Blue_cbdeec" Color="#cbdeec" />
     <SolidColorBrush x:Key="Color_Blue_4a78b0" Color="#4a78b0" />
     <SolidColorBrush x:Key="Color_Blue_0D47A1" Color="#1565C0" />
@@ -51,6 +52,13 @@
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="UseLayoutRounding" Value="True" />
         <Setter Property="BorderBrush" Value="{StaticResource Color_Gray_959595}" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
+    <Style x:Key="BorderGrid" TargetType="{x:Type Border}">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <!--<Setter Property="BorderBrush" Value="#E1E1E1" />-->
         <Setter Property="BorderThickness" Value="1" />
     </Style>
 
