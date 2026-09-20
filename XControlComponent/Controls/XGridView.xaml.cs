@@ -165,6 +165,21 @@ namespace XControlComponents.Controls
                 {
                     getAllDataSources = ((IEnumerable)_dataSource).Cast<object>().ToList();
 
+                    var dataSourceType = _dataSource.GetType();
+
+                    var itemType = dataSourceType.GetGenericArguments()[0];
+
+                    var properties = itemType.GetProperties();
+
+                    var propertyInfos = itemType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+                    foreach (var property in properties)
+                    {
+                        //var attribute = property.GetCustomAttribute<DataBindAttribute>();
+                        var x1 = property.Name;
+                    }
+
+                    var x = getAllDataSources.FirstOrDefault();
                     //var getFirstRow =
 
                     getAllDataSources.ForEach(item =>

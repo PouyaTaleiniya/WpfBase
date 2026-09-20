@@ -34,7 +34,7 @@
                     <!--<controls:XTextBoxBorder _LabelTitle="Gender" _IsRequired="True" _MaxLength="1500" _MaxLengthGridWidth="90" _MaxLengthVisibility="True"  _MaxLengthOutbox="True" _LabelTop="True"  _LabelVisibility="True" _MultiLine="False" />-->
                     <!--<controls:XTextBox1 _ElementType="Normal" _LabelTop="True" _MaxLengthVisibility="True" _MaxLengthOutbox="False" _MaxLengthGridWidth="70" _MaxLength="20" _MultiLine="False"/>-->
                     <!--<controls:XComboBoxBorder Name="xComboBoxData1"  />-->
-                    <controls:XGridView  />
+                    <controls:XGridView  Name="xGridView"/>
                 </Grid>
                 <Grid Grid.Row="2" Background="AliceBlue">
                     <!--<controls:XComboBoxFloating  Name="XComboBox1" _IsGenerateEmptyLabel="True" _LabelVisibility="True" _BorderBrushFocused="True" _PlaceHolderOpacity="0.3"  _LabelTitle="نام" _IsRequired="True" _ValueChanged="XComboBox_ValueChanged"/>-->
