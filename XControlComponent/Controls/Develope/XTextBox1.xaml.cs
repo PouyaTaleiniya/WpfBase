@@ -6,6 +6,9 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using XControlComponents.Tools;
+using XControlComponents.Tools.Controls;
+using XControlComponents.Tools.ControlTypes;
 using XControlHelper;
 
 namespace XControlComponents.Controls;
@@ -246,7 +249,7 @@ public partial class XTextBox1 : UserControl
             if (_borderBrushColorFocused == null)
                 _borderBrushColorFocused = XTextBoxDefaults.BorderBrushColorFocused;
 
-            var getColorTransparent = XElementHelper.GetColor(Colors.Transparent);
+            var getColorTransparent = XElementHelper.GetBrushColor(Colors.Transparent);
             if (_borderBrushColorFocused.FillStringSafe() == getColorTransparent.FillStringSafe())
                 _borderBrushColorFocused = _borderBrushColor;
         }
@@ -954,7 +957,7 @@ public partial class XTextBox1 : UserControl
         BR_Label.BorderThickness = new Thickness(0);
         BR_TextBox.BorderThickness = new Thickness(1, 1, 0, 1);
         BR_MaxLength.BorderThickness = new Thickness(0, 1, 1, 1);
-        TextFieldAssist.SetUnderlineBrush(Txt_Data, XElementHelper.GetColor(Colors.Transparent));
+        TextFieldAssist.SetUnderlineBrush(Txt_Data, XElementHelper.GetBrushColor(Colors.Transparent));
 
         if (_maxLengthVisibility)
         {
@@ -964,7 +967,7 @@ public partial class XTextBox1 : UserControl
                 {
                     BR_TextBox.BorderThickness = _maxLengthOutbox.Value || _multiLine.Value ? new Thickness(1) : new Thickness(1, 1, 0, 1);
                     BR_MaxLength.BorderThickness = _maxLengthOutbox.Value || _multiLine.Value ? new Thickness(0) : new Thickness(0, 1, 1, 1);
-                    BR_MaxLength.Background = _maxLengthOutbox.Value || _multiLine.Value ? XElementHelper.GetColor(Colors.Transparent) : _textBoxBackgroundColor;
+                    BR_MaxLength.Background = _maxLengthOutbox.Value || _multiLine.Value ? XElementHelper.GetBrushColor(Colors.Transparent) : _textBoxBackgroundColor;
                 }
                 else
                 {
@@ -977,7 +980,7 @@ public partial class XTextBox1 : UserControl
             {
                 BR_TextBox.BorderThickness = new Thickness(1);
                 BR_MaxLength.BorderThickness = new Thickness(0);
-                BR_MaxLength.Background = XElementHelper.GetColor(Colors.Transparent);
+                BR_MaxLength.Background = XElementHelper.GetBrushColor(Colors.Transparent);
             }
 
             BR_MaxLength.Visibility = Visibility.Visible;
@@ -1007,7 +1010,7 @@ public partial class XTextBox1 : UserControl
         BR_Label.BorderThickness = new Thickness(1, 1, 0, 1);
         BR_TextBox.BorderThickness = new Thickness(BorderRight, 1, 1, 1);
         BR_MaxLength.BorderThickness = new Thickness(0, 1, 1, 1);
-        TextFieldAssist.SetUnderlineBrush(Txt_Data, XElementHelper.GetColor(Colors.Transparent));
+        TextFieldAssist.SetUnderlineBrush(Txt_Data, XElementHelper.GetBrushColor(Colors.Transparent));
 
         if (_labelTop.HasValue && _labelTop.Value && _LabelVisibility.HasValue && _LabelVisibility.Value)
         {
@@ -1018,13 +1021,13 @@ public partial class XTextBox1 : UserControl
             {
                 BR_Label.BorderThickness = new Thickness(1, 1, _MaxLengthOutbox.Value ? 1 : 0, 0);
                 BR_MaxLength.BorderThickness = _MaxLengthOutbox.Value ? new Thickness(0) : new Thickness(0, 1, 1, 0);
-                BR_MaxLength.Background = _maxLengthOutbox.Value ? XElementHelper.GetColor(Colors.Transparent) : _backgroundColor;
+                BR_MaxLength.Background = _maxLengthOutbox.Value ? XElementHelper.GetBrushColor(Colors.Transparent) : _backgroundColor;
             }
             else
             {
                 BR_Label.BorderThickness = new Thickness(1, 1, 1, 0);
                 BR_MaxLength.BorderThickness = new Thickness(0);
-                BR_MaxLength.Background = XElementHelper.GetColor(Colors.Transparent);
+                BR_MaxLength.Background = XElementHelper.GetBrushColor(Colors.Transparent);
             }
 
             BR_TextBox.BorderThickness = new Thickness(1, 0, 1, 1);
@@ -1035,7 +1038,7 @@ public partial class XTextBox1 : UserControl
         {
             BR_TextBox.BorderThickness = new Thickness(BorderRight, 1, 1, 1);
             BR_MaxLength.BorderThickness = new Thickness(0);
-            BR_MaxLength.Background = XElementHelper.GetColor(Colors.Transparent);
+            BR_MaxLength.Background = XElementHelper.GetBrushColor(Colors.Transparent);
             return;
         }
 
@@ -1045,7 +1048,7 @@ public partial class XTextBox1 : UserControl
             {
                 BR_TextBox.BorderThickness = new Thickness(BorderRight, 1, 1, 1);
                 BR_MaxLength.BorderThickness = new Thickness(0);
-                BR_MaxLength.Background = XElementHelper.GetColor(Colors.Transparent);
+                BR_MaxLength.Background = XElementHelper.GetBrushColor(Colors.Transparent);
             }
             else
             {
@@ -1324,14 +1327,14 @@ public partial class XTextBox1 : UserControl
 
     private void HandleBackground()
     {
-        var TextColor = XElementHelper.GetColor(Colors.White);
+        var TextColor = XElementHelper.GetBrushColor(Colors.White);
 
         //Label
         BR_Label.ClearValue(BackgroundProperty);
 
         if (_elementType == XElementTypes.Floating)
         {
-            BR_TextBox.Background = XElementHelper.GetColor(Colors.Transparent);
+            BR_TextBox.Background = XElementHelper.GetBrushColor(Colors.Transparent);
             return;
         }
 
@@ -1362,7 +1365,7 @@ public partial class XTextBox1 : UserControl
 
     private void HandleMaxLengthBackground()
     {
-        var TextBackgroundColor = XElementHelper.GetColor(Colors.White);
+        var TextBackgroundColor = XElementHelper.GetBrushColor(Colors.White);
         if (_textBoxBackgroundColor != null)
             TextBackgroundColor = _textBoxBackgroundColor;
         else if (_backgroundColor != null)
@@ -1370,13 +1373,13 @@ public partial class XTextBox1 : UserControl
 
         if (!_maxLengthVisibility)
         {
-            BR_MaxLength.Background = XElementHelper.GetColor(Colors.Transparent);
+            BR_MaxLength.Background = XElementHelper.GetBrushColor(Colors.Transparent);
             return;
         }
 
         if (_elementType == XElementTypes.Floating)
         {
-            BR_MaxLength.Background = XElementHelper.GetColor(Colors.Transparent);
+            BR_MaxLength.Background = XElementHelper.GetBrushColor(Colors.Transparent);
             return;
         }
 
@@ -1384,13 +1387,13 @@ public partial class XTextBox1 : UserControl
         {
             if (_maxLengthOutbox.HasValue && _maxLengthOutbox.Value)
             {
-                BR_MaxLength.Background = XElementHelper.GetColor(Colors.Transparent);
+                BR_MaxLength.Background = XElementHelper.GetBrushColor(Colors.Transparent);
                 return;
             }
 
             if (_multiLine.HasValue && _multiLine.Value)
             {
-                BR_MaxLength.Background = XElementHelper.GetColor(Colors.Transparent);
+                BR_MaxLength.Background = XElementHelper.GetBrushColor(Colors.Transparent);
                 return;
             }
 
@@ -1402,7 +1405,7 @@ public partial class XTextBox1 : UserControl
 
 
         if (_maxLengthOutbox.HasValue)
-            BR_MaxLength.Background = _maxLengthOutbox.Value ? XElementHelper.GetColor(Colors.Transparent) : TextBackgroundColor;
+            BR_MaxLength.Background = _maxLengthOutbox.Value ? XElementHelper.GetBrushColor(Colors.Transparent) : TextBackgroundColor;
         else
             BR_MaxLength.Background = TextBackgroundColor;
     }

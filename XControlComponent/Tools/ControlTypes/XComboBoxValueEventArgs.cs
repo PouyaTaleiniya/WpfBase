@@ -1,4 +1,4 @@
-﻿namespace XControlComponents;
+﻿namespace XControlComponents.Tools.ControlTypes;
 
 public class XComboBoxValueEventArgs
 {

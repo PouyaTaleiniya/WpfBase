@@ -18,24 +18,28 @@
                 PrimaryColor="DeepPurple" 
                 SecondaryColor="Lime" />
 
-    <!--Colors-->
+    <!--Colors (Each Color Add To XAppMethod.cs) -->
     <SolidColorBrush x:Key="Color_Red_c42b1c" Color="#c42b1c" /> 
     <SolidColorBrush x:Key="Color_Red_de0030" Color="#de0030" />
+    <SolidColorBrush x:Key="Color_Red_FFE6E6" Color="#FFE6E6" />
     <SolidColorBrush x:Key="Color_White_f3f3f3" Color="#f3f3f3" />
     <SolidColorBrush x:Key="Color_White_f8f9ff" Color="#f8f9ff" />
     <SolidColorBrush x:Key="Color_Gray_949494" Color="#949494" />
     <SolidColorBrush x:Key="Color_Gray_959595" Color="#959595" />
     <SolidColorBrush x:Key="Color_Gray_d9d9d9" Color="#d9d9d9" />
     <SolidColorBrush x:Key="Color_Gray_D1D1D1" Color="#D1D1D1" />
+    <SolidColorBrush x:Key="Color_Gray_B8B8B8" Color="#B8B8B8" />
     <SolidColorBrush x:Key="Color_Blue_cbdeec" Color="#cbdeec" />
     <SolidColorBrush x:Key="Color_Blue_4a78b0" Color="#4a78b0" />
     <SolidColorBrush x:Key="Color_Blue_0D47A1" Color="#1565C0" />
     <SolidColorBrush x:Key="Color_Blue_2196f3" Color="#2196f3" />
     <SolidColorBrush x:Key="Color_Black_424242" Color="#424242" />
     <SolidColorBrush x:Key="Color_Black_212121" Color="#212121" />
-
+    <SolidColorBrush x:Key="Color_Black_1E1E1E" Color="#1E1E1E" />
+    <SolidColorBrush x:Key="Color_Black_444040" Color="#444040" />
+    
     <Style x:Key="LabelTemplate" TargetType="{x:Type Label}">
-        <Setter Property="Foreground" Value="#1E1E1E" />
+        <Setter Property="Foreground" Value="{StaticResource Color_Black_1E1E1E}" />
         <Setter Property="FontSize" Value="20" />
     </Style>
 
@@ -58,8 +62,12 @@
     <Style x:Key="BorderGrid" TargetType="{x:Type Border}">
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="UseLayoutRounding" Value="True" />
-        <!--<Setter Property="BorderBrush" Value="#E1E1E1" />-->
         <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
+    <Style x:Key="BorderInnerGrid" TargetType="{x:Type Border}">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="UseLayoutRounding" Value="True" />
     </Style>
 
     <Style x:Key="BorderDevice" TargetType="{x:Type Border}">

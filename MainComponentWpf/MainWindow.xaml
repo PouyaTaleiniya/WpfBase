@@ -6,6 +6,7 @@
                     xmlns:usercontrols="clr-namespace:XControlComponents.UserControls;assembly=XControlComponents"
                     xmlns:controls="clr-namespace:XControlComponents.Controls;assembly=XControlComponents"
                     xmlns:local="clr-namespace:XControlComponents.Tools;assembly=XControlComponents"
+                    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
                     mc:Ignorable="d"
                    Title="MainWindow"  
                    Height="800" 
@@ -33,17 +34,22 @@
                     <!--<controls:XTextBoxBorder _LabelTitle="Gender" _IsRequired="True" _MaxLength="1500" _MaxLengthGridWidth="90" _MaxLengthVisibility="True"  _MaxLengthOutbox="True" _LabelTop="True"  _LabelVisibility="True" _MultiLine="False" />-->
                     <!--<controls:XTextBox1 _ElementType="Normal" _LabelTop="True" _MaxLengthVisibility="True" _MaxLengthOutbox="False" _MaxLengthGridWidth="70" _MaxLength="20" _MultiLine="False"/>-->
                     <!--<controls:XComboBoxBorder Name="xComboBoxData1"  />-->
-                    <controls:XGridView />
+                    <controls:XGridView  />
                 </Grid>
                 <Grid Grid.Row="2" Background="AliceBlue">
                     <!--<controls:XComboBoxFloating  Name="XComboBox1" _IsGenerateEmptyLabel="True" _LabelVisibility="True" _BorderBrushFocused="True" _PlaceHolderOpacity="0.3"  _LabelTitle="نام" _IsRequired="True" _ValueChanged="XComboBox_ValueChanged"/>-->
+
+                    <!--////////////////ColorPicker-->
+                    <!--<xctk:ColorPicker
+                        x:Name="ColorPicker" Height="50"
+                        SelectedColorChanged="ColorPicker_SelectedColorChanged"/>-->
 
                     <!--<controls:XCheckBox  Name="Ch_Gender" _CheckedChanged="Ch_Gender_CheckedChanged" _LabelGridWidth="250" _LabelTitle="Gender" Value="True"/>-->
                     <!--<DatePicker Width="333" Height="27"/>-->
                     <!--<controls:XDate _LabelTop="True" />-->
                     <!--<TextBox Width="100" />-->
                     <!--<controls:XTextBox Name="xTextBox" _TextBoxFontSize="13" _LabelVisibility="True" _LabelVerticalAlignment="Center"/>-->
-                    <colorPo
+                    <!--<colorPo-->
                 </Grid>
             </Grid>
         </Grid>

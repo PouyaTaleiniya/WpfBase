@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using XControlHelper;
+using XControlComponents.Tools.Controls;
 
 namespace XControlComponents.Tools
 {
@@ -27,11 +27,13 @@ namespace XControlComponents.Tools
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             WindowStyle = WindowStyle.None;
             ResizeMode = ResizeMode.CanResize;
-            Background = XElementHelper.GetColor(Colors.Transparent);
+            Background = XElementHelper.GetBrushColor(Colors.Transparent);
             AllowsTransparency = true;
             _IsResize = XHeaderDefaults.IsResize;
             Loaded += BaseWindow_Loaded;
             Deactivated += BaseWindow_Deactivated;
+
+            FlowDirection = FlowDirection.RightToLeft;
 
             //Set Font Family
             FontFamily = (FontFamily)FindResource("ShabnamBold");

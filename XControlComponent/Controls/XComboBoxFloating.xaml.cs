@@ -8,6 +8,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using XControlComponents.Tools;
+using XControlComponents.Tools.ControlTypes;
 using XControlHelper;
 
 namespace XControlComponents.Controls;
@@ -212,7 +213,7 @@ public partial class XComboBoxFloating : UserControl
             if (_borderBrushFocused.Value)
                 TextFieldAssist.SetUnderlineBrush(Txt_Data, _borderBrushColorFocused);
             else
-                TextFieldAssist.SetUnderlineBrush(Txt_Data, XElementHelper.GetColor(Colors.Transparent));
+                TextFieldAssist.SetUnderlineBrush(Txt_Data, XElementHelper.GetBrushColor(Colors.Transparent));
         }
     }
 
@@ -240,7 +241,7 @@ public partial class XComboBoxFloating : UserControl
             if (_borderBrushColorFocused == null)
                 _borderBrushColorFocused = XComboBoxDefaults.BorderBrushColorFocused;
 
-            var getColorTransparent = XElementHelper.GetColor(Colors.Transparent);
+            var getColorTransparent = XElementHelper.GetBrushColor(Colors.Transparent);
             if (_borderBrushColorFocused.FillStringSafe() == getColorTransparent.FillStringSafe())
                 _borderBrushColorFocused = _borderBrushColor;
 
@@ -752,7 +753,7 @@ public partial class XComboBoxFloating : UserControl
             if (_borderBrushSearchFocused.Value)
                 TextFieldAssist.SetUnderlineBrush(Txt_Data_Search, _borderBrushSearchColorFocused);
             else
-                TextFieldAssist.SetUnderlineBrush(Txt_Data_Search, XElementHelper.GetColor(Colors.Transparent));
+                TextFieldAssist.SetUnderlineBrush(Txt_Data_Search, XElementHelper.GetBrushColor(Colors.Transparent));
         }
     }
 
@@ -818,7 +819,7 @@ public partial class XComboBoxFloating : UserControl
             if (_borderBrushSearchColorFocused == null)
                 _borderBrushSearchColorFocused = XComboBoxDefaults.BorderBrushSearchColorFocused;
 
-            var getColorTransparent = XElementHelper.GetColor(Colors.Transparent);
+            var getColorTransparent = XElementHelper.GetBrushColor(Colors.Transparent);
             if (_borderBrushSearchColorFocused.FillStringSafe() == getColorTransparent.FillStringSafe())
                 _borderBrushSearchColorFocused = _borderBrushSearchColor;
 

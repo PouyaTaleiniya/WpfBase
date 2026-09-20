@@ -1,4 +1,4 @@
-﻿namespace XControlHelper;
+﻿namespace XControlComponents.Tools.ControlTypes;
 
 public enum XInputTypes
 {

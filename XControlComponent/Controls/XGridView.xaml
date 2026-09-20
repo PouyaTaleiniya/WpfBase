@@ -3,29 +3,32 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:XControlComponents.Controls"
+             xmlns:local="clr-namespace:XControlComponents.Controls" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Border Style="{StaticResource BorderGrid}" BorderBrush="#BABABA" Background="#f9f9f9">
+    <Border Style="{StaticResource BorderGrid}" Name="BR_Grid" Background="#f9f9f9">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Name="GR_Row_NoData" />
-                <RowDefinition Name="GR_Row_Data" Height="0"/>
+                <RowDefinition Name="GR_Row_Columns" />
+                <RowDefinition Name="GR_Row_Datas" />
             </Grid.RowDefinitions>
-            <Grid Name="GR_NoData">
-                <TextBlock Name="Txt_NoData" HorizontalAlignment="Center" VerticalAlignment="Center">No Data Exist</TextBlock>
-            </Grid>
-            <Grid Grid.Row="1" Name="GR_Data">
-                <Grid.RowDefinitions>
-                    <RowDefinition Name="GR_Row_Columns" Height="35"/>
-                    <RowDefinition Name="GR_Row_Datas" />
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
-                    
-                </Grid>
-                <Border Grid.Row="1" Style="{StaticResource BorderGrid}" BorderBrush="Black" BorderThickness="0 1 0 0">
+            <Border Grid.Row="0" Name="BR_Columns" Background="#F0F0F0" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 0 1">
 
-                </Border>
+            </Border>
+            <Grid Grid.Row="1" Visibility="Hidden">
+                <xctk:ColorPicker x:Name="ColorPicker" Height="25" Width="250" SelectedColorChanged="ColorPicker_SelectedColorChanged"/>
+            </Grid>
+            <Grid Grid.Row="1" Visibility="Visible">
+                <Grid.RowDefinitions>
+                    <RowDefinition Name="GR_Row_NoData" />
+                    <RowDefinition Name="GR_Row_Data" Height="0"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Name="GR_NoData">
+                    <Label Name="Lb_NoData" VerticalAlignment="Center" HorizontalAlignment="Center"></Label>
+                </Grid>
+                <Grid Grid.Row="1" Name="GR_Data">
+
+                </Grid>
             </Grid>
         </Grid>
     </Border>

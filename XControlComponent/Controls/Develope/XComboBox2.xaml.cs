@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using XControlComponents.Controls.Data;
 using XControlComponents.Tools;
+using XControlComponents.Tools.Controls;
 using XControlHelper;
 
 namespace XControlComponents.Controls;
@@ -267,7 +268,7 @@ public partial class XComboBox2 : XComboBoxDataControl
             if (_borderBrushColorFocused == null)
                 _borderBrushColorFocused = XComboBoxDefaults.BorderBrushColorFocused;
 
-            var getColorTransparent = XElementHelper.GetColor(Colors.Transparent);
+            var getColorTransparent = XElementHelper.GetBrushColor(Colors.Transparent);
             if (_borderBrushColorFocused.FillStringSafe() == getColorTransparent.FillStringSafe())
                 _borderBrushColorFocused = _borderBrushColor;
         }

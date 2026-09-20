@@ -8,6 +8,8 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using XControlComponents.Tools;
+using XControlComponents.Tools.Controls;
+using XControlComponents.Tools.ControlTypes;
 using XControlHelper;
 
 namespace XControlComponents.Controls;
@@ -257,7 +259,7 @@ public partial class XComboBox : UserControl
             if (_borderBrushColorFocused == null)
                 _borderBrushColorFocused = XComboBoxDefaults.BorderBrushColorFocused;
 
-            var getColorTransparent = XElementHelper.GetColor(Colors.Transparent);
+            var getColorTransparent = XElementHelper.GetBrushColor(Colors.Transparent);
             if (_borderBrushColorFocused.FillStringSafe() == getColorTransparent.FillStringSafe())
                 _borderBrushColorFocused = _borderBrushColor;
         }
@@ -830,7 +832,7 @@ public partial class XComboBox : UserControl
             if (_borderBrushSearchFocused.Value)
                 TextFieldAssist.SetUnderlineBrush(Txt_Data_Search, _borderBrushSearchColorFocused);
             else
-                TextFieldAssist.SetUnderlineBrush(Txt_Data_Search, XElementHelper.GetColor(Colors.Transparent));
+                TextFieldAssist.SetUnderlineBrush(Txt_Data_Search, XElementHelper.GetBrushColor(Colors.Transparent));
         }
     }
 
@@ -896,7 +898,7 @@ public partial class XComboBox : UserControl
             if (_borderBrushSearchColorFocused == null)
                 _borderBrushSearchColorFocused = XComboBoxDefaults.BorderBrushSearchColorFocused;
 
-            var getColorTransparent = XElementHelper.GetColor(Colors.Transparent);
+            var getColorTransparent = XElementHelper.GetBrushColor(Colors.Transparent);
             if (_borderBrushSearchColorFocused.FillStringSafe() == getColorTransparent.FillStringSafe())
                 _borderBrushSearchColorFocused = _borderBrushSearchColor;
 
@@ -1258,14 +1260,14 @@ public partial class XComboBox : UserControl
 
     private void HandleBackground()
     {
-        var TextColor = XElementHelper.GetColor(Colors.White);
+        var TextColor = XElementHelper.GetBrushColor(Colors.White);
 
         //Label
         //BR_Label.ClearValue(BackgroundProperty);
 
         if (_elementType == XElementTypes.Floating)
         {
-            BR_TextBox.Background = XElementHelper.GetColor(Colors.Transparent);
+            BR_TextBox.Background = XElementHelper.GetBrushColor(Colors.Transparent);
             return;
         }
 

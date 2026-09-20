@@ -1,5 +1,7 @@
 ﻿using System.Windows.Media;
 using System.Windows;
+using XControlComponents.Tools;
+using XControlComponents.Tools.ControlTypes;
 
 namespace XControlHelper
 {
@@ -11,7 +13,7 @@ namespace XControlHelper
         public static bool WidthAuto { get; set; } = false;
         public static bool BorderBrushFocused { get; set; } = true;
         public static bool RequiredVisibility { get; set; } = true;
-        public static Brush BackgroundColor { get; set; } = XElementHelper.GetColor(Colors.White);
+        public static Brush BackgroundColor { get; set; } = XElementHelper.GetBrushColor(Colors.White);
         public static Brush RequiredColor { get; set; } = XAppMethods.Color_Red_de0030();
         public static Brush BorderBrushColor { get; set; } = XAppMethods.Color_Gray_959595();
         public static Brush BorderBrushColorFloating { get; set; } = XAppMethods.Color_Blue_4a78b0();

@@ -5,7 +5,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using XControlComponents.Tools;
-using XControlHelper;
+using XControlComponents.Tools.Controls;
 
 
 namespace XControlComponents.UserControls
@@ -106,7 +106,7 @@ namespace XControlComponents.UserControls
 
         private void GR_Close_MouseLeave(object sender, MouseEventArgs e)
         {
-            BR_Close.Background = XElementHelper.GetColor(Colors.Transparent);
+            BR_Close.Background = XElementHelper.GetBrushColor(Colors.Transparent);
             Img_Close.SetImageSource("/Images/Close.png");
         }
 
@@ -123,7 +123,7 @@ namespace XControlComponents.UserControls
 
         private void GR_Minimize_MouseLeave(object sender, MouseEventArgs e)
         {
-            GR_Minimize.Background = XElementHelper.GetColor(Colors.Transparent);
+            GR_Minimize.Background = XElementHelper.GetBrushColor(Colors.Transparent);
         }
 
         private void GR_Minimize_Click(object sender, MouseButtonEventArgs e)
@@ -139,7 +139,7 @@ namespace XControlComponents.UserControls
 
         private void GR_Maximize_MouseLeave(object sender, MouseEventArgs e)
         {
-            GR_Maximize.Background = XElementHelper.GetColor(Colors.Transparent);
+            GR_Maximize.Background = XElementHelper.GetBrushColor(Colors.Transparent);
         }
 
         private void GR_Maximize_Click(object sender, MouseButtonEventArgs e)

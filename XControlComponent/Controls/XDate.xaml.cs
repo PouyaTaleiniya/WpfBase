@@ -191,7 +191,7 @@ public partial class XDate : UserControl
             if (_borderBrushColorFocused == null)
                 _borderBrushColorFocused = XDateDefaults.BorderBrushColorFocused;
 
-            var getColorTransparent = XElementHelper.GetColor(Colors.Transparent);
+            var getColorTransparent = XElementHelper.GetBrushColor(Colors.Transparent);
             if (_borderBrushColorFocused.FillStringSafe() == getColorTransparent.FillStringSafe())
                 _borderBrushColorFocused = _borderBrushColor;
         }

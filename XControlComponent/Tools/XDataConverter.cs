@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using XControlComponents.Tools.ControlTypes;
 
 namespace XControlHelper
 {

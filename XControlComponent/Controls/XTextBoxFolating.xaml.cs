@@ -4,6 +4,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using XControlComponents.Tools;
+using XControlComponents.Tools.Controls;
+using XControlComponents.Tools.ControlTypes;
 using XControlHelper;
 
 namespace XControlComponents.Controls;
@@ -216,7 +219,7 @@ public partial class XTextBoxFolating : UserControl
             if (_borderBrushColorFocused == null)
                 _borderBrushColorFocused = XTextBoxDefaults.BorderBrushColorFloating;
 
-            var getColorTransparent = XElementHelper.GetColor(Colors.Transparent);
+            var getColorTransparent = XElementHelper.GetBrushColor(Colors.Transparent);
             if (_borderBrushColorFocused.FillStringSafe() == getColorTransparent.FillStringSafe() || !_borderBrushFocused.Value)
                 _borderBrushColorFocused = _borderBrushColor;
 

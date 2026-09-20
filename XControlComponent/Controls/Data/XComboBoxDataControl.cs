@@ -8,6 +8,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using XControlComponents.Tools;
+using XControlComponents.Tools.ControlTypes;
 using XControlHelper;
 
 namespace XControlComponents.Controls.Data
@@ -281,7 +282,7 @@ namespace XControlComponents.Controls.Data
                 if (_borderBrushSearchFocused.Value)
                     TextFieldAssist.SetUnderlineBrush(txt_Data_Search, _borderBrushSearchColorFocused);
                 else
-                    TextFieldAssist.SetUnderlineBrush(txt_Data_Search, XElementHelper.GetColor(Colors.Transparent));
+                    TextFieldAssist.SetUnderlineBrush(txt_Data_Search, XElementHelper.GetBrushColor(Colors.Transparent));
             }
         }
 
@@ -309,7 +310,7 @@ namespace XControlComponents.Controls.Data
                 if (_borderBrushSearchColorFocused == null)
                     _borderBrushSearchColorFocused = XComboBoxDefaults.BorderBrushSearchColorFocused;
 
-                var getColorTransparent = XElementHelper.GetColor(Colors.Transparent);
+                var getColorTransparent = XElementHelper.GetBrushColor(Colors.Transparent);
                 if (_borderBrushSearchColorFocused.FillStringSafe() == getColorTransparent.FillStringSafe())
                     _borderBrushSearchColorFocused = _borderBrushSearchColor;
 

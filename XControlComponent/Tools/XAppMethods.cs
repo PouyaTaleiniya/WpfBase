@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
-namespace XControlHelper
+namespace XControlComponents.Tools
 {
     public static class XAppMethods
     {
@@ -24,7 +24,12 @@ namespace XControlHelper
         {
             return Application.Current.TryFindResource("Color_Red_de0030") as Brush;
         }
-        
+
+        public static Brush Color_Red_FFE6E6()
+        {
+            return Application.Current.TryFindResource("Color_Red_FFE6E6") as Brush;
+        }
+
         public static Brush Color_White_f8f9ff()
         {
             return Application.Current.TryFindResource("Color_White_f8f9ff") as Brush;
@@ -39,7 +44,12 @@ namespace XControlHelper
         {
             return Application.Current.TryFindResource("Color_Gray_d9d9d9") as Brush;
         }
-        
+
+        public static Brush Color_Gray_B8B8B8()
+        {
+            return Application.Current.TryFindResource("Color_Gray_B8B8B8") as Brush;
+        }
+
         public static Brush Color_Blue_4a78b0()
         {
             return Application.Current.TryFindResource("Color_Blue_4a78b0") as Brush;
@@ -63,6 +73,16 @@ namespace XControlHelper
         public static Brush Color_Black_212121()
         {
             return Application.Current.TryFindResource("Color_Black_212121") as Brush;
+        }
+
+        public static Brush Color_Black_1E1E1E()
+        {
+            return Application.Current.TryFindResource("Color_Black_1E1E1E") as Brush;
+        }
+
+        public static Brush Color_Black_444040()
+        {
+            return Application.Current.TryFindResource("Color_Black_444040") as Brush;
         }
 
         public static Style BorderWindow()

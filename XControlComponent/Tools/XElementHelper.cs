@@ -2,8 +2,9 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using XControlHelper;
 
-namespace XControlHelper
+namespace XControlComponents.Tools
 {
     public static class XElementHelper
     {
@@ -12,14 +13,24 @@ namespace XControlHelper
             ImageElement.Source = new BitmapImage(new Uri(ImageUrl, UriKind.Relative));
         }
 
-        public static Brush GetColorByHex(string HexColor)
+        public static Color GetColorByHex(string HexColor)
         {
-            return (Brush)new BrushConverter().ConvertFromString(HexColor);
+            return (Color)ColorConverter.ConvertFromString(HexColor);
         }
 
-        public static Brush GetColor(Color color)
+        public static Brush GetBrushColor(Color color)
         {
             return new SolidColorBrush(color);
+        }
+
+        public static string GetHexByColor(Color Color)
+        {
+            return $"#{Color.R:X2}{Color.G:X2}{Color.B:X2}";
+        }
+
+        public static Color GetColorByBrush(Brush BrushColor)
+        {
+            return ((SolidColorBrush)BrushColor).Color;
         }
 
         public static T FindChild<T>(DependencyObject parent) where T : DependencyObject
@@ -57,15 +68,15 @@ namespace XControlHelper
             for (int i = 0; i < count; i++)
             {
                 var child = VisualTreeHelper.GetChild(parent, i);
-                 
+
                 if (child is T t)
                 {
                     var tag = (child as FrameworkElement)?.Tag;
                     if (!tag.IsNullOrEmpty() && tag.ToString() == Tag)
                         return t;
                 }
-                   
-                var result = FindChild<T>(child); 
+
+                var result = FindChild<T>(child);
             }
 
             return null;
@@ -97,7 +108,7 @@ namespace XControlHelper
         {
             var parents = new List<DependencyObject>();
             Find(parent);
-            
+
             List<DependencyObject> Find(DependencyObject parentElement)
             {
                 int count = VisualTreeHelper.GetChildrenCount(parentElement);
@@ -105,7 +116,7 @@ namespace XControlHelper
                 {
                     var child = VisualTreeHelper.GetChild(parentElement, i);
                     parents.Add(child);
-                     
+
                     var result = Find(child);
                 }
 
@@ -150,10 +161,10 @@ namespace XControlHelper
                     return parentAsT;
 
                 parent = VisualTreeHelper.GetParent(parent);
-            } 
+            }
             return null;
         }
-        
+
         public static T FindParentByTag<T>(DependencyObject child, string Tag) where T : DependencyObject
         {
             var parent = VisualTreeHelper.GetParent(child);
@@ -205,7 +216,7 @@ namespace XControlHelper
 
             return parents;
         }
-         
+
         public static List<DependencyObject> FindParents<T>(DependencyObject child)
         {
             var parents = new List<DependencyObject>();
@@ -217,7 +228,7 @@ namespace XControlHelper
                     parents.Add(parent);
                 parent = VisualTreeHelper.GetParent(parent);
             }
-             
+
             return parents;
         }
 

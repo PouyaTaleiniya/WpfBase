@@ -5,6 +5,9 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using XControlComponents.Tools;
+using XControlComponents.Tools.Controls;
+using XControlComponents.Tools.ControlTypes;
 using XControlHelper;
 
 namespace XControlComponents.Controls;
@@ -229,7 +232,7 @@ public partial class XTextBox : UserControl
             if (_borderBrushColorFocused == null)
                 _borderBrushColorFocused = XTextBoxDefaults.BorderBrushColorFocused;
 
-            var getColorTransparent = XElementHelper.GetColor(Colors.Transparent);
+            var getColorTransparent = XElementHelper.GetBrushColor(Colors.Transparent);
             if (_borderBrushColorFocused.FillStringSafe() == getColorTransparent.FillStringSafe())
                 _borderBrushColorFocused = _borderBrushColor;
         }
@@ -505,7 +508,7 @@ public partial class XTextBox : UserControl
 
             BR_TextBox.Background = _textBoxBackgroundColor;
             if (_maxLengthOutbox.HasValue)
-                BR_MaxLength.Background = _maxLengthOutbox.Value ? XElementHelper.GetColor(Colors.Transparent) : _textBoxBackgroundColor;
+                BR_MaxLength.Background = _maxLengthOutbox.Value ? XElementHelper.GetBrushColor(Colors.Transparent) : _textBoxBackgroundColor;
             else
                 BR_MaxLength.Background = _textBoxBackgroundColor;
 
@@ -907,7 +910,7 @@ public partial class XTextBox : UserControl
                 {
                     BR_TextBox.BorderThickness = _maxLengthOutbox.Value || _multiLine.Value ? new Thickness(1) : new Thickness(1, 1, 0, 1);
                     BR_MaxLength.BorderThickness = _maxLengthOutbox.Value || _multiLine.Value ? new Thickness(0) : new Thickness(0, 1, 1, 1);
-                    BR_MaxLength.Background = _maxLengthOutbox.Value || _multiLine.Value ? XElementHelper.GetColor(Colors.Transparent) : _textBoxBackgroundColor;
+                    BR_MaxLength.Background = _maxLengthOutbox.Value || _multiLine.Value ? XElementHelper.GetBrushColor(Colors.Transparent) : _textBoxBackgroundColor;
                 }
                 else
                 {
@@ -919,7 +922,7 @@ public partial class XTextBox : UserControl
             else
             {
                 BR_MaxLength.BorderThickness = new Thickness(0);
-                BR_MaxLength.Background = XElementHelper.GetColor(Colors.Transparent);
+                BR_MaxLength.Background = XElementHelper.GetBrushColor(Colors.Transparent);
             }
 
             BR_MaxLength.Visibility = Visibility.Visible;

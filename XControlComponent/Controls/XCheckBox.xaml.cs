@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using XControlComponents.Tools.Controls;
 using XControlHelper;
 
 namespace XControlComponents.Controls;
@@ -28,14 +29,14 @@ public partial class XCheckBox : UserControl
 
         //Label
         _LabelVisibility = true;
-        _LabelTitle = XCheckBoxDefault.LabelTitle;
-        _LabelFontSize = XCheckBoxDefault.LabelFontSize;
-        _LabelOpacity = XCheckBoxDefault.LabelOpacity;
-        _LabelColor = XCheckBoxDefault.LabelColor;
+        _LabelTitle = XCheckBoxDefaults.LabelTitle;
+        _LabelFontSize = XCheckBoxDefaults.LabelFontSize;
+        _LabelOpacity = XCheckBoxDefaults.LabelOpacity;
+        _LabelColor = XCheckBoxDefaults.LabelColor;
 
         //CheckBox
-        _TriggerCheckedChanged = XCheckBoxDefault.TriggerCheckedChanged;
-        _CheckBoxColor = XCheckBoxDefault.CheckBoxColor;
+        _TriggerCheckedChanged = XCheckBoxDefaults.TriggerCheckedChanged;
+        _CheckBoxColor = XCheckBoxDefaults.CheckBoxColor;
     }
 
     #region Label
@@ -49,7 +50,7 @@ public partial class XCheckBox : UserControl
 
             //Label Size
             if (_labelGridWidth == null)
-                _labelGridWidth = XCheckBoxDefault.LabelGridWidth;
+                _labelGridWidth = XCheckBoxDefaults.LabelGridWidth;
 
             if (_labelGridWidth > 0 && _labelGridWidth < 60)
                 _labelGridWidth = 60;
@@ -59,7 +60,7 @@ public partial class XCheckBox : UserControl
 
             //Label Content
             if (_labelGridWidth > 0 && _labelTitle.IsNullOrEmpty())
-                _LabelTitle = XCheckBoxDefault.LabelTitle;
+                _LabelTitle = XCheckBoxDefaults.LabelTitle;
 
             GR_Col_Lable.Width = new GridLength(_labelGridWidth.Value, GridUnitType.Pixel);
         }
@@ -74,7 +75,7 @@ public partial class XCheckBox : UserControl
             _labelFontSize = value;
 
             if (_labelFontSize == null)
-                _labelFontSize = XCheckBoxDefault.LabelFontSize;
+                _labelFontSize = XCheckBoxDefaults.LabelFontSize;
 
             if (_labelFontSize < 10)
                 _labelFontSize = 10;
@@ -94,7 +95,7 @@ public partial class XCheckBox : UserControl
         {
             _labelOpacity = value;
             if (_labelOpacity == null)
-                _labelOpacity = XCheckBoxDefault.LabelOpacity;
+                _labelOpacity = XCheckBoxDefaults.LabelOpacity;
 
             if (_labelOpacity < 0.1)
                 _labelOpacity = 0.1;
@@ -115,7 +116,7 @@ public partial class XCheckBox : UserControl
                 if (_LabelWidthEntered > 0)
                     _LabelGridWidth = _LabelWidthEntered;
                 else
-                    _LabelGridWidth = XCheckBoxDefault.LabelGridWidth;
+                    _LabelGridWidth = XCheckBoxDefaults.LabelGridWidth;
             }
             else
                 _LabelGridWidth = 0;
@@ -130,7 +131,7 @@ public partial class XCheckBox : UserControl
         {
             _labelTitle = value;
             if (_labelTitle.IsNullOrEmpty() && _labelGridWidth > 0)
-                _labelTitle = XCheckBoxDefault.LabelTitle;
+                _labelTitle = XCheckBoxDefaults.LabelTitle;
             Lb_Content.Content = _LabelTitle;
         }
     }
@@ -143,7 +144,7 @@ public partial class XCheckBox : UserControl
         {
             _labelColor = value;
             if (_labelColor == null)
-                _labelColor = XCheckBoxDefault.LabelColor;
+                _labelColor = XCheckBoxDefaults.LabelColor;
             Lb_Content.Foreground = _labelColor;
         }
     }
@@ -158,7 +159,7 @@ public partial class XCheckBox : UserControl
         {
             _triggerCheckedChanged = value;
             if (_triggerCheckedChanged == null)
-                _triggerCheckedChanged = XCheckBoxDefault.TriggerCheckedChanged;
+                _triggerCheckedChanged = XCheckBoxDefaults.TriggerCheckedChanged;
         }
     }
 
@@ -170,7 +171,7 @@ public partial class XCheckBox : UserControl
         {
             _checkBoxColor = value;
             if (_checkBoxColor == null)
-                _checkBoxColor = XCheckBoxDefault.CheckBoxColor;
+                _checkBoxColor = XCheckBoxDefaults.CheckBoxColor;
             Ch_Data.Background = _checkBoxColor;
         }
     }
