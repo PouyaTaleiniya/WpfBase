@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using XControlComponents.Models;
 using XControlComponents.Tools;
 using XControlComponents.Tools.Controls;
 using XControlHelper;
@@ -175,8 +176,8 @@ namespace XControlComponents.Controls
 
                     foreach (var property in properties)
                     {
-                        //var attribute = property.GetCustomAttribute<DataBindAttribute>();
-                        var x1 = property.Name;
+                        var attribute = property.GetCustomAttribute<XDataBindAttribute>();
+                        //var x1 = attribute.Name;
                     }
 
                     var x = getAllDataSources.FirstOrDefault();

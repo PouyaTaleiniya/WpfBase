@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Media;
+using XControlComponents.Models;
 using XControlComponents.Tools;
 using XControlHelper;
 
@@ -48,32 +49,19 @@ namespace MainComponentWpf
 
     public class DataBindDto
     {
-        [DataBind("ردیف")]
+        [XDataBind(DisplayName = "ردیف", Order = 1, Width = 12)]
         public int Id { get; set; }
 
-        [DataBind("نام")]
+        [XDataBind(DisplayName = "نام")]
         public string? FirstName { get; set; }
 
-        [DataBind("نام خانوادگی")]
+        [XDataBind(DisplayName = "نام خانوادگی")]
         public string? LastName { get; set; }
 
-        [DataBind("کد ملی")]
+        [XDataBind(DisplayName = "کد ملی")]
         public string? NationalCode { get; set; }
 
-        [DataBind(Visible = false)]
+        [XDataBind(Visible = false)]
         public string? GuidKey { get; set; }
-    }
-
-    [AttributeUsage(AttributeTargets.Property)]
-    public class DataBindAttribute : Attribute
-    {
-        public string? DisplayName { get; }
-        public int Order { get; set; }
-        public bool Visible { get; set; } = true;
-
-        public DataBindAttribute(string displayName = "")
-        {
-            DisplayName = displayName;
-        }
     }
 }
