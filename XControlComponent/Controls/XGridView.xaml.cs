@@ -80,8 +80,8 @@ namespace XControlComponents.Controls
                 if (_rowHeaderHeight == null)
                     _rowHeaderHeight = XGridViewDefaults.RowHeaderHeight;
 
-                if (_rowHeaderHeight < 30)
-                    _rowHeaderHeight = 30;
+                if (_rowHeaderHeight < 32)
+                    _rowHeaderHeight = 32;
 
                 GR_Row_Columns.Height = new GridLength(_rowHeaderHeight.Value, GridUnitType.Pixel);
             }
@@ -174,10 +174,14 @@ namespace XControlComponents.Controls
 
                     var propertyInfos = itemType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
+                    GR_Columns.ColumnDefinitions.Clear();
+                    GR_Columns.Children.Clear();
+
                     foreach (var property in properties)
                     {
                         var attribute = property.GetCustomAttribute<XDataBindAttribute>();
                         //var x1 = attribute.Name;
+                        GenerateColumn(property);
                     }
 
                     var x = getAllDataSources.FirstOrDefault();
@@ -196,6 +200,21 @@ namespace XControlComponents.Controls
                     });
                 }
             }
+        }
+
+        private void GenerateColumn(PropertyInfo property)
+        {
+            var attribute = property.GetCustomAttribute<XDataBindAttribute>();
+
+            var columnWidth = attribute.Width > 0 ? new GridLength(attribute.Width, GridUnitType.Pixel) : new GridLength(1, GridUnitType.Star);
+
+            GR_Columns.ColumnDefinitions.Add(new ColumnDefinition
+            {
+                Width = columnWidth,
+            });
+
+            //var borderColumn = 
+            //GR_Columns.Children.ad
         }
 
         private void ColorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)

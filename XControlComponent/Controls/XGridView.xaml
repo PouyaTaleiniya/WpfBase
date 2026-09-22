@@ -10,7 +10,7 @@
     <Border Style="{StaticResource BorderGrid}" Name="BR_Grid" Background="#f9f9f9">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Name="GR_Row_Columns"/>
+                <RowDefinition Name="GR_Row_Columns" Height="32"/>
                 <RowDefinition Name="GR_Row_Datas" />
             </Grid.RowDefinitions>
             <Border Grid.Row="0" Name="BR_Columns" Background="#F0F0F0" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 0 1">
@@ -21,6 +21,18 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 0"> 
+                        <TextBlock Text="ردیف" FontSize="15" FontStyle="Normal" FontWeight="Bold" TextDecorations="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border Grid.Column="1" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 0">
+                        <Label Content="ردیف" FontSize="15" FontStyle="Normal" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border Grid.Column="2" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 0">
+
+                    </Border>
+                    <Border Grid.Column="3" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 0 0">
+
+                    </Border>
                 </Grid>
             </Border>
             <Grid Grid.Row="1" Visibility="Hidden">

@@ -63,11 +63,13 @@
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="UseLayoutRounding" Value="True" />
         <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{StaticResource Color_Gray_B8B8B8}" />
     </Style>
 
     <Style x:Key="BorderInnerGrid" TargetType="{x:Type Border}">
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="BorderBrush" Value="{StaticResource Color_Gray_B8B8B8}" />
     </Style>
 
     <Style x:Key="BorderDevice" TargetType="{x:Type Border}">
