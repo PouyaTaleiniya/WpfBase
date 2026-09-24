@@ -176,11 +176,8 @@ namespace XControlComponents.Controls
 
                     GR_Columns.ColumnDefinitions.Clear();
                     GR_Columns.Children.Clear();
-
                     foreach (var property in properties)
                     {
-                        var attribute = property.GetCustomAttribute<XDataBindAttribute>();
-                        //var x1 = attribute.Name;
                         GenerateColumn(property);
                     }
 
@@ -206,15 +203,40 @@ namespace XControlComponents.Controls
         {
             var attribute = property.GetCustomAttribute<XDataBindAttribute>();
 
-            var columnWidth = attribute.Width > 0 ? new GridLength(attribute.Width, GridUnitType.Pixel) : new GridLength(1, GridUnitType.Star);
-
-            GR_Columns.ColumnDefinitions.Add(new ColumnDefinition
+            if (attribute.Visible)
             {
-                Width = columnWidth,
-            });
+                var columnWidth = attribute.Width > 0 ? new GridLength(attribute.Width, GridUnitType.Pixel) : new GridLength(1, GridUnitType.Star);
 
-            //var borderColumn = 
-            //GR_Columns.Children.ad
+                var columnIndex = GR_Columns.ColumnDefinitions.Count();
+
+                GR_Columns.ColumnDefinitions.Add(new ColumnDefinition
+                {
+                    Width = columnWidth,
+                });
+
+                var borderColumn = new Border
+                {
+                    Style = (Style)FindResource("BorderInnerGrid"),
+                    BorderThickness = new Thickness(0, 0, 1, 0)
+                };
+                Grid.SetColumn(borderColumn, columnIndex);
+
+                var content = attribute.DisplayName.IsNullOrEmpty() ? "Empty Field" : attribute.DisplayName;
+                var textBlock = new TextBlock
+                {
+                    Style = (Style)FindResource("BorderInnerGrid"),
+                    Text = content,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    FontSize = 15,
+                    FontWeight = FontWeights.Normal,
+                    FontStyle = FontStyles.Normal,
+                    TextDecorations = TextDecorations.Underline
+                };
+                borderColumn.Child = textBlock;
+
+                GR_Columns.Children.Add(borderColumn);
+            }
         }
 
         private void ColorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
