@@ -23,11 +23,11 @@ namespace XControlComponents.Controls
             InitializeComponent();
 
             //Border
-            _GridBorderColor = XGridViewDefaults.BorderColor;
-            _GridInnerBorderColor = XGridViewDefaults.InnerBorderColor;
+            _BorderColor = XGridViewDefaults.BorderColor;
+            _InnerBorderColor = XGridViewDefaults.InnerBorderColor;
 
             //Grid
-            _RowHeaderHeight = XGridViewDefaults.RowHeaderHeight;
+            _HeaderHeight = XGridViewDefaults.HeaderHeight;
 
             //NoData
             _NoDataForeground = XGridViewDefaults.NoDataForeground;
@@ -37,53 +37,83 @@ namespace XControlComponents.Controls
         }
 
         #region Border
-        private Brush _gridBorderColor;
-        public Brush _GridBorderColor
+        private Brush _borderColor;
+        public Brush _BorderColor
         {
-            get => _gridBorderColor;
+            get => _borderColor;
             set
             {
-                _gridBorderColor = value;
+                _borderColor = value;
 
-                if (_gridBorderColor == null)
-                    _gridBorderColor = XGridViewDefaults.BorderColor;
+                if (_borderColor == null)
+                    _borderColor = XGridViewDefaults.BorderColor;
 
-                BR_Grid.BorderBrush = _gridBorderColor;
+                BR_Grid.BorderBrush = _borderColor;
             }
         }
 
-        private Brush _gridInnerBorderColor;
-        public Brush _GridInnerBorderColor
+        private Brush _innerBorderColor;
+        public Brush _InnerBorderColor
         {
-            get => _gridInnerBorderColor;
+            get => _innerBorderColor;
             set
             {
-                _gridInnerBorderColor = value;
+                _innerBorderColor = value;
 
-                if (_gridInnerBorderColor == null)
-                    _gridInnerBorderColor = XGridViewDefaults.InnerBorderColor;
+                if (_innerBorderColor == null)
+                    _innerBorderColor = XGridViewDefaults.InnerBorderColor;
 
-                BR_Columns.BorderBrush = _gridInnerBorderColor;
+                BR_Header.BorderBrush = _innerBorderColor;
             }
         }
         #endregion
 
         #region Grid
-        private double? _rowHeaderHeight;
-        public double? _RowHeaderHeight
+        private double? _headerHeight;
+        public double? _HeaderHeight
         {
-            get => _rowHeaderHeight;
+            get => _headerHeight;
             set
             {
-                _rowHeaderHeight = value;
+                _headerHeight = value;
 
-                if (_rowHeaderHeight == null)
-                    _rowHeaderHeight = XGridViewDefaults.RowHeaderHeight;
+                if (_headerHeight == null)
+                    _headerHeight = XGridViewDefaults.HeaderHeight;
 
-                if (_rowHeaderHeight < 32)
-                    _rowHeaderHeight = 32;
+                if (_headerHeight < 32)
+                    _headerHeight = 32;
 
-                GR_Row_Columns.Height = new GridLength(_rowHeaderHeight.Value, GridUnitType.Pixel);
+                GR_Row_Header.Height = new GridLength(_headerHeight.Value, GridUnitType.Pixel);
+            }
+        }
+
+        private Brush _backGround;
+        public Brush _Background
+        {
+            get => _backGround;
+            set
+            {
+                _backGround = value;
+
+                if (_backGround == null)
+                    _backGround = XGridViewDefaults.Background;
+
+                BR_Grid.Background = _backGround;
+            }
+        }
+
+        private Brush _headerBackGround;
+        public Brush _HeaderBackground
+        {
+            get => _headerBackGround;
+            set
+            {
+                _headerBackGround = value;
+
+                if (_headerBackGround == null)
+                    _headerBackGround = XGridViewDefaults.HeaderBackground;
+
+                BR_Header.Background = _headerBackGround;
             }
         }
         #endregion
@@ -164,21 +194,28 @@ namespace XControlComponents.Controls
 
                 if (_dataSource != null)
                 {
-                    getAllDataSources = ((IEnumerable)_dataSource).Cast<object>().ToList();
-
-                    var dataSourceType = _dataSource.GetType();
-
-                    var itemType = dataSourceType.GetGenericArguments()[0];
-
-                    var properties = itemType.GetProperties();
-
-                    var propertyInfos = itemType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
+                    //Clear Header
                     GR_Columns.ColumnDefinitions.Clear();
                     GR_Columns.Children.Clear();
-                    foreach (var property in properties)
+
+                    //Read Data Source
+                    getAllDataSources = ((IEnumerable)_dataSource).Cast<object>().ToList();
+                    var dataSourceType = _dataSource.GetType();
+
+                    //Read Header
+                    var itemType = dataSourceType.GetGenericArguments()[0];
+
+                    var properties = GetOrderedProperties(itemType);
+
+                    //Get Property
+                    //var properties = itemType.GetProperties();
+                    //var propertyInfos = itemType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+                    //Visible Fields
+                    var visiblePrp = properties.Where(p => p.GetCustomAttribute<XDataBindAttribute>()?.Visible == true).ToList();
+                    for (int i = 0; i < visiblePrp.Count; i++)
                     {
-                        GenerateColumn(property);
+                        GenerateColumn(visiblePrp[i], i == visiblePrp.Count - 1);
                     }
 
                     var x = getAllDataSources.FirstOrDefault();
@@ -199,7 +236,7 @@ namespace XControlComponents.Controls
             }
         }
 
-        private void GenerateColumn(PropertyInfo property)
+        private void GenerateColumn(PropertyInfo property, bool isLastVisible)
         {
             var attribute = property.GetCustomAttribute<XDataBindAttribute>();
 
@@ -217,26 +254,95 @@ namespace XControlComponents.Controls
                 var borderColumn = new Border
                 {
                     Style = (Style)FindResource("BorderInnerGrid"),
-                    BorderThickness = new Thickness(0, 0, 1, 0)
+                    BorderThickness = new Thickness(0, 0, isLastVisible ? 0 : 1, 0)
                 };
                 Grid.SetColumn(borderColumn, columnIndex);
 
                 var content = attribute.DisplayName.IsNullOrEmpty() ? "Empty Field" : attribute.DisplayName;
                 var textBlock = new TextBlock
                 {
-                    Style = (Style)FindResource("BorderInnerGrid"),
                     Text = content,
+                    Foreground = XAppMethods.Color_Black_424242(),
                     HorizontalAlignment = HorizontalAlignment.Center,
                     VerticalAlignment = VerticalAlignment.Center,
-                    FontSize = 15,
+                    FontSize = 14,
                     FontWeight = FontWeights.Normal,
                     FontStyle = FontStyles.Normal,
-                    TextDecorations = TextDecorations.Underline
+                    //TextDecorations = TextDecorations.Underline
                 };
                 borderColumn.Child = textBlock;
 
                 GR_Columns.Children.Add(borderColumn);
             }
+        }
+
+        private List<PropertyInfo> GetOrderedProperties(Type itemType)
+        {
+            var properties = itemType
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .ToList();
+
+            var items = properties
+                .Select((property, index) => new
+                {
+                    Property = property,
+                    OriginalIndex = index,
+                    Attribute = property.GetCustomAttribute<XDataBindAttribute>()
+                })
+                .ToList();
+
+            var ordered = items
+                .Where(x => x.Attribute?.Order > 0)
+                .OrderBy(x => x.Attribute!.Order)
+                .ThenBy(x => x.OriginalIndex)
+                .ToList();
+
+            var unordered = items
+                .Where(x => x.Attribute?.Order <= 0 || x.Attribute?.Order == null)
+                .OrderBy(x => x.OriginalIndex)
+                .ToList();
+
+            var result = new List<(PropertyInfo Property, int Order)>();
+
+            var usedOrders = new HashSet<int>();
+
+            // اولویت با Order های تعیین شده توسط کاربر
+            foreach (var item in ordered)
+            {
+                int order = item.Attribute!.Order;
+
+                // اگر Order قبلاً استفاده شده،
+                // اولین Order آزاد بعدی را پیدا کن
+                while (usedOrders.Contains(order))
+                {
+                    order++;
+                }
+
+                usedOrders.Add(order);
+
+                result.Add((item.Property, order));
+            }
+
+            // Property های بدون Order
+            int nextOrder = 1;
+
+            foreach (var item in unordered)
+            {
+                while (usedOrders.Contains(nextOrder))
+                {
+                    nextOrder++;
+                }
+
+                usedOrders.Add(nextOrder);
+
+                result.Add((item.Property, nextOrder));
+                nextOrder++;
+            }
+
+            return result
+                .OrderBy(x => x.Order)
+                .Select(x => x.Property)
+                .ToList();
         }
 
         private void ColorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)

@@ -35,6 +35,26 @@ namespace XControlComponents.Tools
             return Application.Current.TryFindResource("Color_White_f8f9ff") as Brush;
         }
 
+        public static Brush Color_White_f9f9f9()
+        {
+            return Application.Current.TryFindResource("Color_Gray_f9f9f9") as Brush;
+        }
+
+        public static Brush Color_White_fdfdfd()
+        {
+            return Application.Current.TryFindResource("Color_Gray_fdfdfd") as Brush;
+        }
+
+        public static Brush Color_White_fcfcfc()
+        {
+            return Application.Current.TryFindResource("Color_Gray_fcfcfc") as Brush;
+        }
+        
+        public static Brush Color_White_fafafa()
+        {
+            return Application.Current.TryFindResource("Color_Gray_fafafa") as Brush;
+        }
+
         public static Brush Color_Gray_959595()
         {
             return Application.Current.TryFindResource("Color_Gray_959595") as Brush;
@@ -50,6 +70,11 @@ namespace XControlComponents.Tools
             return Application.Current.TryFindResource("Color_Gray_B8B8B8") as Brush;
         }
 
+        public static Brush Color_Gray_F0F0F0()
+        {
+            return Application.Current.TryFindResource("Color_Gray_F0F0F0") as Brush;
+        }
+         
         public static Brush Color_Blue_4a78b0()
         {
             return Application.Current.TryFindResource("Color_Blue_4a78b0") as Brush;

@@ -9,8 +9,9 @@ public static class XGridViewDefaults
     public static Brush InnerBorderColor { get; set; } = XAppMethods.Color_Gray_B8B8B8();
 
     //Grid
-    public static double RowHeaderHeight { get; set; } = 32;
-
+    public static double HeaderHeight { get; set; } = 32;
+    public static Brush Background { get; set; } = XAppMethods.Color_White_fafafa();
+    public static Brush HeaderBackground { get; set; } = XAppMethods.Color_Gray_F0F0F0();
 
     //No Data
     public static Brush NoDataBackGround { get; set; } = XAppMethods.Color_Red_FFE6E6();

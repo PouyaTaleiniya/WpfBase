@@ -49,16 +49,16 @@ namespace MainComponentWpf
 
     public class DataBindDto
     {
-        [XDataBind(DisplayName = "ردیف", Order = 1, Width = 12)]
+        [XDataBind(DisplayName = "ردیف", Order = 1, Width = 100)]
         public int Id { get; set; }
 
-        [XDataBind(DisplayName = "نام")]
+        [XDataBind(DisplayName = "نام", Order = 1)]
         public string? FirstName { get; set; }
 
-        [XDataBind(DisplayName = "نام خانوادگی")]
+        [XDataBind(DisplayName = "نام خانوادگی", Order = 1)]
         public string? LastName { get; set; }
 
-        [XDataBind(DisplayName = "کد ملی")]
+        [XDataBind(DisplayName = "کد ملی", Order = 1)]
         public string? NationalCode { get; set; }
 
         [XDataBind(Visible = false)]

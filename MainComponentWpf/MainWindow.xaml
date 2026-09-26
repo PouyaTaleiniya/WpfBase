@@ -36,7 +36,7 @@
                     <!--<controls:XComboBoxBorder Name="xComboBoxData1"  />-->
                     <controls:XGridView  Name="xGridView"/>
                 </Grid>
-                <Grid Grid.Row="2" Background="AliceBlue">
+                <Grid Grid.Row="2" >
                     <!--<controls:XComboBoxFloating  Name="XComboBox1" _IsGenerateEmptyLabel="True" _LabelVisibility="True" _BorderBrushFocused="True" _PlaceHolderOpacity="0.3"  _LabelTitle="نام" _IsRequired="True" _ValueChanged="XComboBox_ValueChanged"/>-->
 
                     <!--////////////////ColorPicker-->
