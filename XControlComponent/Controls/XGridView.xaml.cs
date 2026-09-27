@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using XControlComponents.Models;
+using XControlComponents.Models.XGrid;
 using XControlComponents.Tools;
 using XControlComponents.Tools.Controls;
 using XControlHelper;
@@ -16,6 +17,7 @@ namespace XControlComponents.Controls
     public partial class XGridView : UserControl
     {
         private List<object> getAllDataSources { get; set; }
+        public XGridData xGridData { get; set; } = null!;
         private bool SearchMode { get; set; }
 
         public XGridView()
@@ -205,79 +207,25 @@ namespace XControlComponents.Controls
                     //Read Header
                     var itemType = dataSourceType.GetGenericArguments()[0];
 
-                    var properties = GetOrderedProperties(itemType);
+                    //Columns
+                    SetXColumns(itemType);
 
-                    //Get Property
-                    //var properties = itemType.GetProperties();
-                    //var propertyInfos = itemType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                    //Rows
+                    SetXRows();
 
-                    //Visible Fields
-                    var visiblePrp = properties.Where(p => p.GetCustomAttribute<XDataBindAttribute>()?.Visible == true).ToList();
-                    for (int i = 0; i < visiblePrp.Count; i++)
+                    var visibleColumns = xGridData.Columns.Where(x => x.Visible).ToList();
+                    for (int i = 0; i < visibleColumns.Count; i++)
                     {
-                        GenerateColumn(visiblePrp[i], i == visiblePrp.Count - 1);
+                        GenerateColumn(visibleColumns[i], i == visibleColumns.Count - 1);
                     }
-
-                    var x = getAllDataSources.FirstOrDefault();
-                    //var getFirstRow =
-
-                    getAllDataSources.ForEach(item =>
-                    {
-                        var getTypes = item.GetType();
-                        var getFields = getTypes.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                        var getLstFields = getFields.ToList();
-
-                        getLstFields.ForEach(item =>
-                        {
-
-                        });
-                    });
                 }
             }
         }
 
-        private void GenerateColumn(PropertyInfo property, bool isLastVisible)
+        private void SetXColumns(Type itemType)
         {
-            var attribute = property.GetCustomAttribute<XDataBindAttribute>();
+            xGridData = new XGridData();
 
-            if (attribute.Visible)
-            {
-                var columnWidth = attribute.Width > 0 ? new GridLength(attribute.Width, GridUnitType.Pixel) : new GridLength(1, GridUnitType.Star);
-
-                var columnIndex = GR_Columns.ColumnDefinitions.Count();
-
-                GR_Columns.ColumnDefinitions.Add(new ColumnDefinition
-                {
-                    Width = columnWidth,
-                });
-
-                var borderColumn = new Border
-                {
-                    Style = (Style)FindResource("BorderInnerGrid"),
-                    BorderThickness = new Thickness(0, 0, isLastVisible ? 0 : 1, 0)
-                };
-                Grid.SetColumn(borderColumn, columnIndex);
-
-                var content = attribute.DisplayName.IsNullOrEmpty() ? "Empty Field" : attribute.DisplayName;
-                var textBlock = new TextBlock
-                {
-                    Text = content,
-                    Foreground = XAppMethods.Color_Black_424242(),
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    FontSize = 14,
-                    FontWeight = FontWeights.Normal,
-                    FontStyle = FontStyles.Normal,
-                    //TextDecorations = TextDecorations.Underline
-                };
-                borderColumn.Child = textBlock;
-
-                GR_Columns.Children.Add(borderColumn);
-            }
-        }
-
-        private List<PropertyInfo> GetOrderedProperties(Type itemType)
-        {
             var properties = itemType
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .ToList();
@@ -302,47 +250,126 @@ namespace XControlComponents.Controls
                 .OrderBy(x => x.OriginalIndex)
                 .ToList();
 
-            var result = new List<(PropertyInfo Property, int Order)>();
+            var result = new List<(PropertyInfo Property, XDataBindAttribute Attribute, int Order)>();
 
             var usedOrders = new HashSet<int>();
 
-            // اولویت با Order های تعیین شده توسط کاربر
             foreach (var item in ordered)
             {
                 int order = item.Attribute!.Order;
 
-                // اگر Order قبلاً استفاده شده،
-                // اولین Order آزاد بعدی را پیدا کن
                 while (usedOrders.Contains(order))
-                {
                     order++;
-                }
 
                 usedOrders.Add(order);
 
-                result.Add((item.Property, order));
+                result.Add((
+                    item.Property,
+                    item.Attribute,
+                    order
+                ));
             }
 
-            // Property های بدون Order
             int nextOrder = 1;
 
             foreach (var item in unordered)
             {
                 while (usedOrders.Contains(nextOrder))
-                {
                     nextOrder++;
-                }
 
                 usedOrders.Add(nextOrder);
 
-                result.Add((item.Property, nextOrder));
+                result.Add((
+                    item.Property,
+                    item.Attribute,
+                    nextOrder
+                ));
+
                 nextOrder++;
             }
 
-            return result
-                .OrderBy(x => x.Order)
-                .Select(x => x.Property)
-                .ToList();
+            var columns = new XGridColumnCollection();
+
+            foreach (var item in result.OrderBy(x => x.Order))
+            {
+                var attribute = item.Attribute;
+
+                columns.Add(new XGridColumn
+                {
+                    Name = item.Property.Name,
+
+                    DisplayName = attribute?.DisplayName.IsNullOrEmpty() == false ? attribute.DisplayName : item.Property.Name,
+
+                    Visible = attribute?.Visible == true,
+
+                    Order = item.Order,
+
+                    Width = attribute?.Width ?? 0,
+
+                    Property = item.Property,
+
+                    Attribute = attribute
+                });
+            }
+
+            xGridData.Columns.AddRange(columns);
+        }
+
+        private void SetXRows()
+        {
+            foreach (var item in getAllDataSources)
+            {
+                var row = new XGridRow();
+
+                foreach (var column in xGridData.Columns)
+                {
+                    row.Cells.Add(new XGridCell
+                    {
+                        Column = column,
+                        Value = column.Property.GetValue(item)
+                    });
+                }
+
+                xGridData.Rows.Add(row);
+            }
+        }
+
+        private void GenerateColumn(XGridColumn column, bool isLastVisible)
+        {
+            var attribute = column.Attribute;
+
+            if (!column.Visible)
+                return;
+
+            var columnWidth = column.Width > 0 ? new GridLength(column.Width, GridUnitType.Pixel) : new GridLength(1, GridUnitType.Star);
+
+            var columnIndex = GR_Columns.ColumnDefinitions.Count;
+
+            GR_Columns.ColumnDefinitions.Add(new ColumnDefinition
+            {
+                Width = columnWidth
+            });
+
+            var borderColumn = new Border
+            {
+                Style = (Style)FindResource("BorderInnerGrid"),
+                BorderThickness = new Thickness(0, 0, isLastVisible ? 0 : 1, 0)
+            };
+            Grid.SetColumn(borderColumn, columnIndex);
+
+            var textBlock = new TextBlock
+            {
+                Text = column.DisplayName,
+                Foreground = XAppMethods.Color_Black_424242(),
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                FontSize = 14,
+                FontWeight = FontWeights.Normal,
+                FontStyle = FontStyles.Normal
+            };
+
+            borderColumn.Child = textBlock;
+            GR_Columns.Children.Add(borderColumn);
         }
 
         private void ColorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)

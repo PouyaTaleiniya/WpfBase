@@ -20,7 +20,23 @@ namespace MainComponentWpf
         {
             //xComboBoxData1._Items = new List<string>() { "ایتم 1", "ایتم 2", "ایتم 3" };
 
-            var result = new List<DataBindDto>();
+            var result = new List<DataBindDto>()
+            {
+                new DataBindDto
+                {
+                    Id = 1,
+                    FirstName = "F1",
+                    LastName = "L1",
+                    NationalCode = "NC1"
+                },
+                new DataBindDto
+                {
+                    Id = 2,
+                    FirstName = "F2",
+                    LastName = "L2",
+                    NationalCode = "NC2"
+                }
+            };
             xGridView._DataSource = result;
         }
 
@@ -52,13 +68,13 @@ namespace MainComponentWpf
         [XDataBind(DisplayName = "ردیف", Order = 1, Width = 100)]
         public int Id { get; set; }
 
-        [XDataBind(DisplayName = "نام", Order = 1)]
+        [XDataBind(DisplayName = "نام", Order = 4)]
         public string? FirstName { get; set; }
 
-        [XDataBind(DisplayName = "نام خانوادگی", Order = 1)]
+        [XDataBind(DisplayName = "نام خانوادگی", Order = 2)]
         public string? LastName { get; set; }
 
-        [XDataBind(DisplayName = "کد ملی", Order = 1)]
+        [XDataBind(DisplayName = "کد ملی", Order = 3)]
         public string? NationalCode { get; set; }
 
         [XDataBind(Visible = false)]
