@@ -27,7 +27,7 @@
                     <RowDefinition Height="100"/>
                     <RowDefinition Height="250" Name="GR_Row_2"/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0" Margin="10">
+                <Grid Grid.Row="0" Margin="10" Background="Aquamarine">
                     <!--<controls:XComboBox  Name="XComboBox"  _EqualSearchMode="False" _IsEnableSearch="True" _IsGenerateEmptyLabel="True" _LabelVisibility="True" _PlaceHolderOpacity="0.3"  _LabelTitle="نام" _IsRequired="True" _ValueChanged="XComboBox_ValueChanged"/>-->
                     <!--<controls:XTextBox Name="xTer" _LabelVerticalAlignment="Top" _MultiLine="True" _MaxLength="100"/>-->
                     <!--<controls:XTextBox _LabelVerticalAlignment="Top" _MultiLine="True" _MaxLength="100"/>-->

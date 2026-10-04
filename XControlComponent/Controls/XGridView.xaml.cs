@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -251,29 +252,8 @@ namespace XControlComponents.Controls
             //Rows
             SetXRows();
 
-            //Clear Rows
-            ClearRows();
-
             //Generate Row
-            //for (int row = 0; row < xGridData.Rows.Count; row++)
-            //{
-            //    var IsLastRow = row == xGridData.Rows.Count - 1;
-            //
-            //    var getRow = xGridData.Rows[row];
-            //    var getRowCellCount = getRow.VisibleCells.Count;
-            //    for (int cell = 0; cell < getRowCellCount; cell++)
-            //    {
-            //        var IsLastCell = cell == getRowCellCount - 1;
-            //        GenerateRow(getRow.VisibleCells[cell], IsLastRow, IsLastCell);
-            //    }
-            //}
-            //foreach (var row in xGridData.Rows)
-            //{
-            //    foreach (var cell in row.VisibleCells)
-            //    {
-            //
-            //    }
-            //}
+            GenerateRow();
         }
         #endregion
 
@@ -430,116 +410,68 @@ namespace XControlComponents.Controls
             }
         }
 
-        private void ClearRows()
+        private void GenerateRow()
         {
-            //GR_Data.RowDefinitions.Clear();
-            //GR_Data.Children.Clear();
+            //Clear Rows
+            GR_Data.RowDefinitions.Clear();
+            GR_Data.ColumnDefinitions.Clear();
+            GR_Data.Children.Clear();
 
             GR_Row_NoData.Height = xGridData.Rows.Count > 0 ? new GridLength(0) : new GridLength(1, GridUnitType.Star);
-            GR_Row_Data.Height = xGridData.Rows.Count > 0 ? new GridLength(1, GridUnitType.Star) : new GridLength(0);
-        }
+            GR_Row_Data.Height = xGridData.Rows.Count > 0 ? new GridLength(32, GridUnitType.Pixel) : new GridLength(0);
 
-        private void GenerateRow(XGridCell cell, bool isLastRow, bool isLastColumn)
-        {
-            GR_Data.RowDefinitions.Add(new RowDefinition()
+            var visibleColumns = xGridData.Columns.Where(x => x.Visible).ToList();
+            foreach (var item in visibleColumns)
             {
-                Height = new GridLength(_rowHeight.Value, GridUnitType.Pixel)
-            });
+                var columnWidth = item.Width > 0 ? new GridLength(item.Width, GridUnitType.Pixel) : new GridLength(1, GridUnitType.Star);
+                var columnDefinition = new ColumnDefinition()
+                {
+                    Width = columnWidth
+                };
+                GR_Data.ColumnDefinitions.Add(columnDefinition);
+            }
 
-            // Border اصلی
-            var mainBorder = new Border
+
+            foreach (var row in xGridData.Rows)
             {
-                Style = (Style)FindResource("BorderInnerGrid"),
-                BorderThickness = new Thickness(0, 0, 0, 1)
-            };
+                var rowIndex = xGridData.Rows.IndexOf(row);
+                var IsLastRow = rowIndex == xGridData.Rows.Count - 1;
+                GR_Data.RowDefinitions.Add(new RowDefinition()
+                {
+                    Height = new GridLength(_rowHeight.Value, GridUnitType.Pixel)
+                });
 
-            Grid.SetRow(mainBorder, 0);
+                foreach (var cell in row.VisibleCells)
+                {
+                    var cellIndex = row.VisibleCells.IndexOf(cell);
+                    var IsLastCell = cellIndex == row.VisibleCells.Count - 1;
 
-            // Grid داخلی
-            var innerGrid = new Grid();
+                    var cellBorder = new Border
+                    {
+                        Style = XAppMethods.BorderInnerGrid(),
+                        BorderThickness = new Thickness(0, 0, IsLastCell ? 0 : 1, IsLastRow ? 0 : 1)
+                    };
 
-            innerGrid.ColumnDefinitions.Add(new ColumnDefinition
-            {
-                Width = new GridLength(100)
-            });
-
-            innerGrid.ColumnDefinitions.Add(new ColumnDefinition());
-            innerGrid.ColumnDefinitions.Add(new ColumnDefinition());
-            innerGrid.ColumnDefinitions.Add(new ColumnDefinition());
-
-
-            // Column 0
-            var border0 = new Border
-            {
-                Style = (Style)FindResource("BorderInnerGrid"),
-                BorderThickness = new Thickness(0, 0, 1, 0)
-            };
-
-            var textBlock = new TextBlock
-            {
-                Text = "ردیف",
-                FontSize = 15,
-                FontStyle = FontStyles.Normal,
-                TextDecorations = null,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
-            };
-
-            border0.Child = textBlock;
-
-            Grid.SetColumn(border0, 0);
-            innerGrid.Children.Add(border0);
+                    Grid.SetRow(cellBorder, rowIndex);
+                    Grid.SetColumn(cellBorder, cellIndex);
 
 
-            // Column 1
-            var border1 = new Border
-            {
-                Style = (Style)FindResource("BorderInnerGrid"),
-                BorderThickness = new Thickness(0, 0, 1, 0)
-            };
+                    var textBlock = new TextBlock
+                    {
+                        Text = cell.Value.FillStringSafe(),
+                        Foreground = XAppMethods.Color_Black_424242(),
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        FontSize = 14,
+                        FontWeight = FontWeights.Normal,
+                        FontStyle = FontStyles.Normal
+                    };
+                    cellBorder.Child = textBlock;
 
-            var label = new Label
-            {
-                Content = "ردیف",
-                FontSize = 15,
-                FontStyle = FontStyles.Normal,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
-            };
+                    GR_Data.Children.Add(cellBorder);
+                }
+            }
 
-            border1.Child = label;
-
-            Grid.SetColumn(border1, 1);
-            innerGrid.Children.Add(border1);
-
-
-            // Column 2
-            var border2 = new Border
-            {
-                Style = (Style)FindResource("BorderInnerGrid"),
-                BorderThickness = new Thickness(0, 0, 1, 0)
-            };
-
-            Grid.SetColumn(border2, 2);
-            innerGrid.Children.Add(border2);
-
-
-            // Column 3
-            var border3 = new Border
-            {
-                Style = (Style)FindResource("BorderInnerGrid"),
-                BorderThickness = new Thickness(0, 0, 0, 0)
-            };
-
-            Grid.SetColumn(border3, 3);
-            innerGrid.Children.Add(border3);
-
-
-            // قرار دادن Grid داخلی داخل Border اصلی
-            mainBorder.Child = innerGrid;
-
-            // اضافه کردن به GR_Data
-            GR_Data.Children.Add(mainBorder);
         }
         #endregion
 
