@@ -10,6 +10,7 @@ public static class XGridViewDefaults
 
     //Grid
     public static double HeaderHeight { get; set; } = 32;
+    public static double RowHeight { get; set; } = 32;
     public static Brush Background { get; set; } = XAppMethods.Color_White_fafafa();
     public static Brush HeaderBackground { get; set; } = XAppMethods.Color_Gray_F0F0F0();
 

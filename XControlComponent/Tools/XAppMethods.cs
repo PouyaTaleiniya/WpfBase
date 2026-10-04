@@ -5,6 +5,7 @@ namespace XControlComponents.Tools
 {
     public static class XAppMethods
     {
+        #region Color
         public static Brush Color_White_f3f3f3()
         {
             return Application.Current.TryFindResource("Color_White_f3f3f3") as Brush;
@@ -49,7 +50,7 @@ namespace XControlComponents.Tools
         {
             return Application.Current.TryFindResource("Color_Gray_fcfcfc") as Brush;
         }
-        
+
         public static Brush Color_White_fafafa()
         {
             return Application.Current.TryFindResource("Color_Gray_fafafa") as Brush;
@@ -74,7 +75,7 @@ namespace XControlComponents.Tools
         {
             return Application.Current.TryFindResource("Color_Gray_F0F0F0") as Brush;
         }
-         
+
         public static Brush Color_Blue_4a78b0()
         {
             return Application.Current.TryFindResource("Color_Blue_4a78b0") as Brush;
@@ -124,6 +125,14 @@ namespace XControlComponents.Tools
         {
             return Application.Current.TryFindResource("Img_CloseWhite") as ImageSource;
         }
+        #endregion
+
+        #region Styles
+        public static Style BorderInnerGrid()
+        {
+            return Application.Current.TryFindResource("BorderInnerGrid") as Style;
+        }
+        #endregion
     }
 
 }
