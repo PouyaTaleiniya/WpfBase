@@ -13,7 +13,6 @@ using XControlComponents.Models;
 using XControlComponents.Models.XGrid;
 using XControlComponents.Tools;
 using XControlComponents.Tools.Controls;
-using XControlHelper;
 
 namespace XControlComponents.Controls
 {
@@ -25,6 +24,7 @@ namespace XControlComponents.Controls
         private List<object> getAllDataSources { get; set; }
         public XGridData xGridData { get; set; } = null!;
         private bool SearchMode { get; set; }
+        private bool IsInitializedDataSource { get; set; } = false;
 
         public XGridView()
         {
@@ -37,6 +37,7 @@ namespace XControlComponents.Controls
             //Grid
             _HeaderHeight = XGridViewDefaults.HeaderHeight;
             _RowHeight = XGridViewDefaults.RowHeight;
+            _RowHeightCount = XGridViewDefaults.RowHeightCount;
 
             //NoData
             _NoDataForeground = XGridViewDefaults.NoDataForeground;
@@ -93,6 +94,8 @@ namespace XControlComponents.Controls
                     _headerHeight = 32;
 
                 GR_Row_Header.Height = new GridLength(_headerHeight.Value, GridUnitType.Pixel);
+
+                SetHeightRow();
             }
         }
 
@@ -110,10 +113,25 @@ namespace XControlComponents.Controls
                 if (_rowHeight < 32)
                     _rowHeight = 32;
 
-                foreach (var item in GR_Data.RowDefinitions)
-                {
-                    item.Height = new GridLength(_rowHeight.Value, GridUnitType.Pixel);
-                }
+                SetHeightRow();
+            }
+        }
+
+        private double? _rowHeightCount;
+        public double? _RowHeightCount
+        {
+            get => _rowHeightCount;
+            set
+            {
+                _rowHeightCount = value;
+
+                if (_rowHeightCount == null)
+                    _rowHeightCount = XGridViewDefaults.RowHeightCount;
+
+                if (_rowHeightCount < 1)
+                    _rowHeightCount = 1;
+
+                SetHeightRow();
             }
         }
 
@@ -228,10 +246,6 @@ namespace XControlComponents.Controls
         #region Data Source
         private void RefreshDataSource()
         {
-            //Clear Header
-            GR_Columns.ColumnDefinitions.Clear();
-            GR_Columns.Children.Clear();
-
             //Read Data Source
             getAllDataSources = ((IEnumerable)_dataSource).Cast<object>().ToList();
             var dataSourceType = _dataSource.GetType();
@@ -239,14 +253,20 @@ namespace XControlComponents.Controls
             //Read Header
             var itemType = dataSourceType.GetGenericArguments()[0];
 
+            //Clear Columns
+            GR_Columns.ColumnDefinitions.Clear();
+            GR_Columns.Children.Clear();
+
             //Columns
             SetXColumns(itemType);
 
             //Generate Column
             var visibleColumns = xGridData.Columns.Where(x => x.Visible).ToList();
-            for (int i = 0; i < visibleColumns.Count; i++)
+            foreach (var item in visibleColumns)
             {
-                GenerateColumn(visibleColumns[i], i == visibleColumns.Count - 1);
+                var columnIndex = visibleColumns.IndexOf(item);
+                var IsLastColumn = columnIndex == visibleColumns.Count - 1;
+                GenerateColumn(item, IsLastColumn);
             }
 
             //Rows
@@ -387,6 +407,31 @@ namespace XControlComponents.Controls
 
             borderColumn.Child = textBlock;
             GR_Columns.Children.Add(borderColumn);
+
+            //Generate Column For Scroll
+            if (isLastVisible)
+            {
+                GR_Columns._UnregisterName(XGridViewDefaults.N_GR_Column_Scroll);
+
+                columnIndex = columnIndex + 1;
+
+                var gridColumn = new ColumnDefinition
+                {
+                    Width = new GridLength(0)
+                };
+                RegisterName(XGridViewDefaults.N_GR_Column_Scroll, gridColumn);
+
+                GR_Columns.ColumnDefinitions.Add(gridColumn);
+
+                borderColumn = new Border
+                {
+                    Style = XAppMethods.BorderInnerGrid(),
+                    BorderThickness = new Thickness(1, 0, 0, 0)
+                };
+                Grid.SetColumn(borderColumn, columnIndex);
+
+                GR_Columns.Children.Add(borderColumn);
+            }
         }
         #endregion
 
@@ -417,8 +462,19 @@ namespace XControlComponents.Controls
             GR_Data.ColumnDefinitions.Clear();
             GR_Data.Children.Clear();
 
-            GR_Row_NoData.Height = xGridData.Rows.Count > 0 ? new GridLength(0) : new GridLength(1, GridUnitType.Star);
-            GR_Row_Data.Height = xGridData.Rows.Count > 0 ? new GridLength(32, GridUnitType.Pixel) : new GridLength(0);
+            //Specified Grid Visibility
+            if (xGridData.Rows.Count == 0)
+            {
+                GR_Row_Data.Height = new GridLength(0);
+                GR_Row_NoData.Height = new GridLength(1, GridUnitType.Star);
+                BR_Grid.ClearValue(HeightProperty);
+            }
+            else
+            {
+                GR_Data.ClearValue(HeightProperty);
+                GR_Row_NoData.Height = new GridLength(0);
+                BR_Grid.Height = _headerHeight.Value;
+            }
 
             var visibleColumns = xGridData.Columns.Where(x => x.Visible).ToList();
             foreach (var item in visibleColumns)
@@ -431,15 +487,13 @@ namespace XControlComponents.Controls
                 GR_Data.ColumnDefinitions.Add(columnDefinition);
             }
 
-
             foreach (var row in xGridData.Rows)
             {
                 var rowIndex = xGridData.Rows.IndexOf(row);
                 var IsLastRow = rowIndex == xGridData.Rows.Count - 1;
-                GR_Data.RowDefinitions.Add(new RowDefinition()
-                {
-                    Height = new GridLength(_rowHeight.Value, GridUnitType.Pixel)
-                });
+
+                //Add Row
+                GR_Data.RowDefinitions.Add(new RowDefinition());
 
                 foreach (var cell in row.VisibleCells)
                 {
@@ -472,6 +526,31 @@ namespace XControlComponents.Controls
                 }
             }
 
+            //Set Border Height
+            IsInitializedDataSource = true;
+            SetHeightRow();
+        }
+
+        private void SetHeightRow()
+        {
+            if (GR_Data.RowDefinitions.Count == 0 || !IsInitializedDataSource)
+                return;
+
+            double BorderHeight = GR_Row_Header.Height.Value;
+            var MaxHeight = BorderHeight + (_rowHeightCount * _rowHeight);
+
+            foreach (var item in GR_Data.RowDefinitions)
+            {
+                item.Height = new GridLength(_rowHeight.Value, GridUnitType.Pixel);
+                if (BorderHeight < MaxHeight)
+                    BorderHeight = BorderHeight + _rowHeight.Value;
+            }
+
+            BR_Grid.Height = BorderHeight <= MaxHeight ? BorderHeight + 2 : BorderHeight;
+
+            //Handle Scroll
+            var gR_Column_Scroll = GR_Columns._FindName<ColumnDefinition>(XGridViewDefaults.N_GR_Column_Scroll);
+            gR_Column_Scroll.Width = new GridLength(BorderHeight <= MaxHeight ? 0 : 18, GridUnitType.Pixel);
         }
         #endregion
 

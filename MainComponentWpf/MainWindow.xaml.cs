@@ -35,6 +35,13 @@ namespace MainComponentWpf
                     FirstName = "F2",
                     LastName = "L2",
                     NationalCode = "NC2"
+                },
+                 new DataBindDto
+                {
+                    Id = 3,
+                    FirstName = "F3",
+                    LastName = "L3",
+                    NationalCode = "NC3"
                 }
             };
             xGridView._DataSource = result;

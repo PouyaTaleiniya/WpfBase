@@ -2,8 +2,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using XControlComponents.Tools;
 using XControlComponents.Tools.Controls;
-using XControlHelper;
 
 namespace XControlComponents.Controls;
 

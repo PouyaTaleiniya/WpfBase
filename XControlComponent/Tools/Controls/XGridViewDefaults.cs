@@ -11,6 +11,7 @@ public static class XGridViewDefaults
     //Grid
     public static double HeaderHeight { get; set; } = 32;
     public static double RowHeight { get; set; } = 32;
+    public static int RowHeightCount { get; set; } = 10; //Grid Height Scroll
     public static Brush Background { get; set; } = XAppMethods.Color_White_fafafa();
     public static Brush HeaderBackground { get; set; } = XAppMethods.Color_Gray_F0F0F0();
 
@@ -19,4 +20,7 @@ public static class XGridViewDefaults
     public static Brush NoDataForeground { get; set; } = XAppMethods.Color_Black_444040();
     public static string NoDataText { get; set; } = "No Data Exist";
     public static double NoDataFontSize { get; set; } = 18;
+
+    //Names
+    public static string N_GR_Column_Scroll { get; set; } = "GR_Column_Scroll";
 }

@@ -1,6 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System.Windows.Controls.Primitives;
-using XControlHelper;
 
 namespace XControlComponents.Tools;
 
