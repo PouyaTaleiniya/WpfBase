@@ -259,21 +259,11 @@ namespace XControlComponents.Controls
 
             //Columns
             SetXColumns(itemType);
-
-            //Generate Column
-            var visibleColumns = xGridData.Columns.Where(x => x.Visible).ToList();
-            foreach (var item in visibleColumns)
-            {
-                var columnIndex = visibleColumns.IndexOf(item);
-                var IsLastColumn = columnIndex == visibleColumns.Count - 1;
-                GenerateColumn(item, IsLastColumn);
-            }
+            GenerateColumns();
 
             //Rows
             SetXRows();
-
-            //Generate Row
-            GenerateRow();
+            GenerateRows();
         }
         #endregion
 
@@ -371,67 +361,72 @@ namespace XControlComponents.Controls
             xGridData.Columns.AddRange(columns);
         }
 
-        private void GenerateColumn(XGridColumn column, bool isLastVisible)
+        private void GenerateColumns()
         {
-            var attribute = column.Attribute;
-
-            if (!column.Visible)
-                return;
-
-            var columnWidth = column.Width > 0 ? new GridLength(column.Width, GridUnitType.Pixel) : new GridLength(1, GridUnitType.Star);
-
-            var columnIndex = GR_Columns.ColumnDefinitions.Count;
-
-            GR_Columns.ColumnDefinitions.Add(new ColumnDefinition
+            var visibleColumns = xGridData.Columns.Where(x => x.Visible).ToList();
+            foreach (var column in visibleColumns)
             {
-                Width = columnWidth
-            });
+                var columnIndex = visibleColumns.IndexOf(column);
+                var IsLastColumn = columnIndex == visibleColumns.Count - 1;
 
-            var borderColumn = new Border
-            {
-                Style = XAppMethods.BorderInnerGrid(),
-                BorderThickness = new Thickness(0, 0, isLastVisible ? 0 : 1, 0)
-            };
-            Grid.SetColumn(borderColumn, columnIndex);
+                var attribute = column.Attribute;
 
-            var textBlock = new TextBlock
-            {
-                Text = column.DisplayName,
-                Foreground = XAppMethods.Color_Black_424242(),
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
-                FontSize = 14,
-                FontWeight = FontWeights.Normal,
-                FontStyle = FontStyles.Normal
-            };
+                var columnWidth = column.Width > 0 ? new GridLength(column.Width, GridUnitType.Pixel) : new GridLength(1, GridUnitType.Star);
 
-            borderColumn.Child = textBlock;
-            GR_Columns.Children.Add(borderColumn);
 
-            //Generate Column For Scroll
-            if (isLastVisible)
-            {
-                GR_Columns._UnregisterName(XGridViewDefaults.N_GR_Column_Scroll);
-
-                columnIndex = columnIndex + 1;
-
-                var gridColumn = new ColumnDefinition
+                GR_Columns.ColumnDefinitions.Add(new ColumnDefinition
                 {
-                    Width = new GridLength(0)
-                };
-                RegisterName(XGridViewDefaults.N_GR_Column_Scroll, gridColumn);
+                    Width = columnWidth
+                });
 
-                GR_Columns.ColumnDefinitions.Add(gridColumn);
-
-                borderColumn = new Border
+                var borderColumn = new Border
                 {
                     Style = XAppMethods.BorderInnerGrid(),
-                    BorderThickness = new Thickness(1, 0, 0, 0)
+                    BorderThickness = new Thickness(0, 0, IsLastColumn ? 0 : 1, 0)
                 };
                 Grid.SetColumn(borderColumn, columnIndex);
 
+                var textBlock = new TextBlock
+                {
+                    Text = column.DisplayName,
+                    Foreground = XAppMethods.Color_Black_424242(),
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    FontSize = 14,
+                    FontWeight = FontWeights.Normal,
+                    FontStyle = FontStyles.Normal
+                };
+
+                borderColumn.Child = textBlock;
                 GR_Columns.Children.Add(borderColumn);
+
+                //Generate Column For Scroll
+                if (IsLastColumn)
+                {
+                    GR_Columns._UnregisterName(XGridViewDefaults.N_GR_Column_Scroll);
+
+                    columnIndex = columnIndex + 1;
+
+                    var gridColumn = new ColumnDefinition
+                    {
+                        Width = new GridLength(0)
+                    };
+                    RegisterName(XGridViewDefaults.N_GR_Column_Scroll, gridColumn);
+
+                    GR_Columns.ColumnDefinitions.Add(gridColumn);
+
+                    borderColumn = new Border
+                    {
+                        Style = XAppMethods.BorderInnerGrid(),
+                        BorderThickness = new Thickness(1, 0, 0, 0)
+                    };
+                    Grid.SetColumn(borderColumn, columnIndex);
+
+                    GR_Columns.Children.Add(borderColumn);
+                }
             }
+
+
         }
         #endregion
 
@@ -455,7 +450,7 @@ namespace XControlComponents.Controls
             }
         }
 
-        private void GenerateRow()
+        private void GenerateRows()
         {
             //Clear Rows
             GR_Data.RowDefinitions.Clear();
