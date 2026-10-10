@@ -467,13 +467,13 @@ namespace XControlComponents.Controls
             {
                 GR_Row_Data.Height = new GridLength(0);
                 GR_Row_NoData.Height = new GridLength(1, GridUnitType.Star);
-                BR_Grid.ClearValue(HeightProperty);
+                //BR_Grid.ClearValue(HeightProperty);
             }
             else
             {
                 GR_Data.ClearValue(HeightProperty);
                 GR_Row_NoData.Height = new GridLength(0);
-                BR_Grid.Height = _headerHeight.Value;
+                //BR_Grid.Height = _headerHeight.Value;
             }
 
             var visibleColumns = xGridData.Columns.Where(x => x.Visible).ToList();
@@ -503,7 +503,7 @@ namespace XControlComponents.Controls
                     var cellBorder = new Border
                     {
                         Style = XAppMethods.BorderInnerGrid(),
-                        BorderThickness = new Thickness(0, 0, IsLastCell ? 0 : 1, IsLastRow ? 0 : 1)
+                        BorderThickness = new Thickness(0, 0, IsLastCell ? 0 : 1,  1)
                     };
 
                     Grid.SetRow(cellBorder, rowIndex);
@@ -536,21 +536,22 @@ namespace XControlComponents.Controls
             if (GR_Data.RowDefinitions.Count == 0 || !IsInitializedDataSource)
                 return;
 
-            double BorderHeight = GR_Row_Header.Height.Value;
-            var MaxHeight = BorderHeight + (_rowHeightCount * _rowHeight);
+            double MaxHeight = _HeaderHeight.Value + (_rowHeightCount.Value * _rowHeight.Value);
 
+            double BorderHeight = 0;
             foreach (var item in GR_Data.RowDefinitions)
             {
+                var i = GR_Data.RowDefinitions.IndexOf(item);
                 item.Height = new GridLength(_rowHeight.Value, GridUnitType.Pixel);
-                if (BorderHeight < MaxHeight)
+                if (_rowHeightCount > i)
                     BorderHeight = BorderHeight + _rowHeight.Value;
             }
 
-            BR_Grid.Height = BorderHeight <= MaxHeight ? BorderHeight + 2 : BorderHeight;
+            //BR_Grid.Height = BorderHeight < MaxHeight ? BorderHeight + MaxHeight : MaxHeight + 2;
 
             //Handle Scroll
-            var gR_Column_Scroll = GR_Columns._FindName<ColumnDefinition>(XGridViewDefaults.N_GR_Column_Scroll);
-            gR_Column_Scroll.Width = new GridLength(BorderHeight <= MaxHeight ? 0 : 18, GridUnitType.Pixel);
+            //var gR_Column_Scroll = GR_Columns._FindName<ColumnDefinition>(XGridViewDefaults.N_GR_Column_Scroll);
+            //gR_Column_Scroll.Width = new GridLength(BorderHeight < MaxHeight ? 18 : 0, GridUnitType.Pixel);
         }
         #endregion
 
