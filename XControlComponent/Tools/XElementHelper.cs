@@ -150,7 +150,7 @@ namespace XControlComponents.Tools
             return parents;
         }
 
-        public static T FindParent<T>(DependencyObject child) where T : DependencyObject
+        public static T FindParent<T>(this DependencyObject child) where T : DependencyObject
         {
             var parent = VisualTreeHelper.GetParent(child);
 

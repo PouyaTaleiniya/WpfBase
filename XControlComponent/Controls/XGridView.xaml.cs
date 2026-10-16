@@ -1,10 +1,7 @@
 ﻿using System.Collections;
-using System.ComponentModel;
 using System.Data;
-using System.Data.Common;
 using System.Globalization;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -22,9 +19,10 @@ namespace XControlComponents.Controls
     public partial class XGridView : UserControl
     {
         private List<object> getAllDataSources { get; set; }
-        public XGridData xGridData { get; set; } = null!;
+        public XGridData xGridData { get; set; } = new XGridData();
         private bool SearchMode { get; set; }
         private bool IsInitializedDataSource { get; set; } = false;
+        private bool _isVerticalScrollBarVisible = false;
 
         public XGridView()
         {
@@ -34,16 +32,31 @@ namespace XControlComponents.Controls
             _BorderColor = XGridViewDefaults.BorderColor;
             _InnerBorderColor = XGridViewDefaults.InnerBorderColor;
 
-            //Grid
+            //Grid Header
             _HeaderHeight = XGridViewDefaults.HeaderHeight;
+            _HeaderForeground = XGridViewDefaults.HeaderForeground;
+            _headerFontSize = XGridViewDefaults.HeaderFontSize;
+            _HeaderFontWeight = XGridViewDefaults.HeaderFontWeight;
+            _HeaderFontStyle = XGridViewDefaults.HeaderFontStyle;
+
+            //Grid Row
             _RowHeight = XGridViewDefaults.RowHeight;
-            _RowHeightCount = XGridViewDefaults.RowHeightCount;
+
+            //Grid
+
+            _GridMargin = XGridViewDefaults.GridMargin;
 
             //NoData
             _NoDataForeground = XGridViewDefaults.NoDataForeground;
             _NoDataBackGround = XGridViewDefaults.NoDataBackGround;
             _NoDataText = XGridViewDefaults.NoDataText;
             _NoDataFontSize = XGridViewDefaults.NoDataFontSize;
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetGridBorder();
+            HandleGridVisibility();
         }
 
         #region Border
@@ -78,7 +91,7 @@ namespace XControlComponents.Controls
         }
         #endregion
 
-        #region Grid
+        #region Grid Header
         private double? _headerHeight;
         public double? _HeaderHeight
         {
@@ -96,9 +109,79 @@ namespace XControlComponents.Controls
                 GR_Row_Header.Height = new GridLength(_headerHeight.Value, GridUnitType.Pixel);
 
                 SetHeightRow();
+                SetGridBorder();
             }
         }
 
+        private Brush _headerBackground;
+        public Brush _HeaderBackground
+        {
+            get => _headerBackground;
+            set
+            {
+                _headerBackground = value;
+
+                if (_headerBackground == null)
+                    _headerBackground = XGridViewDefaults.HeaderBackground;
+
+                BR_Header.Background = _headerBackground;
+            }
+        }
+
+        private Brush _headerForeground;
+        public Brush _HeaderForeground
+        {
+            get => _headerForeground;
+            set
+            {
+                _headerForeground = value;
+
+                if (_headerForeground == null)
+                    _headerForeground = XGridViewDefaults.HeaderForeground;
+            }
+        }
+
+        private double? _headerFontSize;
+        public double? _HeaderFontSize
+        {
+            get => _headerFontSize;
+            set
+            {
+                _headerFontSize = value;
+
+                if (_headerFontSize == null)
+                    _headerFontSize = XGridViewDefaults.HeaderFontSize;
+            }
+        }
+
+        private FontWeight? _headerFontWeight;
+        public FontWeight? _HeaderFontWeight
+        {
+            get => _headerFontWeight;
+            set
+            {
+                _headerFontWeight = value;
+
+                if (_headerFontWeight == null)
+                    _headerFontWeight = XGridViewDefaults.HeaderFontWeight; 
+            }
+        }
+
+        private FontStyle? _headerFontStyle;
+        public FontStyle? _HeaderFontStyle
+        {
+            get => _headerFontStyle;
+            set
+            {
+                _headerFontStyle = value;
+
+                if (_headerFontStyle == null)
+                    _headerFontStyle = XGridViewDefaults.HeaderFontStyle;
+            }
+        }
+        #endregion
+
+        #region Grid
         private double? _rowHeight;
         public double? _RowHeight
         {
@@ -114,54 +197,39 @@ namespace XControlComponents.Controls
                     _rowHeight = 32;
 
                 SetHeightRow();
+                SetGridBorder();
             }
         }
-
-        private double? _rowHeightCount;
-        public double? _RowHeightCount
+          
+        private Brush _gridBackGround;
+        public Brush _GridBackground
         {
-            get => _rowHeightCount;
+            get => _gridBackGround;
             set
             {
-                _rowHeightCount = value;
+                _gridBackGround = value;
 
-                if (_rowHeightCount == null)
-                    _rowHeightCount = XGridViewDefaults.RowHeightCount;
+                if (_gridBackGround == null)
+                    _gridBackGround = XGridViewDefaults.GridBackground;
 
-                if (_rowHeightCount < 1)
-                    _rowHeightCount = 1;
-
-                SetHeightRow();
+                BR_Grid.Background = _gridBackGround;
             }
         }
-
-        private Brush _backGround;
-        public Brush _Background
+         
+        private Thickness? _gridMargin;
+        public Thickness? _GridMargin
         {
-            get => _backGround;
+            get => _gridMargin;
             set
             {
-                _backGround = value;
+                _gridMargin = value;
 
-                if (_backGround == null)
-                    _backGround = XGridViewDefaults.Background;
+                if (_gridMargin == null)
+                    _gridMargin = XGridViewDefaults.GridMargin;
 
-                BR_Grid.Background = _backGround;
-            }
-        }
+                BR_Grid.Margin = _gridMargin.Value;
 
-        private Brush _headerBackGround;
-        public Brush _HeaderBackground
-        {
-            get => _headerBackGround;
-            set
-            {
-                _headerBackGround = value;
-
-                if (_headerBackGround == null)
-                    _headerBackGround = XGridViewDefaults.HeaderBackground;
-
-                BR_Header.Background = _headerBackGround;
+                SetGridBorder();
             }
         }
         #endregion
@@ -274,6 +342,86 @@ namespace XControlComponents.Controls
 
             //Generate Row
             GenerateRow();
+
+            //Handle Scroll
+            GridScroll();
+            SetGridBorder();
+        }
+        #endregion
+
+        #region Grid Scroll
+        private void SC_Data_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            GridScroll();
+        }
+
+        private void GridScroll()
+        {
+            try
+            {
+
+                bool isVisible = SC_Data.ComputedVerticalScrollBarVisibility == Visibility.Visible;
+                if (isVisible && !_isVerticalScrollBarVisible)
+                {
+                    var gR_Column_Scroll = GR_Columns._FindName<ColumnDefinition>(XGridViewDefaults.N_GR_Column_Scroll);
+                    if (gR_Column_Scroll != null)
+                    {
+                        _isVerticalScrollBarVisible = true;
+                        gR_Column_Scroll.Width = new GridLength(18, GridUnitType.Pixel);
+                    }
+                }
+                else if (!isVisible && _isVerticalScrollBarVisible)
+                {
+                    _isVerticalScrollBarVisible = false;
+
+                    var gR_Column_Scroll = GR_Columns._FindName<ColumnDefinition>(XGridViewDefaults.N_GR_Column_Scroll);
+                    if (gR_Column_Scroll != null)
+                        gR_Column_Scroll.Width = new GridLength(0, GridUnitType.Pixel);
+                }
+
+                // Bottom End
+                if (IsInitializedDataSource)
+                {
+                    if (SC_Data.ScrollableHeight > 0)
+                    {
+                        if (SC_Data.VerticalOffset >= SC_Data.ScrollableHeight - 0.5)
+                            BR_Grid.BorderThickness = new Thickness(1, 1, 1, 0);
+                        else
+                            BR_Grid.BorderThickness = new Thickness(1);
+                    }
+                    else
+                        SetGridBorder();
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private void BR_Grid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            SetGridBorder();
+        }
+
+        private void SetGridBorder()
+        {
+            if (IsInitializedDataSource)
+            {
+                double MaxHeight = _HeaderHeight.Value + (GR_Data.RowDefinitions.Count * _rowHeight.Value);
+
+                double marginHeight = 0;
+                var gridHeight = BR_Grid.ActualHeight;
+                if (_gridMargin.HasValue && (_gridMargin.Value.Top > 0 || _gridMargin.Value.Bottom > 0))
+                {
+                    marginHeight = _gridMargin.Value.Top + _gridMargin.Value.Bottom;
+                    gridHeight = gridHeight + marginHeight;
+                }
+
+                if (MaxHeight + marginHeight + 4 >= gridHeight)
+                    BR_Grid.BorderThickness = new Thickness(1,1,1,0);
+                else
+                    BR_Grid.BorderThickness = new Thickness(1);
+            }
         }
         #endregion
 
@@ -462,19 +610,7 @@ namespace XControlComponents.Controls
             GR_Data.ColumnDefinitions.Clear();
             GR_Data.Children.Clear();
 
-            //Specified Grid Visibility
-            if (xGridData.Rows.Count == 0)
-            {
-                GR_Row_Data.Height = new GridLength(0);
-                GR_Row_NoData.Height = new GridLength(1, GridUnitType.Star);
-                //BR_Grid.ClearValue(HeightProperty);
-            }
-            else
-            {
-                GR_Data.ClearValue(HeightProperty);
-                GR_Row_NoData.Height = new GridLength(0);
-                //BR_Grid.Height = _headerHeight.Value;
-            }
+            HandleGridVisibility();
 
             var visibleColumns = xGridData.Columns.Where(x => x.Visible).ToList();
             foreach (var item in visibleColumns)
@@ -485,6 +621,12 @@ namespace XControlComponents.Controls
                     Width = columnWidth
                 };
                 GR_Data.ColumnDefinitions.Add(columnDefinition);
+            }
+
+            if (xGridData.Rows.Count == 0)
+            {
+                IsInitializedDataSource = false;
+                return;
             }
 
             foreach (var row in xGridData.Rows)
@@ -503,7 +645,7 @@ namespace XControlComponents.Controls
                     var cellBorder = new Border
                     {
                         Style = XAppMethods.BorderInnerGrid(),
-                        BorderThickness = new Thickness(0, 0, IsLastCell ? 0 : 1,  1)
+                        BorderThickness = new Thickness(0, 0, IsLastCell ? 0 : 1, 1)
                     };
 
                     Grid.SetRow(cellBorder, rowIndex);
@@ -535,23 +677,29 @@ namespace XControlComponents.Controls
         {
             if (GR_Data.RowDefinitions.Count == 0 || !IsInitializedDataSource)
                 return;
-
-            double MaxHeight = _HeaderHeight.Value + (_rowHeightCount.Value * _rowHeight.Value);
-
-            double BorderHeight = 0;
+             
+            //double BorderHeight = 0;
             foreach (var item in GR_Data.RowDefinitions)
             {
                 var i = GR_Data.RowDefinitions.IndexOf(item);
                 item.Height = new GridLength(_rowHeight.Value, GridUnitType.Pixel);
-                if (_rowHeightCount > i)
-                    BorderHeight = BorderHeight + _rowHeight.Value;
             }
+        }
 
-            //BR_Grid.Height = BorderHeight < MaxHeight ? BorderHeight + MaxHeight : MaxHeight + 2;
-
-            //Handle Scroll
-            //var gR_Column_Scroll = GR_Columns._FindName<ColumnDefinition>(XGridViewDefaults.N_GR_Column_Scroll);
-            //gR_Column_Scroll.Width = new GridLength(BorderHeight < MaxHeight ? 18 : 0, GridUnitType.Pixel);
+        private void HandleGridVisibility()
+        {
+            if (xGridData.Rows.Count == 0)
+            {
+                GR_Row_Data.Height = new GridLength(0);
+                GR_Row_NoData.Height = new GridLength(1, GridUnitType.Star);
+                GR_Row_Header.Height = new GridLength(0);
+            }
+            else
+            {
+                GR_Data.ClearValue(HeightProperty);
+                GR_Row_NoData.Height = new GridLength(0);
+                GR_Row_Header.Height = new GridLength(_headerHeight.Value, GridUnitType.Pixel);
+            }
         }
         #endregion
 
