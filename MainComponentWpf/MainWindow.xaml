@@ -23,18 +23,18 @@
             <usercontrols:UC_Header Name="ucHeader" _ImageUrl="/Images/Vpn.png" _ShowMaximumButton="True" _Title="مدیریت وی پی ان" Grid.Row="0" />
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="300"/>
+                    <RowDefinition Height="180"/>
                     <RowDefinition Height="100"/>
                     <RowDefinition Height="250" Name="GR_Row_2"/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0" Margin="10" Background="Aquamarine">
+                <Grid Grid.Row="0"  Background="Aquamarine">
                     <!--<controls:XComboBox  Name="XComboBox"  _EqualSearchMode="False" _IsEnableSearch="True" _IsGenerateEmptyLabel="True" _LabelVisibility="True" _PlaceHolderOpacity="0.3"  _LabelTitle="نام" _IsRequired="True" _ValueChanged="XComboBox_ValueChanged"/>-->
                     <!--<controls:XTextBox Name="xTer" _LabelVerticalAlignment="Top" _MultiLine="True" _MaxLength="100"/>-->
                     <!--<controls:XTextBox _LabelVerticalAlignment="Top" _MultiLine="True" _MaxLength="100"/>-->
                     <!--<controls:XTextBoxBorder _LabelTitle="Gender" _IsRequired="True" _MaxLength="1500" _MaxLengthGridWidth="90" _MaxLengthVisibility="True"  _MaxLengthOutbox="True" _LabelTop="True"  _LabelVisibility="True" _MultiLine="False" />-->
                     <!--<controls:XTextBox1 _ElementType="Normal" _LabelTop="True" _MaxLengthVisibility="True" _MaxLengthOutbox="False" _MaxLengthGridWidth="70" _MaxLength="20" _MultiLine="False"/>-->
                     <!--<controls:XComboBoxBorder Name="xComboBoxData1"  />-->
-                    <controls:XGridView  Name="xGridView" _RowHeightCount="3"/>
+                    <controls:XGridView  Name="xGridView" _GridBackground="AntiqueWhite"/>
                 </Grid>
                 <Grid Grid.Row="2" >
                     <!--<controls:XComboBoxFloating  Name="XComboBox1" _IsGenerateEmptyLabel="True" _LabelVisibility="True" _BorderBrushFocused="True" _PlaceHolderOpacity="0.3"  _LabelTitle="نام" _IsRequired="True" _ValueChanged="XComboBox_ValueChanged"/>-->

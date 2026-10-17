@@ -6,14 +6,15 @@
              xmlns:local="clr-namespace:XControlComponents.Controls" 
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Border Style="{StaticResource BorderGrid}" Name="BR_Grid" Background="{StaticResource Color_White_fafafa}">
+             d:DesignHeight="450" d:DesignWidth="800"
+             Loaded="UserControl_Loaded">
+    <Border Style="{StaticResource BorderGrid}" Name="BR_Grid" Background="{StaticResource Color_White_fafafa}" SizeChanged="BR_Grid_SizeChanged">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Name="GR_Row_Header" Height="32"/>
                 <RowDefinition Name="GR_Row_Datas" />
             </Grid.RowDefinitions>
-            <Border Grid.Row="0" Name="BR_Header" Background="{StaticResource Color_Gray_F0F0F0}" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 0 1">
+            <Border Grid.Row="0" Name="BR_Header" Background="{StaticResource Color_Gray_F0F0F0}" Style="{StaticResource BorderInnerGrid}">
                 <Grid Name="GR_Columns">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100"/>
@@ -44,10 +45,11 @@
                     <RowDefinition Name="GR_Row_NoData" Height="0"/>
                     <RowDefinition Name="GR_Row_Data" />
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0" Name="GR_NoData" Visibility="Hidden">
+                <Grid Grid.Row="0" Name="GR_NoData" >
                     <Label Name="Lb_NoData" VerticalAlignment="Center" HorizontalAlignment="Center"></Label>
                 </Grid>
-                <ScrollViewer Name="SC_Data" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <ScrollViewer Name="SC_Data" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" FocusVisualStyle="{x:Null}"
+                              ScrollChanged="SC_Data_ScrollChanged">
                     <Grid Name="GR_Data">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="32"/>
