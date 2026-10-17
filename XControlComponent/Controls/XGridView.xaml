@@ -49,61 +49,37 @@
                     <Label Name="Lb_NoData" VerticalAlignment="Center" HorizontalAlignment="Center"></Label>
                 </Grid>
                 <ScrollViewer Name="SC_Data" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" FocusVisualStyle="{x:Null}"
-                              ScrollChanged="SC_Data_ScrollChanged">
-                    <Grid Name="GR_Data">
+               ScrollChanged="SC_Data_ScrollChanged">
+                    <Grid Name="GR_Data" Background="Transparent">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="32"/>
                             <RowDefinition Height="32"/>
                             <RowDefinition Height="50"/>
                         </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Border Grid.Column="0" Grid.Row="0" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 1">
-                            <TextBlock Text="ردیف" FontSize="15" FontStyle="Normal" TextDecorations="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <Border Grid.Column="1" Grid.Row="0" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 1">
-                            <Label Content="ردیف" FontSize="15" FontStyle="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <Border Grid.Column="2" Grid.Row="0" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 1">
+                        <Border Grid.Row="0" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 0 1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 0">
+                                    <TextBlock Text="ردیف" FontSize="15" FontStyle="Normal" TextDecorations="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="1" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 0">
+                                    <Label Content="ردیف" FontSize="15" FontStyle="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="2" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 0">
 
-                        </Border>
-                        <Border Grid.Column="3" Grid.Row="0" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 0 1">
+                                </Border>
+                                <Border Grid.Column="3" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 0 0">
 
+                                </Border>
+                            </Grid>
                         </Border>
-
-                        <Border Grid.Column="0" Grid.Row="1" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 1">
-                            <TextBlock Text="ردیف" FontSize="15" FontStyle="Normal" TextDecorations="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <Border Grid.Column="1" Grid.Row="1" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 1">
-                            <Label Content="ردیف" FontSize="15" FontStyle="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <Border Grid.Column="2" Grid.Row="1" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 1">
-
-                        </Border>
-                        <Border Grid.Column="3" Grid.Row="1" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 0 1">
-
-                        </Border>
-
-                        <Border Grid.Column="0" Grid.Row="2" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 0">
-                            <TextBlock Text="ردیف" FontSize="15" FontStyle="Normal" TextDecorations="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <Border Grid.Column="1" Grid.Row="2" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 0">
-                            <Label Content="ردیف" FontSize="15" FontStyle="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <Border Grid.Column="2" Grid.Row="2" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 0">
-
-                        </Border>
-                        <Border Grid.Column="3" Grid.Row="2" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 0 0">
-
-                        </Border>
-
                     </Grid>
                 </ScrollViewer>
-              
             </Grid>
         </Grid>
     </Border>

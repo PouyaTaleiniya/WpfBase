@@ -38,22 +38,22 @@ namespace XControlComponents.Tools
 
         public static Brush Color_White_f9f9f9()
         {
-            return Application.Current.TryFindResource("Color_Gray_f9f9f9") as Brush;
+            return Application.Current.TryFindResource("Color_White_f9f9f9") as Brush;
         }
 
         public static Brush Color_White_fdfdfd()
         {
-            return Application.Current.TryFindResource("Color_Gray_fdfdfd") as Brush;
+            return Application.Current.TryFindResource("Color_White_fdfdfd") as Brush;
         }
 
         public static Brush Color_White_fcfcfc()
         {
-            return Application.Current.TryFindResource("Color_Gray_fcfcfc") as Brush;
+            return Application.Current.TryFindResource("Color_White_fcfcfc") as Brush;
         }
 
         public static Brush Color_White_fafafa()
         {
-            return Application.Current.TryFindResource("Color_Gray_fafafa") as Brush;
+            return Application.Current.TryFindResource("Color_White_fafafa") as Brush;
         }
 
         public static Brush Color_Gray_959595()

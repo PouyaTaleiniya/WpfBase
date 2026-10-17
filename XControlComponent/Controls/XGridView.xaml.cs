@@ -32,6 +32,10 @@ namespace XControlComponents.Controls
             _BorderColor = XGridViewDefaults.BorderColor;
             _InnerBorderColor = XGridViewDefaults.InnerBorderColor;
 
+            //Grid
+            _GridMargin = XGridViewDefaults.GridMargin;
+            _GridBackground = XGridViewDefaults.GridBackground;
+
             //Grid Header
             _HeaderHeight = XGridViewDefaults.HeaderHeight;
             _HeaderForeground = XGridViewDefaults.HeaderForeground;
@@ -41,10 +45,10 @@ namespace XControlComponents.Controls
 
             //Grid Row
             _RowHeight = XGridViewDefaults.RowHeight;
-
-            //Grid
-
-            _GridMargin = XGridViewDefaults.GridMargin;
+            _RowForeground = XGridViewDefaults.RowForeground;
+            _RowFontSize = XGridViewDefaults.RowFontSize;
+            _RowFontWeight = XGridViewDefaults.RowFontWeight;
+            _RowFontStyle = XGridViewDefaults.RowFontStyle;
 
             //NoData
             _NoDataForeground = XGridViewDefaults.NoDataForeground;
@@ -87,6 +91,40 @@ namespace XControlComponents.Controls
                     _innerBorderColor = XGridViewDefaults.InnerBorderColor;
 
                 BR_Header.BorderBrush = _innerBorderColor;
+            }
+        }
+        #endregion
+
+        #region Grid
+        private Brush _gridBackGround;
+        public Brush _GridBackground
+        {
+            get => _gridBackGround;
+            set
+            {
+                _gridBackGround = value;
+
+                if (_gridBackGround == null)
+                    _gridBackGround = XGridViewDefaults.GridBackground;
+
+                BR_Grid.Background = _gridBackGround;
+            }
+        }
+
+        private Thickness? _gridMargin;
+        public Thickness? _GridMargin
+        {
+            get => _gridMargin;
+            set
+            {
+                _gridMargin = value;
+
+                if (_gridMargin == null)
+                    _gridMargin = XGridViewDefaults.GridMargin;
+
+                BR_Grid.Margin = _gridMargin.Value;
+
+                SetGridBorder();
             }
         }
         #endregion
@@ -149,7 +187,7 @@ namespace XControlComponents.Controls
             {
                 _headerFontSize = value;
 
-                if (_headerFontSize == null)
+                if (_headerFontSize == null || _headerFontSize < 10)
                     _headerFontSize = XGridViewDefaults.HeaderFontSize;
             }
         }
@@ -163,7 +201,7 @@ namespace XControlComponents.Controls
                 _headerFontWeight = value;
 
                 if (_headerFontWeight == null)
-                    _headerFontWeight = XGridViewDefaults.HeaderFontWeight; 
+                    _headerFontWeight = XGridViewDefaults.HeaderFontWeight;
             }
         }
 
@@ -181,7 +219,7 @@ namespace XControlComponents.Controls
         }
         #endregion
 
-        #region Grid
+        #region Grid Row
         private double? _rowHeight;
         public double? _RowHeight
         {
@@ -200,36 +238,56 @@ namespace XControlComponents.Controls
                 SetGridBorder();
             }
         }
-          
-        private Brush _gridBackGround;
-        public Brush _GridBackground
+
+        private Brush _rowForeground;
+        public Brush _RowForeground
         {
-            get => _gridBackGround;
+            get => _rowForeground;
             set
             {
-                _gridBackGround = value;
+                _rowForeground = value;
 
-                if (_gridBackGround == null)
-                    _gridBackGround = XGridViewDefaults.GridBackground;
-
-                BR_Grid.Background = _gridBackGround;
+                if (_rowForeground == null)
+                    _rowForeground = XGridViewDefaults.RowForeground;
             }
         }
-         
-        private Thickness? _gridMargin;
-        public Thickness? _GridMargin
+
+        private double? _rowFontSize;
+        public double? _RowFontSize
         {
-            get => _gridMargin;
+            get => _rowFontSize;
             set
             {
-                _gridMargin = value;
+                _rowFontSize = value;
 
-                if (_gridMargin == null)
-                    _gridMargin = XGridViewDefaults.GridMargin;
+                if (_rowFontSize == null || _rowFontSize < 10)
+                    _rowFontSize = XGridViewDefaults.RowFontSize;
+            }
+        }
 
-                BR_Grid.Margin = _gridMargin.Value;
+        private FontWeight? _rowFontWeight;
+        public FontWeight? _RowFontWeight
+        {
+            get => _rowFontWeight;
+            set
+            {
+                _rowFontWeight = value;
 
-                SetGridBorder();
+                if (_rowFontWeight == null)
+                    _rowFontWeight = XGridViewDefaults.RowFontWeight;
+            }
+        }
+
+        private FontStyle? _rowFontStyle;
+        public FontStyle? _RowFontStyle
+        {
+            get => _rowFontStyle;
+            set
+            {
+                _rowFontStyle = value;
+
+                if (_rowFontStyle == null)
+                    _rowFontStyle = XGridViewDefaults.RowFontStyle;
             }
         }
         #endregion
@@ -418,7 +476,7 @@ namespace XControlComponents.Controls
                 }
 
                 if (MaxHeight + marginHeight + 4 >= gridHeight)
-                    BR_Grid.BorderThickness = new Thickness(1,1,1,0);
+                    BR_Grid.BorderThickness = new Thickness(1, 1, 1, 0);
                 else
                     BR_Grid.BorderThickness = new Thickness(1);
             }
@@ -545,12 +603,12 @@ namespace XControlComponents.Controls
             var textBlock = new TextBlock
             {
                 Text = column.DisplayName,
-                Foreground = XAppMethods.Color_Black_424242(),
+                Foreground = _headerForeground,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
-                FontSize = 14,
-                FontWeight = FontWeights.Normal,
-                FontStyle = FontStyles.Normal
+                FontSize = _headerFontSize.Value,
+                FontWeight = _headerFontWeight.Value,
+                FontStyle = _headerFontStyle.Value
             };
 
             borderColumn.Child = textBlock;
@@ -607,21 +665,7 @@ namespace XControlComponents.Controls
         {
             //Clear Rows
             GR_Data.RowDefinitions.Clear();
-            GR_Data.ColumnDefinitions.Clear();
             GR_Data.Children.Clear();
-
-            HandleGridVisibility();
-
-            var visibleColumns = xGridData.Columns.Where(x => x.Visible).ToList();
-            foreach (var item in visibleColumns)
-            {
-                var columnWidth = item.Width > 0 ? new GridLength(item.Width, GridUnitType.Pixel) : new GridLength(1, GridUnitType.Star);
-                var columnDefinition = new ColumnDefinition()
-                {
-                    Width = columnWidth
-                };
-                GR_Data.ColumnDefinitions.Add(columnDefinition);
-            }
 
             if (xGridData.Rows.Count == 0)
             {
@@ -629,6 +673,9 @@ namespace XControlComponents.Controls
                 return;
             }
 
+            HandleGridVisibility();
+
+            var visibleColumns = xGridData.Columns.Where(x => x.Visible).ToList();
             foreach (var row in xGridData.Rows)
             {
                 var rowIndex = xGridData.Rows.IndexOf(row);
@@ -636,6 +683,29 @@ namespace XControlComponents.Controls
 
                 //Add Row
                 GR_Data.RowDefinitions.Add(new RowDefinition());
+
+                //Row Border
+                var rowBorder = new Border
+                {
+                    Style = XAppMethods.BorderInnerGrid(),
+                    BorderThickness = new Thickness(0, 0, 0, 1)
+                };
+                Grid.SetRow(rowBorder, rowIndex);
+
+                //Row Grid
+                var rowGrid = new Grid();
+                rowBorder.Child = rowGrid;
+
+                //Visible Columns
+                foreach (var item in visibleColumns)
+                {
+                    var columnWidth = item.Width > 0 ? new GridLength(item.Width, GridUnitType.Pixel) : new GridLength(1, GridUnitType.Star);
+                    var columnDefinition = new ColumnDefinition()
+                    {
+                        Width = columnWidth
+                    };
+                    rowGrid.ColumnDefinitions.Add(columnDefinition);
+                }
 
                 foreach (var cell in row.VisibleCells)
                 {
@@ -645,27 +715,30 @@ namespace XControlComponents.Controls
                     var cellBorder = new Border
                     {
                         Style = XAppMethods.BorderInnerGrid(),
-                        BorderThickness = new Thickness(0, 0, IsLastCell ? 0 : 1, 1)
+                        BorderThickness = new Thickness(0, 0, IsLastCell ? 0 : 1, 0)
                     };
-
-                    Grid.SetRow(cellBorder, rowIndex);
                     Grid.SetColumn(cellBorder, cellIndex);
 
-
-                    var textBlock = new TextBlock
+                    var textBlock = new TextBox
                     {
                         Text = cell.Value.FillStringSafe(),
-                        Foreground = XAppMethods.Color_Black_424242(),
+                        Foreground = _rowForeground,
                         HorizontalAlignment = HorizontalAlignment.Center,
                         VerticalAlignment = VerticalAlignment.Center,
-                        FontSize = 14,
-                        FontWeight = FontWeights.Normal,
-                        FontStyle = FontStyles.Normal
+                        FontSize = _rowFontSize.Value,
+                        FontWeight = _rowFontWeight.Value,
+                        FontStyle = _rowFontStyle.Value,
+                        IsReadOnly = true,
+                        BorderThickness = new Thickness(0),
+                        Style = null,
+                        FocusVisualStyle = null,
                     };
                     cellBorder.Child = textBlock;
-
-                    GR_Data.Children.Add(cellBorder);
+                    rowGrid.Children.Add(cellBorder);
                 }
+
+                //Add Row Border
+                GR_Data.Children.Add(rowBorder);
             }
 
             //Set Border Height
@@ -677,7 +750,7 @@ namespace XControlComponents.Controls
         {
             if (GR_Data.RowDefinitions.Count == 0 || !IsInitializedDataSource)
                 return;
-             
+
             //double BorderHeight = 0;
             foreach (var item in GR_Data.RowDefinitions)
             {
