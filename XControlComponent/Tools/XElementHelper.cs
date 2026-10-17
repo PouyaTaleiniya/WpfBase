@@ -12,22 +12,27 @@ namespace XControlComponents.Tools
             ImageElement.Source = new BitmapImage(new Uri(ImageUrl, UriKind.Relative));
         }
 
-        public static Color GetColorByHex(string HexColor)
+        public static Color GetColorByHex(this string HexColor)
         {
             return (Color)ColorConverter.ConvertFromString(HexColor);
         }
 
-        public static Brush GetBrushColor(Color color)
+        public static Brush GetBrushColor(this Color color)
         {
             return new SolidColorBrush(color);
         }
 
-        public static string GetHexByColor(Color Color)
+        public static Brush GetBrushColorByHex(this string HexColor)
+        {
+            return new SolidColorBrush(HexColor.GetColorByHex());
+        }
+
+        public static string GetHexByColor(this Color Color)
         {
             return $"#{Color.R:X2}{Color.G:X2}{Color.B:X2}";
         }
 
-        public static Color GetColorByBrush(Brush BrushColor)
+        public static Color GetColorByBrush(this Brush BrushColor)
         {
             return ((SolidColorBrush)BrushColor).Color;
         }

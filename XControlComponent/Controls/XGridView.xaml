@@ -7,7 +7,14 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             Loaded="UserControl_Loaded">
+             Loaded="UserControl_Loaded" PreviewMouseDown="UserControl_PreviewMouseDown">
+    <UserControl.Resources>
+        <Style x:Key="SelectableLabelStyle" TargetType="TextBox">
+            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="TextBox_PreviewMouseLeftButtonDown"/>
+            <EventSetter Event="KeyUp" Handler="TextBox_KeyUp"/>
+            <EventSetter Event="LostKeyboardFocus" Handler="TextBox_LostKeyboardFocus"/>
+        </Style>
+    </UserControl.Resources>
     <Border Style="{StaticResource BorderGrid}" Name="BR_Grid" Background="{StaticResource Color_White_fafafa}" SizeChanged="BR_Grid_SizeChanged">
         <Grid>
             <Grid.RowDefinitions>
@@ -23,7 +30,7 @@
                         <ColumnDefinition />
                         <ColumnDefinition Width="18"/>
                     </Grid.ColumnDefinitions>
-                    <Border Grid.Column="0" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 0"> 
+                    <Border Grid.Column="0" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 0">
                         <TextBlock Text="ردیف" FontSize="15" FontStyle="Normal" FontWeight="Bold" TextDecorations="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <Border Grid.Column="1" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 0">
@@ -49,8 +56,8 @@
                     <Label Name="Lb_NoData" VerticalAlignment="Center" HorizontalAlignment="Center"></Label>
                 </Grid>
                 <ScrollViewer Name="SC_Data" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" FocusVisualStyle="{x:Null}"
-               ScrollChanged="SC_Data_ScrollChanged">
-                    <Grid Name="GR_Data" Background="Transparent">
+               ScrollChanged="SC_Data_ScrollChanged" Focusable="False">
+                    <Grid Name="GR_Data" Background="Transparent" KeyboardNavigation.TabNavigation="Continue">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="32"/>
                             <RowDefinition Height="32"/>

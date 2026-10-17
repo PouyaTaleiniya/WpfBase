@@ -128,9 +128,14 @@ namespace XControlComponents.Tools
         #endregion
 
         #region Styles
-        public static Style BorderInnerGrid()
+        public static Style BorderInnerGridStyle()
         {
             return Application.Current.TryFindResource("BorderInnerGrid") as Style;
+        }
+
+        public static Style SelectableLabelStyle()
+        {
+            return Application.Current.TryFindResource("SelectableLabelStyle") as Style;
         }
         #endregion
     }

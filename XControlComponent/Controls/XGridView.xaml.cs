@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 using XControlComponents.Models;
 using XControlComponents.Models.XGrid;
@@ -57,12 +58,39 @@ namespace XControlComponents.Controls
             _NoDataFontSize = XGridViewDefaults.NoDataFontSize;
         }
 
+        #region User Control
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             SetGridBorder();
             HandleGridVisibility();
         }
 
+        private void UserControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (Keyboard.FocusedElement is TextBox focusedTextBox)
+            {
+                DependencyObject clickedElement = e.OriginalSource as DependencyObject;
+                if (clickedElement != null && !IsClickInsideTextBox(clickedElement, focusedTextBox))
+                {
+                    focusedTextBox.SelectionLength = 0;
+                    Keyboard.ClearFocus();
+                }
+            }
+        }
+
+        private bool IsClickInsideTextBox(DependencyObject clickedElement, TextBox targetTextBox)
+        {
+            while (clickedElement != null)
+            {
+                if (clickedElement == targetTextBox)
+                    return true;
+
+                clickedElement = VisualTreeHelper.GetParent(clickedElement);
+            }
+            return false;
+        }
+        #endregion
+       
         #region Border
         private Brush _borderColor;
         public Brush _BorderColor
@@ -595,7 +623,7 @@ namespace XControlComponents.Controls
 
             var borderColumn = new Border
             {
-                Style = XAppMethods.BorderInnerGrid(),
+                Style = XAppMethods.BorderInnerGridStyle(),
                 BorderThickness = new Thickness(0, 0, isLastVisible ? 0 : 1, 0)
             };
             Grid.SetColumn(borderColumn, columnIndex);
@@ -631,7 +659,7 @@ namespace XControlComponents.Controls
 
                 borderColumn = new Border
                 {
-                    Style = XAppMethods.BorderInnerGrid(),
+                    Style = XAppMethods.BorderInnerGridStyle(),
                     BorderThickness = new Thickness(1, 0, 0, 0)
                 };
                 Grid.SetColumn(borderColumn, columnIndex);
@@ -687,7 +715,7 @@ namespace XControlComponents.Controls
                 //Row Border
                 var rowBorder = new Border
                 {
-                    Style = XAppMethods.BorderInnerGrid(),
+                    Style = XAppMethods.BorderInnerGridStyle(),
                     BorderThickness = new Thickness(0, 0, 0, 1)
                 };
                 Grid.SetRow(rowBorder, rowIndex);
@@ -714,7 +742,7 @@ namespace XControlComponents.Controls
 
                     var cellBorder = new Border
                     {
-                        Style = XAppMethods.BorderInnerGrid(),
+                        Style = XAppMethods.BorderInnerGridStyle(),
                         BorderThickness = new Thickness(0, 0, IsLastCell ? 0 : 1, 0)
                     };
                     Grid.SetColumn(cellBorder, cellIndex);
@@ -723,6 +751,7 @@ namespace XControlComponents.Controls
                     {
                         Text = cell.Value.FillStringSafe(),
                         Foreground = _rowForeground,
+                        Background = Colors.Transparent.GetBrushColor(),
                         HorizontalAlignment = HorizontalAlignment.Center,
                         VerticalAlignment = VerticalAlignment.Center,
                         FontSize = _rowFontSize.Value,
@@ -730,7 +759,9 @@ namespace XControlComponents.Controls
                         FontStyle = _rowFontStyle.Value,
                         IsReadOnly = true,
                         BorderThickness = new Thickness(0),
-                        Style = null,
+                        Style = this.FindResource("SelectableLabelStyle") as Style,
+                        SelectionBrush = "#FF0078D7".GetBrushColorByHex(),
+                        SelectionOpacity = 0.4,
                         FocusVisualStyle = null,
                     };
                     cellBorder.Child = textBlock;
@@ -772,6 +803,40 @@ namespace XControlComponents.Controls
                 GR_Data.ClearValue(HeightProperty);
                 GR_Row_NoData.Height = new GridLength(0);
                 GR_Row_Header.Height = new GridLength(_headerHeight.Value, GridUnitType.Pixel);
+            }
+        }
+        #endregion
+
+        #region Row TextBox
+        private void TextBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is TextBox textBox)
+            {
+                if (e.ClickCount == 1)
+                {
+                    textBox.SelectionLength = 0;
+                }
+                else if (e.ClickCount == 2)
+                {
+                    textBox.SelectAll();
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private void TextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Tab && sender is TextBox textBox)
+            {
+                textBox.SelectAll();
+            }
+        }
+
+        private void TextBox_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (sender is TextBox textBox)
+            {
+                textBox.SelectionLength = 0;
             }
         }
         #endregion
