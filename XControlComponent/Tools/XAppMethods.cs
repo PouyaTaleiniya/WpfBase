@@ -125,6 +125,11 @@ namespace XControlComponents.Tools
         {
             return Application.Current.TryFindResource("Img_CloseWhite") as ImageSource;
         }
+
+        public static Brush Color_SelectedBrush_Blue_FF0078D7()
+        {
+            return Application.Current.TryFindResource("Color_SelectedBrush_Blue_FF0078D7") as Brush;
+        }
         #endregion
 
         #region Styles
@@ -133,9 +138,9 @@ namespace XControlComponents.Tools
             return Application.Current.TryFindResource("BorderInnerGrid") as Style;
         }
 
-        public static Style SelectableLabelStyle()
+        public static Style TextBoxEventStyle()
         {
-            return Application.Current.TryFindResource("SelectableLabelStyle") as Style;
+            return Application.Current.TryFindResource("TextBoxEventStyle") as Style;
         }
         #endregion
     }

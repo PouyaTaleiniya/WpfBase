@@ -108,7 +108,7 @@ namespace XControlComponents.Tools
             return null;
         }
 
-        public static List<DependencyObject> FindChilds(DependencyObject parent)
+        public static List<DependencyObject> FindChilds(this DependencyObject parent)
         {
             var parents = new List<DependencyObject>();
             Find(parent);
@@ -130,7 +130,7 @@ namespace XControlComponents.Tools
             return parents;
         }
 
-        public static List<DependencyObject> FindChilds<T>(DependencyObject parent)
+        public static List<DependencyObject> FindChilds<T>(this DependencyObject parent)
         {
             var parents = new List<DependencyObject>();
 

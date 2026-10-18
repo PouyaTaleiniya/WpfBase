@@ -9,7 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800"
              Loaded="UserControl_Loaded" PreviewMouseDown="UserControl_PreviewMouseDown">
     <UserControl.Resources>
-        <Style x:Key="SelectableLabelStyle" TargetType="TextBox">
+        <Style x:Key="TextBoxEventStyle" TargetType="TextBox">
             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="TextBox_PreviewMouseLeftButtonDown"/>
             <EventSetter Event="KeyUp" Handler="TextBox_KeyUp"/>
             <EventSetter Event="LostKeyboardFocus" Handler="TextBox_LostKeyboardFocus"/>
@@ -22,7 +22,7 @@
                 <RowDefinition Name="GR_Row_Datas" />
             </Grid.RowDefinitions>
             <Border Grid.Row="0" Name="BR_Header" Background="{StaticResource Color_Gray_F0F0F0}" Style="{StaticResource BorderInnerGrid}">
-                <Grid Name="GR_Columns">
+                <Grid Name="GR_Columns" KeyboardNavigation.TabNavigation="Continue">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100"/>
                         <ColumnDefinition />
@@ -72,16 +72,16 @@
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <Border Grid.Column="0" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 0">
-                                    <TextBlock Text="ردیف" FontSize="15" FontStyle="Normal" TextDecorations="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBox Text="ردیف" FontSize="15" FontStyle="Normal" TextDecorations="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
                                 <Border Grid.Column="1" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 0">
-                                    <Label Content="ردیف" FontSize="15" FontStyle="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBox Text="دیتا" FontSize="15" FontStyle="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
                                 <Border Grid.Column="2" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 0">
-
+                                    <TextBox Text="رنگ" FontSize="15" FontStyle="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
                                 <Border Grid.Column="3" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 0 0">
-
+                                    <TextBox Text="ویژگی" FontSize="15" FontStyle="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
                             </Grid>
                         </Border>

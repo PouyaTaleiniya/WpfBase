@@ -39,17 +39,20 @@ namespace XControlComponents.Controls
 
             //Grid Header
             _HeaderHeight = XGridViewDefaults.HeaderHeight;
-            _HeaderForeground = XGridViewDefaults.HeaderForeground;
-            _headerFontSize = XGridViewDefaults.HeaderFontSize;
-            _HeaderFontWeight = XGridViewDefaults.HeaderFontWeight;
-            _HeaderFontStyle = XGridViewDefaults.HeaderFontStyle;
+            _HeaderTxtForeground = XGridViewDefaults.HeaderTxtForeground;
+            _headerTxtFontSize = XGridViewDefaults.HeaderTxtFontSize;
+            _HeaderTxtFontWeight = XGridViewDefaults.HeaderTxtFontWeight;
+            _HeaderTxtFontStyle = XGridViewDefaults.HeaderTxtFontStyle;
 
             //Grid Row
             _RowHeight = XGridViewDefaults.RowHeight;
-            _RowForeground = XGridViewDefaults.RowForeground;
-            _RowFontSize = XGridViewDefaults.RowFontSize;
-            _RowFontWeight = XGridViewDefaults.RowFontWeight;
-            _RowFontStyle = XGridViewDefaults.RowFontStyle;
+            _RowTxtForeground = XGridViewDefaults.RowTxtForeground;
+            _RowTxtFontSize = XGridViewDefaults.RowTxtFontSize;
+            _RowTxtFontWeight = XGridViewDefaults.RowTxtFontWeight;
+            _RowTxtFontStyle = XGridViewDefaults.RowTxtFontStyle;
+            _rowTxtSelectable = XGridViewDefaults.RowTxtSelectable;
+            _RowTxtSelectedBrush = XGridViewDefaults.RowTxtSelectedBrush;
+            _rowTxtSelectionOpacity = XGridViewDefaults.RowTxtSelectionOpacity;
 
             //NoData
             _NoDataForeground = XGridViewDefaults.NoDataForeground;
@@ -90,7 +93,7 @@ namespace XControlComponents.Controls
             return false;
         }
         #endregion
-       
+
         #region Border
         private Brush _borderColor;
         public Brush _BorderColor
@@ -194,55 +197,55 @@ namespace XControlComponents.Controls
             }
         }
 
-        private Brush _headerForeground;
-        public Brush _HeaderForeground
+        private Brush _headerTxtForeground;
+        public Brush _HeaderTxtForeground
         {
-            get => _headerForeground;
+            get => _headerTxtForeground;
             set
             {
-                _headerForeground = value;
+                _headerTxtForeground = value;
 
-                if (_headerForeground == null)
-                    _headerForeground = XGridViewDefaults.HeaderForeground;
+                if (_headerTxtForeground == null)
+                    _headerTxtForeground = XGridViewDefaults.HeaderTxtForeground;
             }
         }
 
-        private double? _headerFontSize;
-        public double? _HeaderFontSize
+        private double? _headerTxtFontSize;
+        public double? _HeaderTxtFontSize
         {
-            get => _headerFontSize;
+            get => _headerTxtFontSize;
             set
             {
-                _headerFontSize = value;
+                _headerTxtFontSize = value;
 
-                if (_headerFontSize == null || _headerFontSize < 10)
-                    _headerFontSize = XGridViewDefaults.HeaderFontSize;
+                if (_headerTxtFontSize == null || _headerTxtFontSize < 10)
+                    _headerTxtFontSize = XGridViewDefaults.HeaderTxtFontSize;
             }
         }
 
-        private FontWeight? _headerFontWeight;
-        public FontWeight? _HeaderFontWeight
+        private FontWeight? _headerTxtFontWeight;
+        public FontWeight? _HeaderTxtFontWeight
         {
-            get => _headerFontWeight;
+            get => _headerTxtFontWeight;
             set
             {
-                _headerFontWeight = value;
+                _headerTxtFontWeight = value;
 
-                if (_headerFontWeight == null)
-                    _headerFontWeight = XGridViewDefaults.HeaderFontWeight;
+                if (_headerTxtFontWeight == null)
+                    _headerTxtFontWeight = XGridViewDefaults.HeaderTxtFontWeight;
             }
         }
 
-        private FontStyle? _headerFontStyle;
-        public FontStyle? _HeaderFontStyle
+        private FontStyle? _headerTxtFontStyle;
+        public FontStyle? _HeaderTxtFontStyle
         {
-            get => _headerFontStyle;
+            get => _headerTxtFontStyle;
             set
             {
-                _headerFontStyle = value;
+                _headerTxtFontStyle = value;
 
-                if (_headerFontStyle == null)
-                    _headerFontStyle = XGridViewDefaults.HeaderFontStyle;
+                if (_headerTxtFontStyle == null)
+                    _headerTxtFontStyle = XGridViewDefaults.HeaderTxtFontStyle;
             }
         }
         #endregion
@@ -267,55 +270,106 @@ namespace XControlComponents.Controls
             }
         }
 
-        private Brush _rowForeground;
-        public Brush _RowForeground
+        private Brush _rowTxtForeground;
+        public Brush _RowTxtForeground
         {
-            get => _rowForeground;
+            get => _rowTxtForeground;
             set
             {
-                _rowForeground = value;
+                _rowTxtForeground = value;
 
-                if (_rowForeground == null)
-                    _rowForeground = XGridViewDefaults.RowForeground;
+                if (_rowTxtForeground == null)
+                    _rowTxtForeground = XGridViewDefaults.RowTxtForeground;
             }
         }
 
-        private double? _rowFontSize;
-        public double? _RowFontSize
+        private double? _rowTxtFontSize;
+        public double? _RowTxtFontSize
         {
-            get => _rowFontSize;
+            get => _rowTxtFontSize;
             set
             {
-                _rowFontSize = value;
+                _rowTxtFontSize = value;
 
-                if (_rowFontSize == null || _rowFontSize < 10)
-                    _rowFontSize = XGridViewDefaults.RowFontSize;
+                if (_rowTxtFontSize == null || _rowTxtFontSize < 10)
+                    _rowTxtFontSize = XGridViewDefaults.RowTxtFontSize;
+
+                HandleRowTextProperties();
             }
         }
 
-        private FontWeight? _rowFontWeight;
-        public FontWeight? _RowFontWeight
+        private FontWeight? _rowTxtFontWeight;
+        public FontWeight? _RowTxtFontWeight
         {
-            get => _rowFontWeight;
+            get => _rowTxtFontWeight;
             set
             {
-                _rowFontWeight = value;
+                _rowTxtFontWeight = value;
 
-                if (_rowFontWeight == null)
-                    _rowFontWeight = XGridViewDefaults.RowFontWeight;
+                if (_rowTxtFontWeight == null)
+                    _rowTxtFontWeight = XGridViewDefaults.RowTxtFontWeight;
+
+                HandleRowTextProperties();
             }
         }
 
-        private FontStyle? _rowFontStyle;
-        public FontStyle? _RowFontStyle
+        private FontStyle? _rowTxtFontStyle;
+        public FontStyle? _RowTxtFontStyle
         {
-            get => _rowFontStyle;
+            get => _rowTxtFontStyle;
             set
             {
-                _rowFontStyle = value;
+                _rowTxtFontStyle = value;
 
-                if (_rowFontStyle == null)
-                    _rowFontStyle = XGridViewDefaults.RowFontStyle;
+                if (_rowTxtFontStyle == null)
+                    _rowTxtFontStyle = XGridViewDefaults.RowTxtFontStyle;
+
+                HandleRowTextProperties();
+            }
+        }
+
+        private bool? _rowTxtSelectable;
+        public bool? _RowTxtSelectable
+        {
+            get => _rowTxtSelectable;
+            set
+            {
+                _rowTxtSelectable = value;
+
+                if (_rowTxtSelectable == null)
+                    _rowTxtSelectable = XGridViewDefaults.RowTxtSelectable;
+
+                HandleRowTextProperties();
+            }
+        }
+
+        private Brush _rowTxtSelectedBrush;
+        public Brush _RowTxtSelectedBrush
+        {
+            get => _rowTxtSelectedBrush;
+            set
+            {
+                _rowTxtSelectedBrush = value;
+
+                if (_rowTxtSelectedBrush == null)
+                    _rowTxtSelectedBrush = XGridViewDefaults.RowTxtSelectedBrush;
+
+                HandleRowTextProperties();
+            }
+        }
+
+        private double? _rowTxtSelectionOpacity;
+        public double? _RowTxtSelectionOpacity
+        {
+            get => _rowTxtSelectionOpacity;
+            set
+            {
+                _rowTxtSelectionOpacity = value;
+
+                if (_rowTxtSelectionOpacity == null || _rowTxtSelectionOpacity < 0.1)
+                    _rowTxtSelectionOpacity = XGridViewDefaults.RowTxtSelectionOpacity;
+
+                HandleRowTextProperties();
             }
         }
         #endregion
@@ -628,15 +682,20 @@ namespace XControlComponents.Controls
             };
             Grid.SetColumn(borderColumn, columnIndex);
 
-            var textBlock = new TextBlock
+            var textBlock = new TextBox
             {
                 Text = column.DisplayName,
-                Foreground = _headerForeground,
+                Foreground = _headerTxtForeground,
+                Background = Colors.Transparent.GetBrushColor(),
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
-                FontSize = _headerFontSize.Value,
-                FontWeight = _headerFontWeight.Value,
-                FontStyle = _headerFontStyle.Value
+                BorderThickness = new Thickness(0),
+                FontSize = _headerTxtFontSize.Value,
+                FontWeight = _headerTxtFontWeight.Value,
+                IsReadOnly = true,
+                Style = this.FindResource("TextBoxEventStyle") as Style,
+                FocusVisualStyle = null,
+                FontStyle = _headerTxtFontStyle.Value
             };
 
             borderColumn.Child = textBlock;
@@ -716,12 +775,13 @@ namespace XControlComponents.Controls
                 var rowBorder = new Border
                 {
                     Style = XAppMethods.BorderInnerGridStyle(),
-                    BorderThickness = new Thickness(0, 0, 0, 1)
+                    BorderThickness = new Thickness(0, 0, 0, 1),
+                    Background = Colors.Transparent.GetBrushColor()
                 };
                 Grid.SetRow(rowBorder, rowIndex);
 
                 //Row Grid
-                var rowGrid = new Grid();
+                var rowGrid = new Grid() { Background = Colors.Transparent.GetBrushColor() };
                 rowBorder.Child = rowGrid;
 
                 //Visible Columns
@@ -743,27 +803,30 @@ namespace XControlComponents.Controls
                     var cellBorder = new Border
                     {
                         Style = XAppMethods.BorderInnerGridStyle(),
-                        BorderThickness = new Thickness(0, 0, IsLastCell ? 0 : 1, 0)
+                        BorderThickness = new Thickness(0, 0, IsLastCell ? 0 : 1, 0),
+                        Background = Colors.Transparent.GetBrushColor()
                     };
                     Grid.SetColumn(cellBorder, cellIndex);
 
                     var textBlock = new TextBox
                     {
                         Text = cell.Value.FillStringSafe(),
-                        Foreground = _rowForeground,
+                        Foreground = _rowTxtForeground,
                         Background = Colors.Transparent.GetBrushColor(),
                         HorizontalAlignment = HorizontalAlignment.Center,
                         VerticalAlignment = VerticalAlignment.Center,
-                        FontSize = _rowFontSize.Value,
-                        FontWeight = _rowFontWeight.Value,
-                        FontStyle = _rowFontStyle.Value,
+                        FontSize = _rowTxtFontSize.Value,
+                        FontWeight = _rowTxtFontWeight.Value,
+                        FontStyle = _rowTxtFontStyle.Value,
                         IsReadOnly = true,
                         BorderThickness = new Thickness(0),
-                        Style = this.FindResource("SelectableLabelStyle") as Style,
-                        SelectionBrush = "#FF0078D7".GetBrushColorByHex(),
-                        SelectionOpacity = 0.4,
+                        Style = _RowTxtSelectable.Value ? this.FindResource("TextBoxEventStyle") as Style : null,
+                        SelectionBrush = _RowTxtSelectable.Value ? _RowTxtSelectedBrush : Colors.Transparent.GetBrushColor(),
+                        SelectionOpacity = _rowTxtSelectionOpacity.Value,
+                        Padding = new Thickness(4, 0, 4, 0),
                         FocusVisualStyle = null,
                     };
+
                     cellBorder.Child = textBlock;
                     rowGrid.Children.Add(cellBorder);
                 }
@@ -837,6 +900,23 @@ namespace XControlComponents.Controls
             if (sender is TextBox textBox)
             {
                 textBox.SelectionLength = 0;
+            }
+        }
+
+        private void HandleRowTextProperties()
+        {
+            if (!IsInitializedDataSource)
+                return;
+
+            var getTextBlocks = GR_Data.FindChilds<TextBox>();
+            foreach (TextBox item in getTextBlocks)
+            {
+                item.FontSize = _RowTxtFontSize.Value;
+                item.FontWeight = _rowTxtFontWeight.Value;
+                item.FontStyle = _rowTxtFontStyle.Value;
+                item.Style = _RowTxtSelectable.Value ? this.FindResource("TextBoxEventStyle") as Style : null;
+                item.SelectionBrush = _RowTxtSelectable.Value ? _RowTxtSelectedBrush : Colors.Transparent.GetBrushColor();
+                item.SelectionOpacity = _rowTxtSelectionOpacity.Value;
             }
         }
         #endregion
