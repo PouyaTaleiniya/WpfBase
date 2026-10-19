@@ -15,7 +15,7 @@
             <EventSetter Event="LostKeyboardFocus" Handler="TextBox_LostKeyboardFocus"/>
         </Style>
     </UserControl.Resources>
-    <Border Style="{StaticResource BorderGrid}" Name="BR_Grid" Background="{StaticResource Color_White_fafafa}" SizeChanged="BR_Grid_SizeChanged">
+    <Border Style="{StaticResource BorderGrid}"  Name="BR_Grid" Background="{StaticResource Color_White_fafafa}" SizeChanged="BR_Grid_SizeChanged">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Name="GR_Row_Header" Height="32"/>
@@ -51,6 +51,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Name="GR_Row_NoData" Height="0"/>
                     <RowDefinition Name="GR_Row_Data" />
+                    <RowDefinition Height="50" />    
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" Name="GR_NoData" >
                     <Label Name="Lb_NoData" VerticalAlignment="Center" HorizontalAlignment="Center"></Label>
@@ -63,7 +64,7 @@
                             <RowDefinition Height="32"/>
                             <RowDefinition Height="50"/>
                         </Grid.RowDefinitions>
-                        <Border Grid.Row="0" Style="{StaticResource BorderInnerGrid}" Background="Transparent" BorderThickness="0 0 0 1" MouseLeftButtonDown="CellBorder_MouseLeftButtonDown">
+                        <Border Grid.Row="0" Name="BR_Row_data" Style="{StaticResource BorderInnerGrid}" Background="#CDE8FF" BorderThickness="0 0 0 1" MouseLeftButtonDown="CellBorder_MouseLeftButtonDown">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100"/>
@@ -72,21 +73,26 @@
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <Border Grid.Column="0" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 0">
-                                    <TextBox Text="ردیف" FontSize="15" FontStyle="Normal" BorderThickness="0" IsReadOnly="true" TextDecorations="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBox Text="ردیف" Background="Transparent" FontSize="15" FontStyle="Normal" BorderThickness="0" Style="{x:Null}" IsReadOnly="true" TextDecorations="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
                                 <Border Grid.Column="1" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 0">
-                                    <TextBox Text="دیتا" FontSize="15" FontStyle="Normal" BorderThickness="0"  IsReadOnly="true" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBox Text="دیتا" Background="Transparent" FontSize="15" FontStyle="Normal" BorderThickness="0"  Style="{x:Null}" IsReadOnly="true" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
                                 <Border Grid.Column="2" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 0">
-                                    <TextBox Text="رنگ" FontSize="15" FontStyle="Normal" BorderThickness="0"  IsReadOnly="true" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBox Text="رنگ" Background="Transparent" FontSize="15" FontStyle="Normal" BorderThickness="0"  Style="{x:Null}" IsReadOnly="true" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
                                 <Border Grid.Column="3" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 0 0">
-                                    <TextBox Text="ویژگی" FontSize="15" FontStyle="Normal" BorderThickness="0"  IsReadOnly="true" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBox Text="ویژگی" Background="Transparent" FontSize="15" FontStyle="Normal" BorderThickness="0"  Style="{x:Null}" IsReadOnly="true" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
                             </Grid>
                         </Border>
                     </Grid>
                 </ScrollViewer>
+                <Grid Grid.Row="2">
+                    <xctk:ColorPicker
+                          x:Name="ColorPicker" Height="50"
+                          SelectedColorChanged="ColorPicker_SelectedColorChanged"/>
+                </Grid>
             </Grid>
         </Grid>
     </Border>

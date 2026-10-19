@@ -26,6 +26,9 @@ public static class XGridViewDefaults
 
     //Grid Row
     public static double RowHeight { get; set; } = 32;
+    public static Brush RowSelectedBackground { get; set; } = XAppMethods.Color_Blue_CDE8FF();
+    public static bool RowSelectable { get; set; } = false;
+    public static bool RowMultiSelectable { get; set; } = false;
     public static Brush RowTxtForeground { get; set; } = XAppMethods.Color_Black_424242();
     public static double RowTxtFontSize { get; set; } = 14;
     public static FontWeight RowTxtFontWeight { get; set; } = FontWeights.Normal;

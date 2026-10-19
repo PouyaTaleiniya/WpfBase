@@ -96,6 +96,11 @@ namespace XControlComponents.Tools
             return Application.Current.TryFindResource("Color_Blue_0D47A1") as Brush;
         }
 
+        public static Brush Color_Blue_CDE8FF()
+        {
+            return Application.Current.TryFindResource("Color_Blue_CDE8FF") as Brush;
+        }
+
         public static Brush Color_Black_212121()
         {
             return Application.Current.TryFindResource("Color_Black_212121") as Brush;

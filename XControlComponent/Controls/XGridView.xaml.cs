@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.ComponentModel;
 using System.Data;
 using System.Globalization;
 using System.Reflection;
@@ -26,6 +27,14 @@ namespace XControlComponents.Controls
         private bool IsInitializedRowData { get; set; }
         private bool IsVerticalScrollBarVisible = false;
 
+        public object _DataSourceSelected { get; set; } = null;
+        public List<Object> _DataSourceMultiSelected { get; set; } = null;
+
+        //Events
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        public delegate void _RowDoubleClickEventHandler(object sender, object Data);
+        public event _RowDoubleClickEventHandler RowDoubleClick;
+
         public XGridView()
         {
             InitializeComponent();
@@ -50,6 +59,9 @@ namespace XControlComponents.Controls
 
             //Grid Row
             _RowHeight = XGridViewDefaults.RowHeight;
+            _RowSelectedBackground = XGridViewDefaults.RowSelectedBackground;
+            _RowSelectable = XGridViewDefaults.RowSelectable;
+            _RowMultiSelectable = XGridViewDefaults.RowMultiSelectable;
             _RowTxtForeground = XGridViewDefaults.RowTxtForeground;
             _RowTxtFontSize = XGridViewDefaults.RowTxtFontSize;
             _RowTxtFontWeight = XGridViewDefaults.RowTxtFontWeight;
@@ -323,6 +335,45 @@ namespace XControlComponents.Controls
 
                 SetHeightRow();
                 SetGridBorder();
+            }
+        }
+
+        private Brush _rowSelectedBackground;
+        public Brush _RowSelectedBackground
+        {
+            get => _rowSelectedBackground;
+            set
+            {
+                _rowSelectedBackground = value;
+
+                if (_rowSelectedBackground == null)
+                    _rowSelectedBackground = XGridViewDefaults.RowSelectedBackground;
+            }
+        }
+
+        private bool? _rowSelectable;
+        public bool? _RowSelectable
+        {
+            get => _rowSelectable;
+            set
+            {
+                _rowSelectable = value;
+
+                if (_rowSelectable == null)
+                    _rowSelectable = XGridViewDefaults.RowSelectable;
+            }
+        }
+
+        private bool? _rowMultiSelectable;
+        public bool? _RowMultiSelectable
+        {
+            get => _rowMultiSelectable;
+            set
+            {
+                _rowMultiSelectable = value;
+
+                if (_rowMultiSelectable == null)
+                    _rowMultiSelectable = XGridViewDefaults.RowMultiSelectable;
             }
         }
 
@@ -824,7 +875,7 @@ namespace XControlComponents.Controls
                     {
                         Column = column,
                         Value = column.Property.GetValue(item),
-
+                        Key = "Column_" + Guid.NewGuid().ToString()
                     });
                 }
 
@@ -858,8 +909,10 @@ namespace XControlComponents.Controls
                     Style = XAppMethods.BorderInnerGridStyle(),
                     BorderThickness = new Thickness(0, 0, 0, 1),
                     Background = Colors.Transparent.GetBrushColor(),
+                    Tag = row.Key
                 };
                 Grid.SetRow(rowBorder, rowIndex);
+                rowBorder.MouseLeftButtonDown += CellBorder_MouseLeftButtonDown;
 
                 //Row Grid
                 var rowGrid = new Grid() { Background = Colors.Transparent.GetBrushColor() };
@@ -868,7 +921,7 @@ namespace XControlComponents.Controls
                 //Visible Columns
                 foreach (var item in visibleColumns)
                 {
-                    var columnWidth = item.Width > 0 ? new GridLength(item.Width, GridUnitType.Pixel) : new GridLength(1, GridUnitType.Star);
+                    GridLength columnWidth = item.Width > 0 ? new GridLength(item.Width, GridUnitType.Pixel) : new GridLength(1, GridUnitType.Star);
                     var columnDefinition = new ColumnDefinition()
                     {
                         Width = columnWidth
@@ -906,6 +959,7 @@ namespace XControlComponents.Controls
                         SelectionOpacity = _rowTxtSelectionOpacity.Value,
                         Padding = new Thickness(4, 0, 4, 0),
                         FocusVisualStyle = null,
+                        Tag = cell.Key
                     };
 
                     cellBorder.Child = textBlock;
@@ -956,17 +1010,17 @@ namespace XControlComponents.Controls
         #region Grid Row Text
         private void CellBorder_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            // ۱. بررسی می‌کنیم که حتماً دابل‌کلیک شده باشد
+            if (e.ClickCount == 1)
+            {
+                var getBorder = sender as Border;
+                var getKey = getBorder.Tag.ToString();
+                var getSelectedRow = xGridData.Rows.FirstOrDefault(x => x.Key == getKey);
+                _DataSourceSelected = getSelectedRow.Data; getSelectedRow.IsSelected = true;
+            }
+
             if (e.ClickCount == 2)
             {
-                // ۲. اطمینان از اینکه کاربر روی خودِ TextBox دابل‌کلیک نکرده است
-                //if (e.OriginalSource is DependencyObject clickedElement && IsClickInside AnyTextBox(clickedElement))
-                //{
-                //    return; // اگر روی تکست‌باکس بود، هیچ کاری نکن و خارج شو
-                //}
-
-                Border clickedBorder = sender as Border;
-                MessageBox.Show("روی فضای خالی Border دابل‌کلیک شد!");
+                RowDoubleClick?.Invoke(this, e);
             }
         }
 
@@ -1022,13 +1076,12 @@ namespace XControlComponents.Controls
 
         private void ColorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            //Color? color = e.NewValue;
-            //
-            //if (color.HasValue)
-            //{
-            //    Color selectedColor = color.Value;
-            //    GR_NoData.Background = XElementHelper.GetBrushColor(selectedColor);
-            //}
+            Color? color = e.NewValue;
+            if (color.HasValue)
+            {
+                Color selectedColor = color.Value;
+                BR_Row_data.Background = XElementHelper.GetBrushColor(selectedColor);
+            }
         }
     }
 

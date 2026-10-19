@@ -45,7 +45,6 @@ namespace MainComponentWpf
                 }
             };
             //xGridView._DataSource = result;
-
         }
 
         private void ColorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
@@ -69,6 +68,11 @@ namespace MainComponentWpf
             }
         }
 
+        private void xGridView_RowDoubleClick(object sender, object Data)
+        {
+            var x = sender as DataBindDto;
+            var y = xGridView._DataSourceSelected as DataBindDto;
+        }
     }
 
     public class DataBindDto

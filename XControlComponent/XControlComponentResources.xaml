@@ -38,6 +38,7 @@
     <SolidColorBrush x:Key="Color_Blue_4a78b0" Color="#4a78b0" />
     <SolidColorBrush x:Key="Color_Blue_0D47A1" Color="#1565C0" />
     <SolidColorBrush x:Key="Color_Blue_2196f3" Color="#2196f3" />
+    <SolidColorBrush x:Key="Color_Blue_CDE8FF" Color="#CDE8FF" />
     <SolidColorBrush x:Key="Color_SelectedBrush_Blue_FF0078D7" Color="#FF0078D7" />
     <SolidColorBrush x:Key="Color_Black_424242" Color="#424242" />
     <SolidColorBrush x:Key="Color_Black_212121" Color="#212121" />
