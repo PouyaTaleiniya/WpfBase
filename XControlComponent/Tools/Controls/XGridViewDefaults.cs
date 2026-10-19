@@ -20,6 +20,9 @@ public static class XGridViewDefaults
     public static double HeaderTxtFontSize { get; set; } = 14;
     public static FontWeight HeaderTxtFontWeight { get; set; } = FontWeights.Normal;
     public static FontStyle HeaderTxtFontStyle { get; set; } = FontStyles.Normal;
+    public static bool HeaderTxtSelectable { get; set; } = true;
+    public static Brush HeaderTxtSelectedBrush { get; set; } = XAppMethods.Color_SelectedBrush_Blue_FF0078D7();
+    public static double HeaderTxtSelectionOpacity { get; set; } = 0.4;
 
     //Grid Row
     public static double RowHeight { get; set; } = 32;

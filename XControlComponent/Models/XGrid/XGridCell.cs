@@ -5,4 +5,6 @@ public class XGridCell
     public XGridColumn Column { get; set; }
 
     public object Value { get; set; }
+
+    internal string Key { get; set; }
 }

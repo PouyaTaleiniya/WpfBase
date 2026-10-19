@@ -23,7 +23,8 @@ namespace XControlComponents.Controls
         public XGridData xGridData { get; set; } = new XGridData();
         private bool SearchMode { get; set; }
         private bool IsInitializedDataSource { get; set; } = false;
-        private bool _isVerticalScrollBarVisible = false;
+        private bool IsInitializedRowData { get; set; }
+        private bool IsVerticalScrollBarVisible = false;
 
         public XGridView()
         {
@@ -43,6 +44,9 @@ namespace XControlComponents.Controls
             _headerTxtFontSize = XGridViewDefaults.HeaderTxtFontSize;
             _HeaderTxtFontWeight = XGridViewDefaults.HeaderTxtFontWeight;
             _HeaderTxtFontStyle = XGridViewDefaults.HeaderTxtFontStyle;
+            _headerTxtSelectable = XGridViewDefaults.HeaderTxtSelectable;
+            _headerTxtSelectedBrush = XGridViewDefaults.HeaderTxtSelectedBrush;
+            _headerTxtSelectionOpacity = XGridViewDefaults.HeaderTxtSelectionOpacity;
 
             //Grid Row
             _RowHeight = XGridViewDefaults.RowHeight;
@@ -61,11 +65,10 @@ namespace XControlComponents.Controls
             _NoDataFontSize = XGridViewDefaults.NoDataFontSize;
         }
 
-        #region User Control
+        #region User Control 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            SetGridBorder();
-            HandleGridVisibility();
+            //HandleGridVisibility();
         }
 
         private void UserControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -207,6 +210,8 @@ namespace XControlComponents.Controls
 
                 if (_headerTxtForeground == null)
                     _headerTxtForeground = XGridViewDefaults.HeaderTxtForeground;
+
+                HandleColumnTextProperties();
             }
         }
 
@@ -220,6 +225,8 @@ namespace XControlComponents.Controls
 
                 if (_headerTxtFontSize == null || _headerTxtFontSize < 10)
                     _headerTxtFontSize = XGridViewDefaults.HeaderTxtFontSize;
+
+                HandleColumnTextProperties();
             }
         }
 
@@ -233,6 +240,8 @@ namespace XControlComponents.Controls
 
                 if (_headerTxtFontWeight == null)
                     _headerTxtFontWeight = XGridViewDefaults.HeaderTxtFontWeight;
+
+                HandleColumnTextProperties();
             }
         }
 
@@ -246,6 +255,53 @@ namespace XControlComponents.Controls
 
                 if (_headerTxtFontStyle == null)
                     _headerTxtFontStyle = XGridViewDefaults.HeaderTxtFontStyle;
+
+                HandleColumnTextProperties();
+            }
+        }
+
+        private bool? _headerTxtSelectable;
+        public bool? _HeaderTxtSelectable
+        {
+            get => _headerTxtSelectable;
+            set
+            {
+                _headerTxtSelectable = value;
+
+                if (_headerTxtSelectable == null)
+                    _headerTxtSelectable = XGridViewDefaults.HeaderTxtSelectable;
+
+                HandleColumnTextProperties();
+            }
+        }
+
+        private Brush _headerTxtSelectedBrush;
+        public Brush _HeaderTxtSelectedBrush
+        {
+            get => _headerTxtSelectedBrush;
+            set
+            {
+                _headerTxtSelectedBrush = value;
+
+                if (_headerTxtSelectedBrush == null)
+                    _headerTxtSelectedBrush = XGridViewDefaults.HeaderTxtSelectedBrush;
+
+                HandleColumnTextProperties();
+            }
+        }
+
+        private double? _headerTxtSelectionOpacity;
+        public double? _HeaderTxtSelectionOpacity
+        {
+            get => _headerTxtSelectionOpacity;
+            set
+            {
+                _headerTxtSelectionOpacity = value;
+
+                if (_headerTxtSelectionOpacity == null || _headerTxtSelectionOpacity < 0.1)
+                    _headerTxtSelectionOpacity = XGridViewDefaults.HeaderTxtSelectionOpacity;
+
+                HandleColumnTextProperties();
             }
         }
         #endregion
@@ -439,6 +495,7 @@ namespace XControlComponents.Controls
         private object _dataSource;
         public object _DataSource
         {
+            get => _dataSource;
             set
             {
                 _dataSource = value;
@@ -485,7 +542,9 @@ namespace XControlComponents.Controls
 
             //Handle Scroll
             GridScroll();
-            SetGridBorder();
+
+            //Set Initialize
+            IsInitializedDataSource = true;
         }
         #endregion
 
@@ -501,18 +560,18 @@ namespace XControlComponents.Controls
             {
 
                 bool isVisible = SC_Data.ComputedVerticalScrollBarVisibility == Visibility.Visible;
-                if (isVisible && !_isVerticalScrollBarVisible)
+                if (isVisible && !IsVerticalScrollBarVisible)
                 {
                     var gR_Column_Scroll = GR_Columns._FindName<ColumnDefinition>(XGridViewDefaults.N_GR_Column_Scroll);
                     if (gR_Column_Scroll != null)
                     {
-                        _isVerticalScrollBarVisible = true;
+                        IsVerticalScrollBarVisible = true;
                         gR_Column_Scroll.Width = new GridLength(18, GridUnitType.Pixel);
                     }
                 }
-                else if (!isVisible && _isVerticalScrollBarVisible)
+                else if (!isVisible && IsVerticalScrollBarVisible)
                 {
-                    _isVerticalScrollBarVisible = false;
+                    IsVerticalScrollBarVisible = false;
 
                     var gR_Column_Scroll = GR_Columns._FindName<ColumnDefinition>(XGridViewDefaults.N_GR_Column_Scroll);
                     if (gR_Column_Scroll != null)
@@ -520,7 +579,7 @@ namespace XControlComponents.Controls
                 }
 
                 // Bottom End
-                if (IsInitializedDataSource)
+                if (IsInitializedRowData)
                 {
                     if (SC_Data.ScrollableHeight > 0)
                     {
@@ -545,7 +604,7 @@ namespace XControlComponents.Controls
 
         private void SetGridBorder()
         {
-            if (IsInitializedDataSource)
+            if (IsInitializedRowData)
             {
                 double MaxHeight = _HeaderHeight.Value + (GR_Data.RowDefinitions.Count * _rowHeight.Value);
 
@@ -565,7 +624,7 @@ namespace XControlComponents.Controls
         }
         #endregion
 
-        #region Columns
+        #region Grid Header
         private void SetXColumns(Type itemType)
         {
             xGridData = new XGridData();
@@ -693,9 +752,11 @@ namespace XControlComponents.Controls
                 FontSize = _headerTxtFontSize.Value,
                 FontWeight = _headerTxtFontWeight.Value,
                 IsReadOnly = true,
-                Style = this.FindResource("TextBoxEventStyle") as Style,
+                Style = _HeaderTxtSelectable.Value ? this.FindResource("TextBoxEventStyle") as Style : null,
                 FocusVisualStyle = null,
-                FontStyle = _headerTxtFontStyle.Value
+                FontStyle = _headerTxtFontStyle.Value,
+                SelectionBrush = _HeaderTxtSelectable.Value ? _HeaderTxtSelectedBrush : Colors.Transparent.GetBrushColor(),
+                SelectionOpacity = _HeaderTxtSelectionOpacity.Value
             };
 
             borderColumn.Child = textBlock;
@@ -726,21 +787,44 @@ namespace XControlComponents.Controls
                 GR_Columns.Children.Add(borderColumn);
             }
         }
+
+        private void HandleColumnTextProperties()
+        {
+            if (!IsInitializedDataSource)
+                return;
+
+            var getTextBoxes = GR_Columns.FindChilds<TextBox>();
+            foreach (TextBox item in getTextBoxes)
+            {
+                item.Foreground = _HeaderTxtForeground;
+                item.FontSize = _HeaderTxtFontSize.Value;
+                item.FontWeight = _HeaderTxtFontWeight.Value;
+                item.FontStyle = _HeaderTxtFontStyle.Value;
+                item.Style = _HeaderTxtSelectable.Value ? this.FindResource("TextBoxEventStyle") as Style : null;
+                item.SelectionBrush = _HeaderTxtSelectable.Value ? _HeaderTxtSelectedBrush : Colors.Transparent.GetBrushColor();
+                item.SelectionOpacity = _HeaderTxtSelectionOpacity.Value;
+            }
+        }
         #endregion
 
-        #region Rows
+        #region Grid Row
         private void SetXRows()
         {
             foreach (var item in getAllDataSources)
             {
-                var row = new XGridRow();
+                var row = new XGridRow()
+                {
+                    Data = item,
+                    Key = "Row_" + Guid.NewGuid().ToString()
+                };
 
                 foreach (var column in xGridData.Columns)
                 {
                     row.Cells.Add(new XGridCell
                     {
                         Column = column,
-                        Value = column.Property.GetValue(item)
+                        Value = column.Property.GetValue(item),
+
                     });
                 }
 
@@ -755,10 +839,7 @@ namespace XControlComponents.Controls
             GR_Data.Children.Clear();
 
             if (xGridData.Rows.Count == 0)
-            {
-                IsInitializedDataSource = false;
                 return;
-            }
 
             HandleGridVisibility();
 
@@ -776,7 +857,7 @@ namespace XControlComponents.Controls
                 {
                     Style = XAppMethods.BorderInnerGridStyle(),
                     BorderThickness = new Thickness(0, 0, 0, 1),
-                    Background = Colors.Transparent.GetBrushColor()
+                    Background = Colors.Transparent.GetBrushColor(),
                 };
                 Grid.SetRow(rowBorder, rowIndex);
 
@@ -835,14 +916,16 @@ namespace XControlComponents.Controls
                 GR_Data.Children.Add(rowBorder);
             }
 
+            //Set Initialize
+            IsInitializedRowData = true;
+
             //Set Border Height
-            IsInitializedDataSource = true;
             SetHeightRow();
         }
 
         private void SetHeightRow()
         {
-            if (GR_Data.RowDefinitions.Count == 0 || !IsInitializedDataSource)
+            if (!IsInitializedRowData)
                 return;
 
             //double BorderHeight = 0;
@@ -870,7 +953,23 @@ namespace XControlComponents.Controls
         }
         #endregion
 
-        #region Row TextBox
+        #region Grid Row Text
+        private void CellBorder_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // ۱. بررسی می‌کنیم که حتماً دابل‌کلیک شده باشد
+            if (e.ClickCount == 2)
+            {
+                // ۲. اطمینان از اینکه کاربر روی خودِ TextBox دابل‌کلیک نکرده است
+                //if (e.OriginalSource is DependencyObject clickedElement && IsClickInside AnyTextBox(clickedElement))
+                //{
+                //    return; // اگر روی تکست‌باکس بود، هیچ کاری نکن و خارج شو
+                //}
+
+                Border clickedBorder = sender as Border;
+                MessageBox.Show("روی فضای خالی Border دابل‌کلیک شد!");
+            }
+        }
+
         private void TextBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is TextBox textBox)
@@ -905,7 +1004,7 @@ namespace XControlComponents.Controls
 
         private void HandleRowTextProperties()
         {
-            if (!IsInitializedDataSource)
+            if (!IsInitializedRowData)
                 return;
 
             var getTextBlocks = GR_Data.FindChilds<TextBox>();
