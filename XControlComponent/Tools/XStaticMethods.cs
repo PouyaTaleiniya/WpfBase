@@ -16,24 +16,6 @@ namespace XControlComponents.Tools
             return stringValue;
         }
 
-        public static void _UnregisterName(this FrameworkElement element, string name)
-        {
-            if (element.FindName(name) != null)
-            {
-                element.UnregisterName(name);
-            }
-        }
-
-        public static T? _FindName<T>(this FrameworkElement element, string name) where T : class
-        {
-            var result = element.FindName(name);
-
-            if (result is T typedResult)
-                return typedResult;
-
-            return null;
-        }
-
         public static bool IsNullOrEmpty(this object Value)
         {
             if (Value == null)

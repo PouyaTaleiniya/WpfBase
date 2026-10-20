@@ -37,7 +37,26 @@ namespace XControlComponents.Tools
             return ((SolidColorBrush)BrushColor).Color;
         }
 
-        public static T FindChild<T>(DependencyObject parent) where T : DependencyObject
+        public static void _UnregisterName(this FrameworkElement element, string name)
+        {
+            if (element.FindName(name) != null)
+            {
+                element.UnregisterName(name);
+            }
+        }
+
+        public static T? _FindName<T>(this FrameworkElement element, string name) where T : class
+        {
+            var result = element.FindName(name);
+
+            if (result is T typedResult)
+                return typedResult;
+
+            return null;
+        }
+
+
+        public static T FindChild<T>(this DependencyObject parent) where T : DependencyObject
         {
             if (parent == null) return null;
 
@@ -64,7 +83,7 @@ namespace XControlComponents.Tools
             return null;
         }
 
-        public static T FindChildByTag<T>(DependencyObject parent, string Tag) where T : DependencyObject
+        public static T FindChildByTag<T>(this DependencyObject parent, string Tag) where T : DependencyObject
         {
             if (parent == null) return null;
 
@@ -86,7 +105,7 @@ namespace XControlComponents.Tools
             return null;
         }
 
-        public static T FindChildByName<T>(DependencyObject parent, string Name) where T : DependencyObject
+        public static T FindChildByName<T>(this DependencyObject parent, string Name) where T : DependencyObject
         {
             if (parent == null) return null;
 
@@ -169,7 +188,7 @@ namespace XControlComponents.Tools
             return null;
         }
 
-        public static T FindParentByTag<T>(DependencyObject child, string Tag) where T : DependencyObject
+        public static T FindParentByTag<T>(this DependencyObject child, string Tag) where T : DependencyObject
         {
             var parent = VisualTreeHelper.GetParent(child);
 
@@ -188,7 +207,7 @@ namespace XControlComponents.Tools
             return null;
         }
 
-        public static T FindParentByName<T>(DependencyObject child, string Name) where T : DependencyObject
+        public static T FindParentByName<T>(this DependencyObject child, string Name) where T : DependencyObject
         {
             var parent = VisualTreeHelper.GetParent(child);
 
@@ -207,7 +226,7 @@ namespace XControlComponents.Tools
             return null;
         }
 
-        public static List<DependencyObject> FindParents(DependencyObject child)
+        public static List<DependencyObject> FindParents(this DependencyObject child)
         {
             var parents = new List<DependencyObject>();
             DependencyObject parent = VisualTreeHelper.GetParent(child);
@@ -221,7 +240,7 @@ namespace XControlComponents.Tools
             return parents;
         }
 
-        public static List<DependencyObject> FindParents<T>(DependencyObject child)
+        public static List<DependencyObject> FindParents<T>(this DependencyObject child)
         {
             var parents = new List<DependencyObject>();
             DependencyObject parent = VisualTreeHelper.GetParent(child);
@@ -236,7 +255,7 @@ namespace XControlComponents.Tools
             return parents;
         }
 
-        public static bool IsChildOf(DependencyObject source, DependencyObject potentialParent)
+        public static bool IsChildOf(this DependencyObject source, DependencyObject potentialParent)
         {
             while (source != null)
             {
@@ -248,7 +267,7 @@ namespace XControlComponents.Tools
             return false;
         }
 
-        public static string GetTag(DependencyObject source)
+        public static string GetTag(this DependencyObject source)
         {
             if (source is FrameworkElement fe && fe.Tag != null)
             {

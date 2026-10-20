@@ -44,7 +44,7 @@ namespace MainComponentWpf
                     NationalCode = "NC3"
                 }
             };
-            //xGridView._DataSource = result;
+            xGridView._DataSource = result;
         }
 
         private void ColorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)

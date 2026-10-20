@@ -51,7 +51,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Name="GR_Row_NoData" Height="0"/>
                     <RowDefinition Name="GR_Row_Data" />
-                    <RowDefinition Height="50" />    
+                    <RowDefinition Height="0" />    
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" Name="GR_NoData" >
                     <Label Name="Lb_NoData" VerticalAlignment="Center" HorizontalAlignment="Center"></Label>
@@ -62,7 +62,6 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="32"/>
                             <RowDefinition Height="32"/>
-                            <RowDefinition Height="50"/>
                         </Grid.RowDefinitions>
                         <Border Grid.Row="0" Name="BR_Row_data" Style="{StaticResource BorderInnerGrid}" Background="#CDE8FF" BorderThickness="0 0 0 1" MouseLeftButtonDown="CellBorder_MouseLeftButtonDown">
                             <Grid>
