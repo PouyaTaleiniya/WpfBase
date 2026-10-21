@@ -33,9 +33,6 @@ namespace XControlComponents.Controls
 
         public object _DataSourceMultiSelected => xGridData.Rows.Where(x => x.IsSelected).ToList();
 
-        [DllImport("user32.dll")]
-        private static extern uint GetDoubleClickTime();
-
         //Events
         [EditorBrowsable(EditorBrowsableState.Always)]
         public delegate void _RowDoubleClickEventHandler(object sender, object Data);
@@ -1020,65 +1017,41 @@ namespace XControlComponents.Controls
         #region Grid Row Events
         private void CellBorder_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (!_rowSelectable.Value && !_rowMultiSelectable.Value)
+                return;
+
             var border = sender as Border;
+            var getKey = border.Tag.ToString();
+            var getSlcRow = xGridData.Rows.FirstOrDefault(x => x.Key == getKey);
             if (e.ClickCount == 1)
             {
-                var timer = new DispatcherTimer
+                if (!_rowMultiSelectable.Value)
                 {
-                    Interval = TimeSpan.FromMilliseconds(GetDoubleClickTime())
-                };
-
-                timer.Tick += (_, _) =>
-                {
-                    timer.Stop();
-
-                    if (ReferenceEquals(border.Tag, timer))
-                        border.Tag = null;
-
-                    // عملیات تک‌کلیک
-                    border.Background = Brushes.LightBlue;
-                };
-
-                border.Tag = timer;
-                timer.Start();
-            }
-            else if (e.ClickCount == 2)
-            {
-                if (border.Tag is DispatcherTimer timer)
-                {
-                    timer.Stop();
-                    border.Tag = null;
+                    var getLastSlcRow = xGridData.Rows.FirstOrDefault(x => x.IsSelected);
+                    if (getLastSlcRow != null && getLastSlcRow.Key != getSlcRow.Key)
+                    {
+                        RemoveRowBackground(getLastSlcRow.Key);
+                        getLastSlcRow.IsSelected = false;
+                    }
                 }
 
-                // عملیات دابل‌کلیک
-                MessageBox.Show(border.Name);
-            }
-        }
-
-        private void HandleOneClick(Border border)
-        {
-            var getKey = border.Tag.ToString();
-
-            var getSlcRow = xGridData.Rows.FirstOrDefault(x => x.Key == getKey);
-            if (!_rowMultiSelectable.Value)
-            {
-                var getLastSlcRow = xGridData.Rows.FirstOrDefault(x => x.IsSelected);
-                if (getLastSlcRow != null && getLastSlcRow.Key != getSlcRow.Key)
+                if (getSlcRow.IsSelected)
                 {
-                    RemoveRowBackground(getLastSlcRow.Key);
-                    getLastSlcRow.IsSelected = false;
+                    getSlcRow.IsSelected = false;
+                    RemoveRowBackground(getSlcRow.Key);
+                }
+                else
+                {
+                    getSlcRow.IsSelected = true;
+                    EnableRowBackground(getSlcRow.Key);
                 }
             }
 
-            if (getSlcRow.IsSelected)
+            if (e.ClickCount == 2)
             {
-                getSlcRow.IsSelected = false;
-                RemoveRowBackground(getSlcRow.Key);
-            }
-            else
-            {
-                getSlcRow.IsSelected = true;
                 EnableRowBackground(getSlcRow.Key);
+                if (!_rowMultiSelectable.Value)
+                    RowDoubleClick?.Invoke(sender, getSlcRow);
             }
         }
 

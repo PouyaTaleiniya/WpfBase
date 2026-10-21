@@ -26,6 +26,7 @@
                     <RowDefinition Height="160"/>
                     <RowDefinition Height="100"/>
                     <RowDefinition Height="250" Name="GR_Row_2"/>
+                    <RowDefinition Height="250"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" Background="Beige">
                     <!--<controls:XComboBox  Name="XComboBox"  _EqualSearchMode="False" _IsEnableSearch="True" _IsGenerateEmptyLabel="True" _LabelVisibility="True" _PlaceHolderOpacity="0.3"  _LabelTitle="نام" _IsRequired="True" _ValueChanged="XComboBox_ValueChanged"/>-->
@@ -50,6 +51,12 @@
                     <!--<TextBox Width="100" />-->
                     <!--<controls:XTextBox Name="xTextBox" _TextBoxFontSize="13" _LabelVisibility="True" _LabelVerticalAlignment="Center"/>-->
                     <!--<colorPo-->
+                </Grid>
+                <Grid Grid.Row="3">
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Content="کد ملی" Margin="5" Style="{StaticResource ButtonWindows}" Width="80" Cursor="Hand"/>
+                        <Button Content="nv[" Margin="5" Style="{StaticResource ButtonDanger}" Width="80"/>
+                    </StackPanel>
                 </Grid>
             </Grid>
         </Grid>

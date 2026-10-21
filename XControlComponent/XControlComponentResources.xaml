@@ -6,10 +6,10 @@
 
     <ResourceDictionary.MergedDictionaries>
         <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="Lime" />
- 
+
 
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
- 
+
 
     </ResourceDictionary.MergedDictionaries>
 
@@ -19,7 +19,7 @@
                 SecondaryColor="Lime" />
 
     <!--Colors (Each Color Add To XAppMethod.cs) -->
-    <SolidColorBrush x:Key="Color_Red_c42b1c" Color="#c42b1c" /> 
+    <SolidColorBrush x:Key="Color_Red_c42b1c" Color="#c42b1c" />
     <SolidColorBrush x:Key="Color_Red_de0030" Color="#de0030" />
     <SolidColorBrush x:Key="Color_Red_FFE6E6" Color="#FFE6E6" />
     <SolidColorBrush x:Key="Color_White_f3f3f3" Color="#f3f3f3" />
@@ -33,7 +33,7 @@
     <SolidColorBrush x:Key="Color_Gray_959595" Color="#959595" />
     <SolidColorBrush x:Key="Color_Gray_d9d9d9" Color="#d9d9d9" />
     <SolidColorBrush x:Key="Color_Gray_D1D1D1" Color="#D1D1D1" />
-    <SolidColorBrush x:Key="Color_Gray_B8B8B8" Color="#B8B8B8" /> 
+    <SolidColorBrush x:Key="Color_Gray_B8B8B8" Color="#B8B8B8" />
     <SolidColorBrush x:Key="Color_Blue_cbdeec" Color="#cbdeec" />
     <SolidColorBrush x:Key="Color_Blue_4a78b0" Color="#4a78b0" />
     <SolidColorBrush x:Key="Color_Blue_0D47A1" Color="#1565C0" />
@@ -44,7 +44,7 @@
     <SolidColorBrush x:Key="Color_Black_212121" Color="#212121" />
     <SolidColorBrush x:Key="Color_Black_1E1E1E" Color="#1E1E1E" />
     <SolidColorBrush x:Key="Color_Black_444040" Color="#444040" />
-    
+
     <Style x:Key="LabelTemplate" TargetType="{x:Type Label}">
         <Setter Property="Foreground" Value="{StaticResource Color_Black_1E1E1E}" />
         <Setter Property="FontSize" Value="20" />
@@ -93,7 +93,7 @@
         <Setter Property="BorderThickness" Value="0 0 0 1" />
         <Setter Property="CornerRadius" Value="5 5 0 0" />
     </Style>
- 
+
     <Style x:Key="NameTextBox" TargetType="TextBox" BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
         <Setter Property="materialDesign:HintAssist.HintOpacity" Value="0.35"/>
         <Setter Property="materialDesign:ColorZoneAssist.Mode" Value="Dark"/>
@@ -103,6 +103,72 @@
         <Setter Property="FontSize" Value="20"/>
     </Style>
 
-   
+    <Style TargetType="Button" x:Key="ButtonWindows">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Background" Value="#E1E1E1"/>
+        <Setter Property="Foreground" Value="#000000"/>
+        <Setter Property="BorderBrush" Value="#ADADAD"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Padding" Value="10,4"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <!-- در ویندوز 10 لبه‌ها کاملاً تیز هستند (CornerRadius=0) -->
+                    <Border x:Name="border" 
+                            Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="0">
+                        <ContentPresenter HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center" 
+                                          Margin="{TemplateBinding Padding}" 
+                                          RecognizesAccessKey="True"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="#E5F1FB"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="#0078D7"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+ 
+    <Style TargetType="Button" x:Key="ButtonDanger">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Background" Value="#F5CDD0"/>
+        <Setter Property="Foreground" Value="#000000"/>
+        <Setter Property="BorderBrush" Value="#D67A80"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Padding" Value="10,4"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" 
+                            Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="0">
+                        <ContentPresenter HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center" 
+                                          Margin="{TemplateBinding Padding}" 
+                                          RecognizesAccessKey="True"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="#F0B1B6"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="#C42B1C"/>
+                            <Setter Property="Foreground" Value="#5A080B"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
 </ResourceDictionary>
