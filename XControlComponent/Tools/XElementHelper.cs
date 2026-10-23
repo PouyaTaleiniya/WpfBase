@@ -149,13 +149,16 @@ namespace XControlComponents.Tools
             return parents;
         }
 
-        public static List<DependencyObject> FindChilds<T>(this DependencyObject parent)
+        public static List<T> FindChilds<T>(this DependencyObject parent) where T : DependencyObject
         {
-            var parents = new List<DependencyObject>();
+            var children = new List<T>();
 
-            Find<T>(parent);
+            if (parent == null)
+                return children;
 
-            List<DependencyObject> Find<T>(DependencyObject parentElement)
+            Find(parent);
+
+            void Find(DependencyObject parentElement)
             {
                 int count = VisualTreeHelper.GetChildrenCount(parentElement);
                 for (int i = 0; i < count; i++)
@@ -163,15 +166,13 @@ namespace XControlComponents.Tools
                     var child = VisualTreeHelper.GetChild(parentElement, i);
 
                     if (child is T t)
-                        parents.Add(child);
+                        children.Add(t);
 
-                    var result = Find<T>(child);
+                    Find(child);
                 }
-
-                return parents;
             }
 
-            return parents;
+            return children;
         }
 
         public static T FindParent<T>(this DependencyObject child) where T : DependencyObject

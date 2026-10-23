@@ -32,9 +32,9 @@ namespace MainComponentWpf
                 new DataBindDto
                 {
                     Id = 2,
-                    FirstName = "F2",
-                    LastName = "L2",
-                    NationalCode = "NC2"
+                    FirstName = "F1",
+                    LastName = "L1",
+                    NationalCode = "NC1"
                 },
                  new DataBindDto
                 {
@@ -71,7 +71,28 @@ namespace MainComponentWpf
         private void xGridView_RowDoubleClick(object sender, object Data)
         {
             var x = sender as DataBindDto;
-            var y = xGridView._DataSourceSelected as DataBindDto;
+            //var y = xGridView._DataSourceSelected as DataBindDto;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var get = xGridView._DataSourceSelected<DataBindDto>();
+            if (get != null)
+            {
+                get!.FirstName = get!.FirstName + "E";
+                get!.LastName = get!.LastName + "E";
+                get!.NationalCode = get!.NationalCode + "E";
+                xGridView.UpdateRow(get);
+            }
+
+            //var getDtos = xGridView.GetDataSource<DataBindDto>();
+            //foreach (var item in getDtos)
+            //{
+            //    item!.FirstName = item!.FirstName + "E";
+            //    item!.LastName = item!.LastName + "E";
+            //    item!.NationalCode = item!.NationalCode + "E";
+            //}
+            //xGridView.UpdateRows(getDtos);
         }
     }
 

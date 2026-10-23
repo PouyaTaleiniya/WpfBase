@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Newtonsoft.Json;
+using System.Windows;
 
 namespace XControlComponents.Tools
 {
@@ -43,6 +44,11 @@ namespace XControlComponents.Tools
         {
             var getValuesArray = Values.Split(',').ToArray();
             return getValuesArray.ToList().FirstOrDefault(a => getValuesArray.Contains(a.Trim())) != null;
+        }
+
+        public static T DuckCopyShallow<T>(this object src)
+        {
+            return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(src));
         }
     }
 }

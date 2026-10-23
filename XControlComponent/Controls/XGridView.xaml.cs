@@ -29,10 +29,6 @@ namespace XControlComponents.Controls
         private bool IsInitializedRowData { get; set; }
         private bool IsVerticalScrollBarVisible = false;
 
-        public object _DataSourceSelected => xGridData.Rows.FirstOrDefault(x => x.IsSelected);
-
-        public object _DataSourceMultiSelected => xGridData.Rows.Where(x => x.IsSelected).ToList();
-
         //Events
         [EditorBrowsable(EditorBrowsableState.Always)]
         public delegate void _RowDoubleClickEventHandler(object sender, object Data);
@@ -553,7 +549,7 @@ namespace XControlComponents.Controls
         private object _dataSource;
         public object _DataSource
         {
-            get => _dataSource;
+            internal get => _dataSource;
             set
             {
                 _dataSource = value;
@@ -603,6 +599,55 @@ namespace XControlComponents.Controls
 
             //Set Initialize
             IsInitializedDataSource = true;
+        }
+
+        public List<T> GetDataSource<T>()
+        {
+            var getDataSource = getAllDataSources?.Cast<T>().ToList() ?? new List<T>();
+            return getDataSource.DuckCopyShallow<List<T>>();
+        }
+
+        public T _DataSourceSelected<T>()
+        {
+            var getSelected = xGridData.Rows.FirstOrDefault(x => x.IsSelected);
+            return getSelected.DuckCopyShallow<T>();
+        }
+
+        public List<T> _DataSourceSelectedItems<T>()
+        {
+            var getSelectedItems = xGridData.Rows.Where(x => x.IsSelected).Select(x => (T)x.Data).ToList();
+            return getSelectedItems.DuckCopyShallow<List<T>>();
+        }
+
+        public void UpdateRow(object Data)
+        {
+            var getRow = xGridData.Rows.FirstOrDefault(x => x.Data == Data);
+            UpdateRowData(getRow);
+        }
+
+        public void UpdateRows<T>(List<T> Datas)
+        {
+            var getRows = xGridData.Rows.Where(x => Datas.Contains((T)x.Data)).ToList();
+            foreach (var item in getRows)
+            {
+                UpdateRowData(item);
+            }
+        }
+
+        private void UpdateRowData(XGridRow getRow)
+        {
+            var getBorder = GR_Data.FindChildByTag<Border>(getRow.Key);
+            var getGrid = getBorder.FindChildByTag<Grid>(getRow.Key);
+            var getTxts = getGrid.FindChilds<TextBox>();
+            foreach (var item in getRow.Cells)
+            {
+                item.Value = item.Column.Property.GetValue(getRow.Data);
+                if (item.Column.Visible)
+                {
+                    var getTxt = getTxts.FirstOrDefault(x => x.Tag?.ToString() == item.Key);
+                    getTxt.Text = item.Value.FillStringSafe();
+                }
+            }
         }
         #endregion
 
@@ -918,11 +963,15 @@ namespace XControlComponents.Controls
                     Background = Colors.Transparent.GetBrushColor(),
                     Tag = row.Key
                 };
-                Grid.SetRow(rowBorder, rowIndex);
                 rowBorder.MouseLeftButtonDown += CellBorder_MouseLeftButtonDown;
+                Grid.SetRow(rowBorder, rowIndex);
 
                 //Row Grid
-                var rowGrid = new Grid() { Background = Colors.Transparent.GetBrushColor() };
+                var rowGrid = new Grid()
+                {
+                    Background = Colors.Transparent.GetBrushColor(),
+                    Tag = row.Key
+                };
                 rowBorder.Child = rowGrid;
 
                 //Visible Columns
@@ -1025,16 +1074,7 @@ namespace XControlComponents.Controls
             var getSlcRow = xGridData.Rows.FirstOrDefault(x => x.Key == getKey);
             if (e.ClickCount == 1)
             {
-                if (!_rowMultiSelectable.Value)
-                {
-                    var getLastSlcRow = xGridData.Rows.FirstOrDefault(x => x.IsSelected);
-                    if (getLastSlcRow != null && getLastSlcRow.Key != getSlcRow.Key)
-                    {
-                        RemoveRowBackground(getLastSlcRow.Key);
-                        getLastSlcRow.IsSelected = false;
-                    }
-                }
-
+                RemoveLastSelected();
                 if (getSlcRow.IsSelected)
                 {
                     getSlcRow.IsSelected = false;
@@ -1046,12 +1086,28 @@ namespace XControlComponents.Controls
                     EnableRowBackground(getSlcRow.Key);
                 }
             }
-
-            if (e.ClickCount == 2)
+            else if (e.ClickCount == 2)
             {
+                RemoveLastSelected();
+
                 EnableRowBackground(getSlcRow.Key);
+                getSlcRow.IsSelected = true;
+
                 if (!_rowMultiSelectable.Value)
                     RowDoubleClick?.Invoke(sender, getSlcRow);
+            }
+
+            void RemoveLastSelected()
+            {
+                if (!_rowMultiSelectable.Value)
+                {
+                    var getLastSlcRow = xGridData.Rows.FirstOrDefault(x => x.IsSelected);
+                    if (getLastSlcRow != null && getLastSlcRow.Key != getSlcRow.Key)
+                    {
+                        RemoveRowBackground(getLastSlcRow.Key);
+                        getLastSlcRow.IsSelected = false;
+                    }
+                }
             }
         }
 

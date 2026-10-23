@@ -136,12 +136,14 @@
             </Setter.Value>
         </Setter>
     </Style>
- 
+
     <Style TargetType="Button" x:Key="ButtonDanger">
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-        <Setter Property="Background" Value="#F5CDD0"/>
+        <Setter Property="Background" Value="#F0B4B8"/>
+        <!-- قرمز پررنگ‌تر و مشخص‌تر -->
         <Setter Property="Foreground" Value="#000000"/>
-        <Setter Property="BorderBrush" Value="#D67A80"/>
+        <Setter Property="BorderBrush" Value="#CC5C64"/>
+        <!-- حاشیه قرمز واضح‌تر -->
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Padding" Value="10,4"/>
@@ -150,20 +152,64 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="border" 
-                            Background="{TemplateBinding Background}" 
-                            BorderBrush="{TemplateBinding BorderBrush}" 
-                            BorderThickness="{TemplateBinding BorderThickness}" 
-                            CornerRadius="0">
+                        Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        CornerRadius="0">
                         <ContentPresenter HorizontalAlignment="Center" 
-                                          VerticalAlignment="Center" 
-                                          Margin="{TemplateBinding Padding}" 
-                                          RecognizesAccessKey="True"/>
+                                      VerticalAlignment="Center" 
+                                      Margin="{TemplateBinding Padding}" 
+                                      RecognizesAccessKey="True"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" TargetName="border" Value="#F0B1B6"/>
+                            <Setter Property="Background" TargetName="border" Value="#E8959B"/>
                             <Setter Property="BorderBrush" TargetName="border" Value="#C42B1C"/>
-                            <Setter Property="Foreground" Value="#5A080B"/>
+                            <Setter Property="Foreground" Value="#4A0407"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="#DE7880"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="#9E1F13"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Button" x:Key="ButtonSuccess">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Background" Value="#B4E3BF"/>
+        <!-- سبز پررنگ‌تر و واضح‌تر -->
+        <Setter Property="Foreground" Value="#000000"/>
+        <Setter Property="BorderBrush" Value="#55A869"/>
+        <!-- حاشیه سبز مشخص‌تر -->
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Padding" Value="10,4"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" 
+                        Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        CornerRadius="0">
+                        <ContentPresenter HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center" 
+                                      Margin="{TemplateBinding Padding}" 
+                                      RecognizesAccessKey="True"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="#96D6A5"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="#107C10"/>
+                            <Setter Property="Foreground" Value="#043304"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="#7BC78D"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="#0B5A0B"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

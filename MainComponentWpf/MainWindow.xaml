@@ -54,7 +54,7 @@
                 </Grid>
                 <Grid Grid.Row="3">
                     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Button Content="کد ملی" Margin="5" Style="{StaticResource ButtonWindows}" Width="80" Cursor="Hand"/>
+                        <Button Content="بروز رسانی" Margin="5" Style="{StaticResource ButtonSuccess}" Width="80" Cursor="Hand" Click="Button_Click"/>
                         <Button Content="nv[" Margin="5" Style="{StaticResource ButtonDanger}" Width="80"/>
                     </StackPanel>
                 </Grid>
