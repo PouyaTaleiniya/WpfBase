@@ -3,13 +3,11 @@ using System.ComponentModel;
 using System.Data;
 using System.Globalization;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
 using XControlComponents.Models;
 using XControlComponents.Models.XGrid;
 using XControlComponents.Tools;
@@ -601,22 +599,23 @@ namespace XControlComponents.Controls
             IsInitializedDataSource = true;
         }
 
-        public List<T> GetDataSource<T>()
+        public List<T> GetDataSource<T>(Func<T, bool>? predicate = null)
         {
-            var getDataSource = getAllDataSources?.Cast<T>().ToList() ?? new List<T>();
-            return getDataSource.DuckCopyShallow<List<T>>();
+            return (getAllDataSources?.Cast<T>() ?? Enumerable.Empty<T>())
+                   .Where(x => predicate == null || predicate(x))
+                   .ToList();
         }
 
         public T _DataSourceSelected<T>()
         {
             var getSelected = xGridData.Rows.FirstOrDefault(x => x.IsSelected);
-            return getSelected.DuckCopyShallow<T>();
+            return (T)getSelected.Data;
         }
 
         public List<T> _DataSourceSelectedItems<T>()
         {
             var getSelectedItems = xGridData.Rows.Where(x => x.IsSelected).Select(x => (T)x.Data).ToList();
-            return getSelectedItems.DuckCopyShallow<List<T>>();
+            return getSelectedItems;
         }
 
         public void UpdateRow(object Data)
@@ -647,6 +646,15 @@ namespace XControlComponents.Controls
                     var getTxt = getTxts.FirstOrDefault(x => x.Tag?.ToString() == item.Key);
                     getTxt.Text = item.Value.FillStringSafe();
                 }
+            }
+        }
+
+        public void SetName(params string[][] items)
+        {
+            var x = items.Where(x => !x[0].IsNullOrEmpty() && !x[1].IsNullOrEmpty()).ToList();
+            foreach (var item in items)
+            {
+                Console.WriteLine($"{item[0]} - {item[1]}");
             }
         }
         #endregion
@@ -920,6 +928,9 @@ namespace XControlComponents.Controls
                     Data = item,
                     Key = "Row_" + Guid.NewGuid().ToString()
                 };
+
+                if (item is XDataKeyDto)
+                    ((XDataKeyDto)item).XKey = row.Key;
 
                 foreach (var column in xGridData.Columns)
                 {

@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Media;
+using XControlComponents.Controls;
 using XControlComponents.Models;
 using XControlComponents.Tools;
 using XControlHelper;
@@ -76,16 +77,17 @@ namespace MainComponentWpf
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var get = xGridView._DataSourceSelected<DataBindDto>();
-            if (get != null)
-            {
-                get!.FirstName = get!.FirstName + "E";
-                get!.LastName = get!.LastName + "E";
-                get!.NationalCode = get!.NationalCode + "E";
-                xGridView.UpdateRow(get);
-            }
-
-            //var getDtos = xGridView.GetDataSource<DataBindDto>();
+            //var get = xGridView.GetDataSource<DataBindDto>();
+            //if (get != null)
+            //{
+            //     get!.FirstName = get!.FirstName + "E";
+            //     get!.LastName = get!.LastName + "E";
+            //     get!.NationalCode = get!.NationalCode + "E";
+            //    // xGridView.UpdateRow(get);
+            //}
+            //xGridView.UpdateRows(getDtos);
+            //xGridView.xGridData.Columns.ce
+            //var getDtos = xGridView.GetDataSource<DataBindDto>(x => x.Id > 1);
             //foreach (var item in getDtos)
             //{
             //    item!.FirstName = item!.FirstName + "E";

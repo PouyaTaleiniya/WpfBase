@@ -50,5 +50,12 @@ namespace XControlComponents.Tools
         {
             return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(src));
         }
+
+        public static List<T> DuckCopyListShallow<T>(this IEnumerable<object> src)
+        {
+            return JsonConvert.DeserializeObject<List<T>>(
+                JsonConvert.SerializeObject(src)
+            );
+        }
     }
 }
