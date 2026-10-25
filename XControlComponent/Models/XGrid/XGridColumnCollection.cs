@@ -6,7 +6,7 @@ public class XGridColumnCollection : List<XGridColumn>
     {
         get
         {
-            var column = this.FirstOrDefault(x => string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase));
+            var column = this.FirstOrDefault(x => string.Equals(x.FieldName, name, StringComparison.OrdinalIgnoreCase));
 
             if (column == null)
                 throw new KeyNotFoundException($"Column '{name}' was not found.");

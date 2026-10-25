@@ -8,7 +8,7 @@ public class XGridCellCollection : List<XGridCell>
         {
             var cell = this.FirstOrDefault(x =>
                 string.Equals(
-                    x.Column.Name,
+                    x.Column.FieldName,
                     columnName,
                     StringComparison.OrdinalIgnoreCase));
 

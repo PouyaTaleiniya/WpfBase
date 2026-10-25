@@ -44,5 +44,7 @@ public static class XGridViewDefaults
     public static double NoDataFontSize { get; set; } = 18;
 
     //Names
+    internal static string N_GR_Column_Shower { get; } = "N_GR_Column_Shower";
+    internal static string N_GR_Column_Row { get; } = "N_GR_Column_Row";
     internal static string N_GR_Column_Scroll { get; } = "GR_Column_Scroll";
 }

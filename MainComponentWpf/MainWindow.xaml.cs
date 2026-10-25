@@ -48,6 +48,13 @@ namespace MainComponentWpf
             xGridView._DataSource = result;
         }
 
+        private void xGridView_DataSourceInitialized()
+        {
+            //List<string[]> temp = new();
+            //temp.Add(["Ali", "25"]);
+            xGridView.SetDisplayNames([[nameof(DataBindDto.FirstName), "نام"], [nameof(DataBindDto.LastName), "نام خانوادگی"], [nameof(DataBindDto.NationalCode), "کد ملی"]]);
+        }
+
         private void ColorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
             Color? color = e.NewValue;
@@ -100,16 +107,16 @@ namespace MainComponentWpf
 
     public class DataBindDto
     {
-        [XDataBind(DisplayName = "ردیف", Order = 1, Width = 100)]
+        [XDataBind(Order = 1, Width = 100)]
         public int Id { get; set; }
 
-        [XDataBind(DisplayName = "نام", Order = 4)]
+        [XDataBind(Order = 4)]
         public string? FirstName { get; set; }
 
-        [XDataBind(DisplayName = "نام خانوادگی", Order = 2)]
+        [XDataBind(Order = 2)]
         public string? LastName { get; set; }
 
-        [XDataBind(DisplayName = "کد ملی", Order = 3)]
+        [XDataBind(Order = 3)]
         public string? NationalCode { get; set; }
 
         [XDataBind(Visible = false)]

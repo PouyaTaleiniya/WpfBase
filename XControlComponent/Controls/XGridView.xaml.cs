@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.Globalization;
 using System.Reflection;
 using System.Windows;
@@ -31,6 +32,11 @@ namespace XControlComponents.Controls
         [EditorBrowsable(EditorBrowsableState.Always)]
         public delegate void _RowDoubleClickEventHandler(object sender, object Data);
         public event _RowDoubleClickEventHandler RowDoubleClick;
+
+
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        public delegate void _DataSourceInitializedEventHandler();
+        public event _DataSourceInitializedEventHandler DataSourceInitialized;
 
         public XGridView()
         {
@@ -578,13 +584,7 @@ namespace XControlComponents.Controls
             SetXColumns(itemType);
 
             //Generate Column
-            var visibleColumns = xGridData.Columns.Where(x => x.Visible).ToList();
-            foreach (var item in visibleColumns)
-            {
-                var columnIndex = visibleColumns.IndexOf(item);
-                var IsLastColumn = columnIndex == visibleColumns.Count - 1;
-                GenerateColumn(item, IsLastColumn);
-            }
+            GenerateColumn();
 
             //Rows
             SetXRows();
@@ -597,6 +597,7 @@ namespace XControlComponents.Controls
 
             //Set Initialize
             IsInitializedDataSource = true;
+            DataSourceInitialized?.Invoke();
         }
 
         public List<T> GetDataSource<T>(Func<T, bool>? predicate = null)
@@ -649,12 +650,19 @@ namespace XControlComponents.Controls
             }
         }
 
-        public void SetName(params string[][] items)
+        public void SetDisplayNames(List<string[]> items)
         {
-            var x = items.Where(x => !x[0].IsNullOrEmpty() && !x[1].IsNullOrEmpty()).ToList();
-            foreach (var item in items)
+            var getValidItems = items.Where(x => x.Length == 2 && x.All(value => !value.IsNullOrEmpty())).ToList();
+            var getTxts = GR_Columns.FindChilds<TextBox>();
+            foreach (var item in getValidItems)
             {
-                Console.WriteLine($"{item[0]} - {item[1]}");
+                var getColumn = xGridData.Columns.FirstOrDefault(x => x.FieldName == item[0]);
+                if (getColumn != null)
+                {
+                    getColumn.DisplayName = item[1].FillStringSafe();
+                    var getTxt = getTxts.FirstOrDefault(x => x.Tag?.ToString() == item[0]);
+                    getTxt.Text = getColumn.DisplayName;
+                }
             }
         }
         #endregion
@@ -810,7 +818,7 @@ namespace XControlComponents.Controls
 
                 columns.Add(new XGridColumn
                 {
-                    Name = item.Property.Name,
+                    FieldName = item.Property.Name,
 
                     DisplayName = attribute?.DisplayName.IsNullOrEmpty() == false ? attribute.DisplayName : item.Property.Name,
 
@@ -829,74 +837,113 @@ namespace XControlComponents.Controls
             xGridData.Columns.AddRange(columns);
         }
 
-        private void GenerateColumn(XGridColumn column, bool isLastVisible)
+        public void GenerateColumn()
         {
-            var attribute = column.Attribute;
+            GenerateColumnShower();
 
-            if (!column.Visible)
-                return;
+            foreach (var column in xGridData.Columns)
+            {
+                var IsLastColumn = xGridData.VisibleColumns.IndexOf(column) == xGridData.VisibleColumns.Count - 1;
 
-            var columnWidth = column.Width > 0 ? new GridLength(column.Width, GridUnitType.Pixel) : new GridLength(1, GridUnitType.Star);
+                var attribute = column.Attribute;
 
-            var columnIndex = GR_Columns.ColumnDefinitions.Count;
+                var columnWidth = new GridLength(0);
+                if (column.Visible)
+                    columnWidth = column.Width > 0 ? new GridLength(column.Width, GridUnitType.Pixel) : new GridLength(1, GridUnitType.Star);
 
+                GR_Columns.ColumnDefinitions.Add(new ColumnDefinition
+                {
+                    Width = columnWidth
+                });
+
+                var columnIndex = GR_Columns.ColumnDefinitions.Count - 1;
+
+                var borderColumn = new Border
+                {
+                    Style = XAppMethods.BorderInnerGridStyle(),
+                    BorderThickness = new Thickness(0, 0, IsLastColumn ? 0 : 1, 0),
+                    Background = Colors.Transparent.GetBrushColor()
+                };
+                Grid.SetColumn(borderColumn, columnIndex);
+
+                var textBox = new TextBox
+                {
+                    Tag = column.FieldName.ToString(),
+                    Text = column.DisplayName.IsNullOrEmpty() ? column.FieldName : column.DisplayName,
+                    Foreground = _headerTxtForeground,
+                    Background = Colors.Transparent.GetBrushColor(),
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    BorderThickness = new Thickness(0),
+                    FontSize = _headerTxtFontSize.Value,
+                    FontWeight = _headerTxtFontWeight.Value,
+                    IsReadOnly = true,
+                    Style = _HeaderTxtSelectable.Value ? this.FindResource("TextBoxEventStyle") as Style : null,
+                    FocusVisualStyle = null,
+                    FontStyle = _headerTxtFontStyle.Value,
+                    SelectionBrush = _HeaderTxtSelectable.Value ? _HeaderTxtSelectedBrush : Colors.Transparent.GetBrushColor(),
+                    SelectionOpacity = _HeaderTxtSelectionOpacity.Value
+                };
+
+                borderColumn.Child = textBox;
+                GR_Columns.Children.Add(borderColumn);
+
+                //Generate Column For Scroll
+                if (IsLastColumn)
+                {
+                    GR_Columns._UnregisterName(XGridViewDefaults.N_GR_Column_Scroll);
+
+                    columnIndex = columnIndex + 1;
+
+                    var gridColumn = new ColumnDefinition
+                    {
+                        Width = new GridLength(0)
+                    };
+                    RegisterName(XGridViewDefaults.N_GR_Column_Scroll, gridColumn);
+
+                    GR_Columns.ColumnDefinitions.Add(gridColumn);
+
+                    borderColumn = new Border
+                    {
+                        Style = XAppMethods.BorderInnerGridStyle(),
+                        BorderThickness = new Thickness(1, 0, 0, 0)
+                    };
+                    Grid.SetColumn(borderColumn, columnIndex);
+
+                    GR_Columns.Children.Add(borderColumn);
+                }
+            }
+        }
+
+        public void GenerateColumnShower()
+        {
             GR_Columns.ColumnDefinitions.Add(new ColumnDefinition
             {
-                Width = columnWidth
+                Width = new GridLength(0)
             });
 
             var borderColumn = new Border
             {
                 Style = XAppMethods.BorderInnerGridStyle(),
-                BorderThickness = new Thickness(0, 0, isLastVisible ? 0 : 1, 0)
+                BorderThickness = new Thickness(0, 0, 1, 0),
+                Background = Colors.Transparent.GetBrushColor()
             };
-            Grid.SetColumn(borderColumn, columnIndex);
+            Grid.SetColumn(borderColumn, 0);
 
-            var textBlock = new TextBox
+            var textBox = new Label
             {
-                Text = column.DisplayName,
+                Content = "*",
                 Foreground = _headerTxtForeground,
-                Background = Colors.Transparent.GetBrushColor(),
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
-                BorderThickness = new Thickness(0),
-                FontSize = _headerTxtFontSize.Value,
-                FontWeight = _headerTxtFontWeight.Value,
-                IsReadOnly = true,
-                Style = _HeaderTxtSelectable.Value ? this.FindResource("TextBoxEventStyle") as Style : null,
+                FontSize = 15,
+                Padding = new Thickness(0, 5, 0, 0),
                 FocusVisualStyle = null,
-                FontStyle = _headerTxtFontStyle.Value,
-                SelectionBrush = _HeaderTxtSelectable.Value ? _HeaderTxtSelectedBrush : Colors.Transparent.GetBrushColor(),
-                SelectionOpacity = _HeaderTxtSelectionOpacity.Value
+                Opacity = 0.5
             };
 
-            borderColumn.Child = textBlock;
+            borderColumn.Child = textBox;
             GR_Columns.Children.Add(borderColumn);
-
-            //Generate Column For Scroll
-            if (isLastVisible)
-            {
-                GR_Columns._UnregisterName(XGridViewDefaults.N_GR_Column_Scroll);
-
-                columnIndex = columnIndex + 1;
-
-                var gridColumn = new ColumnDefinition
-                {
-                    Width = new GridLength(0)
-                };
-                RegisterName(XGridViewDefaults.N_GR_Column_Scroll, gridColumn);
-
-                GR_Columns.ColumnDefinitions.Add(gridColumn);
-
-                borderColumn = new Border
-                {
-                    Style = XAppMethods.BorderInnerGridStyle(),
-                    BorderThickness = new Thickness(1, 0, 0, 0)
-                };
-                Grid.SetColumn(borderColumn, columnIndex);
-
-                GR_Columns.Children.Add(borderColumn);
-            }
         }
 
         private void HandleColumnTextProperties()
@@ -985,19 +1032,20 @@ namespace XControlComponents.Controls
                 };
                 rowBorder.Child = rowGrid;
 
-                //Visible Columns
-                foreach (var item in visibleColumns)
+                GenerateRowShower(rowGrid);
+
+                foreach (var cell in row.Cells)
                 {
-                    GridLength columnWidth = item.Width > 0 ? new GridLength(item.Width, GridUnitType.Pixel) : new GridLength(1, GridUnitType.Star);
+                    var columnWidth = new GridLength(0);
+                    if (cell.Column.Visible)
+                        columnWidth = cell.Column.Width > 0 ? new GridLength(cell.Column.Width, GridUnitType.Pixel) : new GridLength(1, GridUnitType.Star);
+
                     var columnDefinition = new ColumnDefinition()
                     {
                         Width = columnWidth
                     };
                     rowGrid.ColumnDefinitions.Add(columnDefinition);
-                }
 
-                foreach (var cell in row.VisibleCells)
-                {
                     var cellIndex = row.VisibleCells.IndexOf(cell);
                     var IsLastCell = cellIndex == row.VisibleCells.Count - 1;
 
@@ -1007,9 +1055,9 @@ namespace XControlComponents.Controls
                         BorderThickness = new Thickness(0, 0, IsLastCell ? 0 : 1, 0),
                         Background = Colors.Transparent.GetBrushColor()
                     };
-                    Grid.SetColumn(cellBorder, cellIndex);
+                    Grid.SetColumn(cellBorder, rowGrid.ColumnDefinitions.Count - 1);
 
-                    var textBlock = new TextBox
+                    var textBox = new TextBox
                     {
                         Text = cell.Value.FillStringSafe(),
                         Foreground = _rowTxtForeground,
@@ -1029,7 +1077,7 @@ namespace XControlComponents.Controls
                         Tag = cell.Key
                     };
 
-                    cellBorder.Child = textBlock;
+                    cellBorder.Child = textBox;
                     rowGrid.Children.Add(cellBorder);
                 }
 
@@ -1042,6 +1090,37 @@ namespace XControlComponents.Controls
 
             //Set Border Height
             SetHeightRow();
+        }
+
+        public void GenerateRowShower(Grid gridRow)
+        {
+            var columnDefinition = new ColumnDefinition()
+            {
+                Width = new GridLength(0, GridUnitType.Pixel)
+            };
+            gridRow.ColumnDefinitions.Add(columnDefinition);
+
+            var borderColumn = new Border
+            {
+                Style = XAppMethods.BorderInnerGridStyle(),
+                BorderThickness = new Thickness(0, 0, 1, 0),
+                Background = Colors.Transparent.GetBrushColor()
+            };
+            Grid.SetColumn(borderColumn, 0);
+
+            var label = new Label
+            {
+                Content = ">",
+                Foreground = _headerTxtForeground,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                FontSize = 10,
+                FocusVisualStyle = null,
+                Opacity = 0.5
+            };
+
+            borderColumn.Child = label;
+            gridRow.Children.Add(borderColumn);
         }
 
         private void SetHeightRow()

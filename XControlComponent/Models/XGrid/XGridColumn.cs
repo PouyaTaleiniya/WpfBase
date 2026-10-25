@@ -4,7 +4,7 @@ namespace XControlComponents.Models.XGrid;
 
 public class XGridColumn
 {
-    internal string Name { get; set; }
+    internal string FieldName { get; set; }
 
     public string DisplayName { get; set; }
 
