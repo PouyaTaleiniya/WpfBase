@@ -9,7 +9,6 @@ using System.Windows.Media;
 using XControlComponents.Tools;
 using XControlComponents.Tools.Controls;
 using XControlComponents.Tools.ControlTypes;
-using XControlHelper;
 
 namespace XControlComponents.Controls;
 

@@ -6,7 +6,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using XControlComponents.Tools;
 using XControlComponents.Tools.Controls;
-using XControlHelper;
 
 namespace XControlComponents.Controls;
 

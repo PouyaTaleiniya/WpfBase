@@ -102,7 +102,13 @@ namespace MainComponentWpf
             //    item!.NationalCode = item!.NationalCode + "E";
             //}
             //xGridView.UpdateRows(getDtos);
+
+            xGridView.SetOrders([[nameof(DataBindDto.FirstName), "2"],
+                                 [nameof(DataBindDto.LastName), "3"],
+                                 [nameof(DataBindDto.NationalCode),"4"]]);
         }
+
+
     }
 
     public class DataBindDto

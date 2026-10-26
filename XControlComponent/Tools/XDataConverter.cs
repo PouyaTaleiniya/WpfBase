@@ -1,10 +1,9 @@
 ﻿using System.Data;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using XControlComponents.Tools;
 using XControlComponents.Tools.ControlTypes;
 
-namespace XControlHelper
+namespace XControlComponents.Tools
 {
     public static class XDataConverter
     {
@@ -113,6 +112,11 @@ namespace XControlHelper
                 ValueData = int.Parse(Value.ToString());
 
             return ValueData;
+        }
+
+        public static bool IsInt(this string value)
+        {
+            return int.TryParse(value, out _);
         }
 
         public static int GetIntPercent(decimal Value, decimal Percent)
@@ -244,7 +248,7 @@ namespace XControlHelper
                 int M = 0;
                 int D = 0;
 
-                if(FormatDate == "Y/M/D")
+                if (FormatDate == "Y/M/D")
                 {
                     Y = int.Parse(getDates[0]);
                     M = int.Parse(getDates[1]);
@@ -271,7 +275,7 @@ namespace XControlHelper
 
                 getDateTime = new DateTime(Y, M, D);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 getDateTime = DateTime.Now;
             }
@@ -327,7 +331,7 @@ namespace XControlHelper
             var D = Day.ToString();
             if (D.Length == 1)
                 D = "0" + D;
-             
+
             return GetDateFormat(FormatDate, Y, M, D);
         }
 

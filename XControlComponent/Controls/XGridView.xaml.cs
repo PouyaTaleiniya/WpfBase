@@ -665,6 +665,47 @@ namespace XControlComponents.Controls
                 }
             }
         }
+
+        public void SetOrders(List<string[]> items)
+        {
+            var getValidItems = items.Where(x => x.Length == 2 && x.All(value => !value.IsNullOrEmpty())).ToList();
+
+            var getTxts = GR_Columns.FindChilds<TextBox>();
+            foreach (var item in getValidItems)
+            {
+                if (item[1].IsInt())
+                {
+                    var getColumn = xGridData.Columns.FirstOrDefault(x => x.FieldName == item[0]);
+                    if (getColumn != null && item[1].IsInt())
+                        getColumn.Order = item[1].IntParse();
+                }
+            }
+
+            var getBorders = GR_Columns.FindChilds<Border>();
+
+            var y = getBorders.Select(x => x.Tag).ToList();
+
+            var sortedColumns = xGridData.Columns.OrderBy(x => x.Order).ToList();
+            foreach (var item in sortedColumns)
+            {
+                var getBorder = getBorders.FirstOrDefault(x => x.Tag?.ToString() == item.FieldName);
+                if (getBorder != null)
+                {
+                    //Index
+                    var Index = xGridData.Columns.IndexOf(item);
+
+                    //Column Width
+                    var colWidth = new GridLength(0);
+                    if (item.Visible)
+                        colWidth = item.Width > 0 ? new GridLength(item.Width, GridUnitType.Pixel) : new GridLength(1, GridUnitType.Star);
+                    GR_Columns.ColumnDefinitions[Index + 1].Width = colWidth;
+
+                    //Column Index
+                    Grid.SetColumn(getBorder, Index + 1);
+
+                }
+            }
+        }
         #endregion
 
         #region Grid Scroll
@@ -862,7 +903,8 @@ namespace XControlComponents.Controls
                 {
                     Style = XAppMethods.BorderInnerGridStyle(),
                     BorderThickness = new Thickness(0, 0, IsLastColumn ? 0 : 1, 0),
-                    Background = Colors.Transparent.GetBrushColor()
+                    Background = Colors.Transparent.GetBrushColor(),
+                    Tag = "BR" + column.FieldName.ToString(),
                 };
                 Grid.SetColumn(borderColumn, columnIndex);
 
