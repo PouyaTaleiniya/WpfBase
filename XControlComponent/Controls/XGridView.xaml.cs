@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using XControlComponents.Models;
@@ -681,28 +682,63 @@ namespace XControlComponents.Controls
                 }
             }
 
-            var getBorders = GR_Columns.FindChilds<Border>();
+            var gR_Column_Scroll = GR_Columns._FindName<ColumnDefinition>(XGridViewDefaults.N_GR_Column_Scroll);
+            var IsScroll = gR_Column_Scroll.Width.Value > 0;
 
-            var y = getBorders.Select(x => x.Tag).ToList();
+            var getBorders = GR_Columns.FindChilds<Border>(x => !x.Tag.IsNullOrEmpty());
 
             var sortedColumns = xGridData.Columns.OrderBy(x => x.Order).ToList();
+            var VisibleColumns = xGridData.VisibleColumns.OrderBy(x => x.Order).ToList();
             foreach (var item in sortedColumns)
             {
-                var getBorder = getBorders.FirstOrDefault(x => x.Tag?.ToString() == item.FieldName);
-                if (getBorder != null)
+                //Index
+                var Index = sortedColumns.IndexOf(item);
+                var IsLastColumn = VisibleColumns.IndexOf(item) == VisibleColumns.Count - 1;
+
+                //Column Width
+                var colWidth = new GridLength(0);
+                if (item.Visible)
+                    colWidth = item.Width > 0 ? new GridLength(item.Width, GridUnitType.Pixel) : new GridLength(1, GridUnitType.Star);
+                GR_Columns.ColumnDefinitions[Index + 1].Width = colWidth;
+
+                var getBorder = getBorders.FirstOrDefault(x => x.Tag?.ToString() == "BR" + item.FieldName);
+
+                //Set Border
+                getBorder.BorderThickness = new Thickness(0, 0, IsLastColumn && !IsScroll ? 0 : 1, 0);
+
+                //Column Index
+                Grid.SetColumn(getBorder, Index + 1);
+            }
+
+            if (xGridData.Rows.Count > 0)
+            {
+                var grids = GR_Data.FindChilds<Grid>(x => !x.Tag.IsNullOrEmpty());
+                foreach (var item in xGridData.Rows)
                 {
-                    //Index
-                    var Index = xGridData.Columns.IndexOf(item);
+                    var sortedCells = item.Cells.OrderBy(cell => cell.Column.Order).ToList();
+                    var getGridRow = grids.FirstOrDefault(x => x.Tag?.ToString() == item.Key);
+                    var getCellBorders = getGridRow.FindChilds<Border>(x => !x.Tag.IsNullOrEmpty());
+                    var VisibleCells = item.VisibleCells.OrderBy(x => x.Column.Order).ToList();
+                    foreach (var cell in sortedCells)
+                    {
+                        //Index
+                        var Index = sortedCells.IndexOf(cell);
+                        var IsLastColumn = VisibleCells.IndexOf(cell) == VisibleCells.Count - 1;
 
-                    //Column Width
-                    var colWidth = new GridLength(0);
-                    if (item.Visible)
-                        colWidth = item.Width > 0 ? new GridLength(item.Width, GridUnitType.Pixel) : new GridLength(1, GridUnitType.Star);
-                    GR_Columns.ColumnDefinitions[Index + 1].Width = colWidth;
+                        //Cell Width
+                        var colWidth = new GridLength(0);
+                        if (cell.Column.Visible)
+                            colWidth = cell.Column.Width > 0 ? new GridLength(cell.Column.Width, GridUnitType.Pixel) : new GridLength(1, GridUnitType.Star);
+                        GR_Columns.ColumnDefinitions[Index + 1].Width = colWidth;
 
-                    //Column Index
-                    Grid.SetColumn(getBorder, Index + 1);
+                        var getBorder = getCellBorders.FirstOrDefault(x => x.Tag?.ToString() == cell.Key);
 
+                        //Set Border
+                        getBorder.BorderThickness = new Thickness(0, 0, IsLastColumn && !IsScroll ? 0 : 1, 0);
+
+                        //Cell Index
+                        Grid.SetColumn(getBorder, Index + 1);
+                    }
                 }
             }
         }
@@ -1095,7 +1131,8 @@ namespace XControlComponents.Controls
                     {
                         Style = XAppMethods.BorderInnerGridStyle(),
                         BorderThickness = new Thickness(0, 0, IsLastCell ? 0 : 1, 0),
-                        Background = Colors.Transparent.GetBrushColor()
+                        Background = Colors.Transparent.GetBrushColor(),
+                        Tag = cell.Key
                     };
                     Grid.SetColumn(cellBorder, rowGrid.ColumnDefinitions.Count - 1);
 

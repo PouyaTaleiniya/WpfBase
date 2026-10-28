@@ -149,7 +149,7 @@ namespace XControlComponents.Tools
             return parents;
         }
 
-        public static List<T> FindChilds<T>(this DependencyObject parent) where T : DependencyObject
+        public static List<T> FindChilds<T>(this DependencyObject parent, Func<T, bool>? predicate = null) where T : DependencyObject
         {
             var children = new List<T>();
 
@@ -172,7 +172,7 @@ namespace XControlComponents.Tools
                 }
             }
 
-            return children;
+            return children.Where(x => predicate == null || predicate(x)).ToList();
         }
 
         public static T FindParent<T>(this DependencyObject child) where T : DependencyObject
@@ -254,6 +254,11 @@ namespace XControlComponents.Tools
             }
 
             return parents;
+        }
+
+        public static T GetElement<T>(this List<DependencyObject> dependencies, Func<T, bool> predicate)
+        {
+            return dependencies.OfType<T>().FirstOrDefault(x => predicate == null || predicate(x));
         }
 
         public static bool IsChildOf(this DependencyObject source, DependencyObject potentialParent)

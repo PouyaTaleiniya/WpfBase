@@ -28,22 +28,22 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                         <ColumnDefinition />
-                        <ColumnDefinition Width="18"/>
+                        <ColumnDefinition Width="0"/>
                     </Grid.ColumnDefinitions>
                     <Border Grid.Column="0" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 0">
-                        <TextBlock Text="ردیف" FontSize="15" FontStyle="Normal" FontWeight="Bold" TextDecorations="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock Text="ستون 1" FontSize="15" FontStyle="Normal" FontWeight="Bold" TextDecorations="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <Border Grid.Column="1" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 0">
-                        <Label Content="ردیف" FontSize="15" FontStyle="Normal" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Label Content="ستون 2" FontSize="15" FontStyle="Normal" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <Border Grid.Column="2" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 1 0">
-
+                        <Label Content="ستون 3" FontSize="15" FontStyle="Normal" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <Border Grid.Column="3" Style="{StaticResource BorderInnerGrid}" BorderThickness="0 0 0 0">
-
+                        <Label Content="ستون 4" FontSize="15" FontStyle="Normal" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <Border Grid.Column="4" Style="{StaticResource BorderInnerGrid}" BorderThickness="1 0 0 0">
-
+                         
                     </Border>
                 </Grid>
             </Border>
