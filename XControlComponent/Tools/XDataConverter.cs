@@ -131,6 +131,11 @@ namespace XControlComponents.Tools
             return getPercent.IntParse();
         }
 
+        public static bool IsBool(this string value)
+        {
+            return bool.TryParse(value, out _);
+        }
+
         public static int ConvertMillimeterToPixel(double millimeter, int dpi)
         {
             // Calculate pixels based on DPI

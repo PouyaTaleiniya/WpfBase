@@ -35,7 +35,7 @@
                     <!--<controls:XTextBoxBorder _LabelTitle="Gender" _IsRequired="True" _MaxLength="1500" _MaxLengthGridWidth="90" _MaxLengthVisibility="True"  _MaxLengthOutbox="True" _LabelTop="True"  _LabelVisibility="True" _MultiLine="False" />-->
                     <!--<controls:XTextBox1 _ElementType="Normal" _LabelTop="True" _MaxLengthVisibility="True" _MaxLengthOutbox="False" _MaxLengthGridWidth="70" _MaxLength="20" _MultiLine="False"/>-->
                     <!--<controls:XComboBoxBorder Name="xComboBoxData1"  />-->
-                    <controls:XGridView  Name="xGridView" _RowHeight="33" _HeaderTxtFontSize="15" _RowSelectable="True"  _RowMultiSelectable="False" RowDoubleClick="xGridView_RowDoubleClick" DataSourceInitialized="xGridView_DataSourceInitialized"/>
+                    <controls:XGridView  Name="xGridView" _RowHeight="33" _HeaderTxtFontSize="15" _RowSelectable="True"  _RowMultiSelectable="False"  RowDoubleClick="xGridView_RowDoubleClick" DataSourceInitialized="xGridView_DataSourceInitialized"/>
                 </Grid>
                 <Grid Grid.Row="2" >
                     <!--<controls:XComboBoxFloa ting  Name="XComboBox1" _IsGenerateEmptyLabel="True" _LabelVisibility="True" _BorderBrushFocused="True" _PlaceHolderOpacity="0.3"  _LabelTitle="نام" _IsRequired="True" _ValueChanged="XComboBox_ValueChanged"/>-->
@@ -54,8 +54,8 @@
                 </Grid>
                 <Grid Grid.Row="3">
                     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Button Content="بروز رسانی" Margin="5" Style="{StaticResource ButtonSuccess}" Width="80" Cursor="Hand" Click="Button_Click"/>
-                        <Button Content="nv[" Margin="5" Style="{StaticResource ButtonDanger}" Width="80"/>
+                        <Button Content="Set Order" Margin="5" Style="{StaticResource ButtonSuccess}" Width="80" Cursor="Hand" Click="Btn_SetOrder_Click"/>
+                        <Button Content="Set Visiblie" Margin="5" Style="{StaticResource ButtonSuccess}" Width="80" Cursor="Hand" Click="Btn_SetVisible_Click"/>
                     </StackPanel>
                 </Grid>
             </Grid>

@@ -24,6 +24,7 @@ namespace XControlComponents.Controls
     {
         private List<object> getAllDataSources { get; set; }
         public XGridData xGridData { get; set; } = new XGridData();
+        public List()
         private bool SearchMode { get; set; }
         private bool IsInitializedDataSource { get; set; } = false;
         private bool IsInitializedRowData { get; set; }
@@ -651,37 +652,59 @@ namespace XControlComponents.Controls
             }
         }
 
-        public void SetDisplayNames(List<string[]> items)
+        public void SetDisplayName(IEnumerable<(string FieldName, string DisplayName)> items)
         {
-            var getValidItems = items.Where(x => x.Length == 2 && x.All(value => !value.IsNullOrEmpty())).ToList();
             var getTxts = GR_Columns.FindChilds<TextBox>();
-            foreach (var item in getValidItems)
+            foreach (var item in items)
             {
-                var getColumn = xGridData.Columns.FirstOrDefault(x => x.FieldName == item[0]);
+                var getColumn = xGridData.Columns.FirstOrDefault(x => x.FieldName == item.FieldName);
                 if (getColumn != null)
                 {
-                    getColumn.DisplayName = item[1].FillStringSafe();
-                    var getTxt = getTxts.FirstOrDefault(x => x.Tag?.ToString() == item[0]);
+                    getColumn.DisplayName = item.DisplayName.FillStringSafe();
+                    var getTxt = getTxts.FirstOrDefault(x => x.Tag?.ToString() == item.FieldName);
                     getTxt.Text = getColumn.DisplayName;
                 }
             }
         }
 
-        public void SetOrders(List<string[]> items)
+        public void SetOrder(IEnumerable<(string FieldName, int Order)> items)
         {
-            var getValidItems = items.Where(x => x.Length == 2 && x.All(value => !value.IsNullOrEmpty())).ToList();
-
-            var getTxts = GR_Columns.FindChilds<TextBox>();
-            foreach (var item in getValidItems)
+            foreach (var item in items)
             {
-                if (item[1].IsInt())
-                {
-                    var getColumn = xGridData.Columns.FirstOrDefault(x => x.FieldName == item[0]);
-                    if (getColumn != null && item[1].IsInt())
-                        getColumn.Order = item[1].IntParse();
-                }
+                var getColumn = xGridData.Columns.FirstOrDefault(x => x.FieldName == item.FieldName);
+                if (getColumn != null)
+                    getColumn.Order = item.Order;
             }
 
+            SetFieldProperties();
+        }
+
+        public void SetWidth(IEnumerable<(string FieldName, double Width)> items)
+        {
+            foreach (var item in items)
+            {
+                var getColumn = xGridData.Columns.FirstOrDefault(x => x.FieldName == item.FieldName);
+                if (getColumn != null)
+                    getColumn.Width = item.Width;
+            }
+
+            SetFieldProperties();
+        }
+
+        public void SetVisibility(IEnumerable<(string FieldName, bool Visible)> items)
+        {
+            foreach (var item in items)
+            {
+                var getColumn = xGridData.Columns.FirstOrDefault(x => x.FieldName == item.FieldName);
+                if (getColumn != null)
+                    getColumn.Visible = item.Visible;
+            }
+
+            SetFieldProperties();
+        }
+
+        private void SetFieldProperties()
+        {
             var gR_Column_Scroll = GR_Columns._FindName<ColumnDefinition>(XGridViewDefaults.N_GR_Column_Scroll);
             var IsScroll = gR_Column_Scroll.Width.Value > 0;
 
@@ -691,15 +714,15 @@ namespace XControlComponents.Controls
             var VisibleColumns = xGridData.VisibleColumns.OrderBy(x => x.Order).ToList();
             foreach (var item in sortedColumns)
             {
-                //Index
-                var Index = sortedColumns.IndexOf(item);
+                //Index (+1 For Shower Column)
+                var Index = sortedColumns.IndexOf(item) + 1;
                 var IsLastColumn = VisibleColumns.IndexOf(item) == VisibleColumns.Count - 1;
 
                 //Column Width
                 var colWidth = new GridLength(0);
                 if (item.Visible)
                     colWidth = item.Width > 0 ? new GridLength(item.Width, GridUnitType.Pixel) : new GridLength(1, GridUnitType.Star);
-                GR_Columns.ColumnDefinitions[Index + 1].Width = colWidth;
+                GR_Columns.ColumnDefinitions[Index].Width = colWidth;
 
                 var getBorder = getBorders.FirstOrDefault(x => x.Tag?.ToString() == "BR" + item.FieldName);
 
@@ -707,7 +730,7 @@ namespace XControlComponents.Controls
                 getBorder.BorderThickness = new Thickness(0, 0, IsLastColumn && !IsScroll ? 0 : 1, 0);
 
                 //Column Index
-                Grid.SetColumn(getBorder, Index + 1);
+                Grid.SetColumn(getBorder, Index);
             }
 
             if (xGridData.Rows.Count > 0)
@@ -721,15 +744,15 @@ namespace XControlComponents.Controls
                     var VisibleCells = item.VisibleCells.OrderBy(x => x.Column.Order).ToList();
                     foreach (var cell in sortedCells)
                     {
-                        //Index
-                        var Index = sortedCells.IndexOf(cell);
+                        //Index (+1 For Shower Column)
+                        var Index = sortedCells.IndexOf(cell) + 1;
                         var IsLastColumn = VisibleCells.IndexOf(cell) == VisibleCells.Count - 1;
 
                         //Cell Width
                         var colWidth = new GridLength(0);
                         if (cell.Column.Visible)
                             colWidth = cell.Column.Width > 0 ? new GridLength(cell.Column.Width, GridUnitType.Pixel) : new GridLength(1, GridUnitType.Star);
-                        GR_Columns.ColumnDefinitions[Index + 1].Width = colWidth;
+                        getGridRow.ColumnDefinitions[Index].Width = colWidth;
 
                         var getBorder = getCellBorders.FirstOrDefault(x => x.Tag?.ToString() == cell.Key);
 
@@ -737,7 +760,7 @@ namespace XControlComponents.Controls
                         getBorder.BorderThickness = new Thickness(0, 0, IsLastColumn && !IsScroll ? 0 : 1, 0);
 
                         //Cell Index
-                        Grid.SetColumn(getBorder, Index + 1);
+                        Grid.SetColumn(getBorder, Index);
                     }
                 }
             }
@@ -914,7 +937,7 @@ namespace XControlComponents.Controls
             xGridData.Columns.AddRange(columns);
         }
 
-        public void GenerateColumn()
+        private void GenerateColumn()
         {
             GenerateColumnShower();
 
@@ -993,7 +1016,7 @@ namespace XControlComponents.Controls
             }
         }
 
-        public void GenerateColumnShower()
+        private void GenerateColumnShower()
         {
             GR_Columns.ColumnDefinitions.Add(new ColumnDefinition
             {
@@ -1171,7 +1194,7 @@ namespace XControlComponents.Controls
             SetHeightRow();
         }
 
-        public void GenerateRowShower(Grid gridRow)
+        private void GenerateRowShower(Grid gridRow)
         {
             var columnDefinition = new ColumnDefinition()
             {

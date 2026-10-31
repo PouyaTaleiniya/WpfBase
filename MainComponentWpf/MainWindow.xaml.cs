@@ -48,13 +48,6 @@ namespace MainComponentWpf
             xGridView._DataSource = result;
         }
 
-        private void xGridView_DataSourceInitialized()
-        {
-            //List<string[]> temp = new();
-            //temp.Add(["Ali", "25"]);
-            xGridView.SetDisplayNames([[nameof(DataBindDto.FirstName), "نام"], [nameof(DataBindDto.LastName), "نام خانوادگی"], [nameof(DataBindDto.NationalCode), "کد ملی"]]);
-        }
-
         private void ColorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
             Color? color = e.NewValue;
@@ -79,36 +72,24 @@ namespace MainComponentWpf
         private void xGridView_RowDoubleClick(object sender, object Data)
         {
             var x = sender as DataBindDto;
-            //var y = xGridView._DataSourceSelected as DataBindDto;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+
+        private void xGridView_DataSourceInitialized()
         {
-            //var get = xGridView.GetDataSource<DataBindDto>();
-            //if (get != null)
-            //{
-            //     get!.FirstName = get!.FirstName + "E";
-            //     get!.LastName = get!.LastName + "E";
-            //     get!.NationalCode = get!.NationalCode + "E";
-            //    // xGridView.UpdateRow(get);
-            //}
-            //xGridView.UpdateRows(getDtos);
-            //xGridView.xGridData.Columns.ce
-            //var getDtos = xGridView.GetDataSource<DataBindDto>(x => x.Id > 1);
-            //foreach (var item in getDtos)
-            //{
-            //    item!.FirstName = item!.FirstName + "E";
-            //    item!.LastName = item!.LastName + "E";
-            //    item!.NationalCode = item!.NationalCode + "E";
-            //}
-            //xGridView.UpdateRows(getDtos);
-
-            xGridView.SetOrders([[nameof(DataBindDto.FirstName), "2"],
-                                 [nameof(DataBindDto.LastName), "3"],
-                                 [nameof(DataBindDto.NationalCode),"4"]]);
+            xGridView.SetDisplayName([(nameof(DataBindDto.FirstName), "نام"), (nameof(DataBindDto.LastName), "نام خانوادگی"), (nameof(DataBindDto.NationalCode), "کد ملی")]);
         }
 
 
+        private void Btn_SetOrder_Click(object sender, RoutedEventArgs e)
+        {
+            xGridView.SetOrder([(nameof(DataBindDto.FirstName), 3), (nameof(DataBindDto.LastName), 4), (nameof(DataBindDto.NationalCode), 2)]);
+        }
+
+        private void Btn_SetVisible_Click(object sender, RoutedEventArgs e)
+        {
+            xGridView.SetVisibility([(nameof(DataBindDto.FirstName), false)]);
+        }
     }
 
     public class DataBindDto
@@ -116,13 +97,13 @@ namespace MainComponentWpf
         [XDataBind(Order = 1, Width = 100)]
         public int Id { get; set; }
 
-        [XDataBind(Order = 4)]
+        [XDataBind(Order = 2)]
         public string? FirstName { get; set; }
 
-        [XDataBind(Order = 2)]
+        [XDataBind(Order = 3)]
         public string? LastName { get; set; }
 
-        [XDataBind(Order = 3)]
+        [XDataBind(Order = 4)]
         public string? NationalCode { get; set; }
 
         [XDataBind(Visible = false)]
