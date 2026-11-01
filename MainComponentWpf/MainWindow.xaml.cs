@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using XControlComponents.Controls;
 using XControlComponents.Models;
@@ -45,6 +46,19 @@ namespace MainComponentWpf
                     NationalCode = "NC3"
                 }
             };
+            xGridView._DisplayNameFields = [(nameof(DataBindDto.Id), "ردیف"),
+                                            (nameof(DataBindDto.FirstName), "نام"),
+                                            (nameof(DataBindDto.LastName), "نام خانوادگی"),
+                                            (nameof(DataBindDto.NationalCode), "کد ملی")];
+
+            //xGridView._OrderFields = [(nameof(DataBindDto.FirstName), 1),
+            //                          (nameof(DataBindDto.LastName), 2),
+            //                          (nameof(DataBindDto.NationalCode), 1)];
+
+            xGridView._VisibilityFields = [(nameof(DataBindDto.GuidKey), false)];
+
+            xGridView._WidthFields = [(nameof(DataBindDto.Id), 100)];
+
             xGridView._DataSource = result;
         }
 
@@ -74,39 +88,23 @@ namespace MainComponentWpf
             var x = sender as DataBindDto;
         }
 
-
-        private void xGridView_DataSourceInitialized()
-        {
-            xGridView.SetDisplayName([(nameof(DataBindDto.FirstName), "نام"), (nameof(DataBindDto.LastName), "نام خانوادگی"), (nameof(DataBindDto.NationalCode), "کد ملی")]);
-        }
-
-
         private void Btn_SetOrder_Click(object sender, RoutedEventArgs e)
         {
-            xGridView.SetOrder([(nameof(DataBindDto.FirstName), 3), (nameof(DataBindDto.LastName), 4), (nameof(DataBindDto.NationalCode), 2)]);
+            xGridView._OrderFields = [(nameof(DataBindDto.FirstName), 1), (nameof(DataBindDto.LastName), 1), (nameof(DataBindDto.NationalCode), 2)];
         }
 
         private void Btn_SetVisible_Click(object sender, RoutedEventArgs e)
         {
-            xGridView.SetVisibility([(nameof(DataBindDto.FirstName), false)]);
+            xGridView._VisibilityFields = [(nameof(DataBindDto.FirstName), true)];
         }
     }
 
     public class DataBindDto
     {
-        [XDataBind(Order = 1, Width = 100)]
         public int Id { get; set; }
-
-        [XDataBind(Order = 2)]
         public string? FirstName { get; set; }
-
-        [XDataBind(Order = 3)]
         public string? LastName { get; set; }
-
-        [XDataBind(Order = 4)]
         public string? NationalCode { get; set; }
-
-        [XDataBind(Visible = false)]
         public string? GuidKey { get; set; }
     }
 }

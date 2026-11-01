@@ -15,6 +15,4 @@ public class XGridColumn
     public double Width { get; set; }
 
     internal PropertyInfo Property { get; init; }
-
-    internal XDataBindAttribute Attribute { get; init; }
 }
