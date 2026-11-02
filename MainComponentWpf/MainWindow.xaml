@@ -23,7 +23,7 @@
             <usercontrols:UC_Header Name="ucHeader" _ImageUrl="/Images/Vpn.png" _ShowMaximumButton="True" _Title="مدیریت وی پی ان" Grid.Row="0" />
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="160"/>
+                    <RowDefinition Height="100"/>
                     <RowDefinition Height="100"/>
                     <RowDefinition Height="250" Name="GR_Row_2"/>
                     <RowDefinition Height="250"/>

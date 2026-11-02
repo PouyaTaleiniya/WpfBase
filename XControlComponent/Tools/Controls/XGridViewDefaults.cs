@@ -36,6 +36,7 @@ public static class XGridViewDefaults
     public static bool RowTxtSelectable { get; set; } = true;
     public static Brush RowTxtSelectedBrush { get; set; } = XAppMethods.Color_SelectedBrush_Blue_FF0078D7();
     public static double RowTxtSelectionOpacity { get; set; } = 0.4;
+    public static bool RowIndicator { get; set; } = false;
 
     //No Data
     public static Brush NoDataBackGround { get; set; } = XAppMethods.Color_Red_FFE6E6();

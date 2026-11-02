@@ -51,9 +51,9 @@ namespace MainComponentWpf
                                             (nameof(DataBindDto.LastName), "نام خانوادگی"),
                                             (nameof(DataBindDto.NationalCode), "کد ملی")];
 
-            //xGridView._OrderFields = [(nameof(DataBindDto.FirstName), 1),
-            //                          (nameof(DataBindDto.LastName), 2),
-            //                          (nameof(DataBindDto.NationalCode), 1)];
+            xGridView._OrderFields = [(nameof(DataBindDto.FirstName), 1),
+                                      (nameof(DataBindDto.LastName), 2),
+                                      (nameof(DataBindDto.NationalCode), 1)];
 
             xGridView._VisibilityFields = [(nameof(DataBindDto.GuidKey), false)];
 
