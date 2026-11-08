@@ -29,6 +29,8 @@ namespace XControlComponents.Controls
         private bool IsInitializedDataSource { get; set; } = false;
         private bool IsInitializedRowData { get; set; }
         private bool IsVerticalScrollBarVisible = false;
+        private int LastColumnIndex = 0;
+        private int ScrollColumnIndex = 0;
 
         //Events
         [EditorBrowsable(EditorBrowsableState.Always)]
@@ -160,17 +162,6 @@ namespace XControlComponents.Controls
                     _gridBackGround = XGridViewDefaults.GridBackground;
 
                 BR_Grid.Background = _gridBackGround;
-            }
-        }
-
-        private int? _GridScrollIndex
-        {
-            get
-            {
-                if (GR_Columns.ColumnDefinitions.Count == 0)
-                    return null;
-
-                return GR_Columns.ColumnDefinitions.Count - 1;
             }
         }
 
@@ -743,29 +734,29 @@ namespace XControlComponents.Controls
         #region Grid Scroll
         private void SC_Data_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            GridScroll();
+            if (getAllDataSources != null)
+                GridScroll();
         }
 
         private void GridScroll()
         {
             try
             {
-
-                bool isVisible = SC_Data.ComputedVerticalScrollBarVisibility == Visibility.Visible;
-                if (isVisible && !IsVerticalScrollBarVisible)
+                if (IsInitializedRowData)
                 {
-                    if (_GridScrollIndex != null)
+                    bool isVisible = SC_Data.ComputedVerticalScrollBarVisibility == Visibility.Visible;
+                    if (isVisible && !IsVerticalScrollBarVisible)
                     {
                         IsVerticalScrollBarVisible = true;
-                        GR_Columns.ColumnDefinitions[_GridScrollIndex.Value].Width = new GridLength(18, GridUnitType.Pixel);
+                        GR_Columns.ColumnDefinitions[ScrollColumnIndex].Width = new GridLength(17, GridUnitType.Pixel);
+                        HandleLastGridColumnBorder();
                     }
-                }
-                else if (!isVisible && IsVerticalScrollBarVisible)
-                {
-                    IsVerticalScrollBarVisible = false;
-
-                    if (_GridScrollIndex != null)
-                        GR_Columns.ColumnDefinitions[_GridScrollIndex.Value].Width = new GridLength(0, GridUnitType.Pixel);
+                    else if (!isVisible && IsVerticalScrollBarVisible)
+                    {
+                        IsVerticalScrollBarVisible = false;
+                        GR_Columns.ColumnDefinitions[ScrollColumnIndex].Width = new GridLength(0, GridUnitType.Pixel);
+                        HandleLastGridColumnBorder();
+                    }
                 }
 
                 // Bottom End
@@ -810,6 +801,24 @@ namespace XControlComponents.Controls
                     BR_Grid.BorderThickness = new Thickness(1, 1, 1, 0);
                 else
                     BR_Grid.BorderThickness = new Thickness(1);
+            }
+        }
+
+        private void HandleLastGridColumnBorder()
+        {
+            var getLstBorder = GR_Columns.Children.OfType<Border>().FirstOrDefault(x => Grid.GetColumn(x) == LastColumnIndex);
+            getLstBorder.BorderThickness = new Thickness(0, 0, IsVerticalScrollBarVisible ? 1 : 0, 0);
+
+            if (xGridData.Rows.Count > 0)
+            {
+                var grids = GR_Data.FindChilds<Grid>(x => !x.Tag.IsNullOrEmpty());
+                foreach (var item in xGridData.Rows)
+                {
+                    var sortedCells = item.Cells.OrderBy(cell => cell.Column.Order).ToList();
+                    var getGridRow = grids.FirstOrDefault(x => x.Tag?.ToString() == item.Key);
+                    getLstBorder = getGridRow.Children.OfType<Border>().FirstOrDefault(x => Grid.GetColumn(x) == LastColumnIndex);
+                    getLstBorder.BorderThickness = new Thickness(0, 0, IsVerticalScrollBarVisible ? 1 : 0, 0);
+                }
             }
         }
         #endregion
@@ -861,6 +870,8 @@ namespace XControlComponents.Controls
             foreach (var column in sortedColumn)
             {
                 var IsLastColumn = visibleColumn.IndexOf(column) == visibleColumn.Count - 1;
+                if (IsLastColumn)
+                    LastColumnIndex = columnIndex;
 
                 var columnWidth = new GridLength(0);
                 if (column.Visible)
@@ -874,7 +885,7 @@ namespace XControlComponents.Controls
                 var borderColumn = new Border
                 {
                     Style = XAppMethods.BorderInnerGridStyle(),
-                    BorderThickness = new Thickness(0, 0, IsLastColumn ? 0 : 1, 0),
+                    BorderThickness = new Thickness(0, 0, column.Visible ? 1 : 0, 0),
                     Background = Colors.Transparent.GetBrushColor(),
                     Tag = "BR" + column.FieldName.ToString(),
                 };
@@ -906,9 +917,7 @@ namespace XControlComponents.Controls
             }
 
             //Scroll
-
-            columnIndex = columnIndex + 1;
-
+            ScrollColumnIndex = columnIndex;
             var gridColumn = new ColumnDefinition
             {
                 Width = new GridLength(0)
@@ -919,9 +928,9 @@ namespace XControlComponents.Controls
             var borderScrollColumn = new Border
             {
                 Style = XAppMethods.BorderInnerGridStyle(),
-                BorderThickness = new Thickness(1, 0, 0, 0)
+                BorderThickness = new Thickness(0, 0, 0, 0)
             };
-            Grid.SetColumn(borderScrollColumn, columnIndex);
+            Grid.SetColumn(borderScrollColumn, ScrollColumnIndex);
 
             GR_Columns.Children.Add(borderScrollColumn);
         }
@@ -987,7 +996,6 @@ namespace XControlComponents.Controls
             foreach (var row in xGridData.Rows)
             {
                 var rowIndex = xGridData.Rows.IndexOf(row);
-                var IsLastRow = rowIndex == xGridData.Rows.Count - 1;
 
                 //Add Row
                 GR_Data.RowDefinitions.Add(new RowDefinition());
@@ -1027,12 +1035,10 @@ namespace XControlComponents.Controls
                     };
                     rowGrid.ColumnDefinitions.Add(columnDefinition);
 
-                    var IsLastCell = visibleCell.IndexOf(cell) == visibleCell.Count - 1;
-
                     var cellBorder = new Border
                     {
                         Style = XAppMethods.BorderInnerGridStyle(),
-                        BorderThickness = new Thickness(0, 0, IsLastCell ? 0 : 1, 0),
+                        BorderThickness = new Thickness(0, 0, cell.Column.Visible ? 1 : 0, 0),
                         Background = Colors.Transparent.GetBrushColor(),
                         Tag = cell.Key
                     };
@@ -1108,7 +1114,7 @@ namespace XControlComponents.Controls
         {
             GR_Columns.ColumnDefinitions.Add(new ColumnDefinition
             {
-                Width = new GridLength(_rowIndicator.Value ? 50 : 0, GridUnitType.Pixel)
+                Width = new GridLength(_rowIndicator.Value ? 50 : 0, GridUnitType.Pixel),
             });
 
             var borderColumn = new Border
@@ -1139,7 +1145,8 @@ namespace XControlComponents.Controls
         {
             var columnDefinition = new ColumnDefinition()
             {
-                Width = new GridLength(_rowIndicator.Value ? 50 : 0, GridUnitType.Pixel)
+                Width = new GridLength(_rowIndicator.Value ? 50 : 0, GridUnitType.Pixel),
+                Tag = "Row_Indicator"
             };
             gridRow.ColumnDefinitions.Add(columnDefinition);
 
@@ -1168,7 +1175,13 @@ namespace XControlComponents.Controls
 
         private void HandleRowIndicator()
         {
+            GR_Columns.ColumnDefinitions[0].Width = new GridLength(_rowIndicator.Value ? 50 : 0, GridUnitType.Pixel);
 
+            var getAllRows = GR_Data.FindChilds<ColumnDefinition>(x => x.Tag?.ToString() == "Row_Indicator");
+            foreach (var item in getAllRows)
+            {
+                item.Width = new GridLength(_rowIndicator.Value ? 50 : 0, GridUnitType.Pixel);
+            }
         }
         #endregion
 
@@ -1226,8 +1239,6 @@ namespace XControlComponents.Controls
 
         private void SetPropertyFields()
         {
-            var IsScroll = GR_Columns.ColumnDefinitions[_GridScrollIndex.Value].Width.Value > 0;
-
             var getBorders = GR_Columns.FindChilds<Border>(x => !x.Tag.IsNullOrEmpty());
 
             var sortedColumns = xGridData.Columns.OrderBy(x => x.Order).ToList();
@@ -1237,6 +1248,8 @@ namespace XControlComponents.Controls
                 //Index (+1 For Shower Column)
                 var Index = sortedColumns.IndexOf(item) + 1;
                 var IsLastColumn = VisibleColumns.IndexOf(item) == VisibleColumns.Count - 1;
+                if (IsLastColumn)
+                    LastColumnIndex = Index;
 
                 //Column Width
                 var colWidth = new GridLength(0);
@@ -1247,7 +1260,7 @@ namespace XControlComponents.Controls
                 var getBorder = getBorders.FirstOrDefault(x => x.Tag?.ToString() == "BR" + item.FieldName);
 
                 //Set Border
-                getBorder.BorderThickness = new Thickness(0, 0, IsLastColumn && !IsScroll ? 0 : 1, 0);
+                getBorder.BorderThickness = new Thickness(0, 0, item.Visible ? 1 : 0, 0);
 
                 //Column Index
                 Grid.SetColumn(getBorder, Index);
@@ -1277,13 +1290,15 @@ namespace XControlComponents.Controls
                         var getBorder = getCellBorders.FirstOrDefault(x => x.Tag?.ToString() == cell.Key);
 
                         //Set Border
-                        getBorder.BorderThickness = new Thickness(0, 0, IsLastColumn && !IsScroll ? 0 : 1, 0);
+                        getBorder.BorderThickness = new Thickness(0, 0, cell.Column.Visible ? 1 : 0, 0);
 
                         //Cell Index
                         Grid.SetColumn(getBorder, Index);
                     }
                 }
             }
+
+            HandleLastGridColumnBorder();
         }
         #endregion
 

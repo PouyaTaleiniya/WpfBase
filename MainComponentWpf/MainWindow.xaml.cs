@@ -90,12 +90,17 @@ namespace MainComponentWpf
 
         private void Btn_SetOrder_Click(object sender, RoutedEventArgs e)
         {
-            xGridView._OrderFields = [(nameof(DataBindDto.FirstName), 1), (nameof(DataBindDto.LastName), 1), (nameof(DataBindDto.NationalCode), 2)];
+            xGridView._OrderFields = [(nameof(DataBindDto.FirstName), 2), (nameof(DataBindDto.LastName), 3), (nameof(DataBindDto.NationalCode), 1)];
         }
 
         private void Btn_SetVisible_Click(object sender, RoutedEventArgs e)
         {
-            xGridView._VisibilityFields = [(nameof(DataBindDto.FirstName), true)];
+            xGridView._VisibilityFields = [(nameof(DataBindDto.LastName), true)];
+        }
+
+        private void Btn_InVisiblie_Click(object sender, RoutedEventArgs e)
+        {
+            xGridView._VisibilityFields = [(nameof(DataBindDto.LastName), false)];
         }
     }
 
