@@ -1,13 +1,11 @@
 ﻿using System.Collections;
 using System.ComponentModel;
 using System.Data;
-using System.Data.Common;
 using System.Globalization;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using XControlComponents.Models;
@@ -1114,7 +1112,7 @@ namespace XControlComponents.Controls
         {
             GR_Columns.ColumnDefinitions.Add(new ColumnDefinition
             {
-                Width = new GridLength(_rowIndicator.Value ? 50 : 0, GridUnitType.Pixel),
+                Width = new GridLength(_rowIndicator.Value ? 30 : 0, GridUnitType.Pixel),
             });
 
             var borderColumn = new Border
@@ -1145,8 +1143,7 @@ namespace XControlComponents.Controls
         {
             var columnDefinition = new ColumnDefinition()
             {
-                Width = new GridLength(_rowIndicator.Value ? 50 : 0, GridUnitType.Pixel),
-                Tag = "Row_Indicator"
+                Width = new GridLength(_rowIndicator.Value ? 30 : 0, GridUnitType.Pixel),
             };
             gridRow.ColumnDefinitions.Add(columnDefinition);
 
@@ -1154,8 +1151,13 @@ namespace XControlComponents.Controls
             {
                 Style = XAppMethods.BorderInnerGridStyle(),
                 BorderThickness = new Thickness(0, 0, 1, 0),
-                Background = Colors.Transparent.GetBrushColor()
+                Background = Colors.Transparent.GetBrushColor(),
+                Uid = gridRow.Tag?.ToString(),
+                Tag = ""
             };
+            borderColumn.MouseEnter += BR_RowIndicator_MouseEnter;
+            borderColumn.MouseLeave += BR_RowIndicator_MouseLeave;
+            borderColumn.MouseLeftButtonDown += BR_RowIndicator_MouseLeftButtonDown;
             Grid.SetColumn(borderColumn, 0);
 
             var label = new Label
@@ -1173,14 +1175,38 @@ namespace XControlComponents.Controls
             gridRow.Children.Add(borderColumn);
         }
 
+        private void BR_RowIndicator_MouseLeave(object sender, MouseEventArgs e)
+        {
+            var getBorder = sender as Border;
+            if (getBorder.Tag?.ToString() == "")
+            {
+                getBorder.Background = Colors.Transparent.GetBrushColor();
+            }
+        }
+
+        private void BR_RowIndicator_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var getBorder = sender as Border;
+            if (getBorder.Tag?.ToString() == "")
+            {
+                getBorder.Background = XAppMethods.Color_Gray_EDEDED();
+            }
+        }
+
+        private void BR_RowIndicator_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var getBorder = sender as Border;
+            var parentBorder = getBorder.FindParent<Border>(x => x.Tag?.ToString() == getBorder.Uid);
+            HandleSelectedCellBorder(parentBorder, e);
+        }
+
         private void HandleRowIndicator()
         {
             GR_Columns.ColumnDefinitions[0].Width = new GridLength(_rowIndicator.Value ? 50 : 0, GridUnitType.Pixel);
 
-            var getAllRows = GR_Data.FindChilds<ColumnDefinition>(x => x.Tag?.ToString() == "Row_Indicator");
-            foreach (var item in getAllRows)
+            foreach (var item in GetGridRows())
             {
-                item.Width = new GridLength(_rowIndicator.Value ? 50 : 0, GridUnitType.Pixel);
+                item.ColumnDefinitions[0].Width = new GridLength(_rowIndicator.Value ? 50 : 0, GridUnitType.Pixel);
             }
         }
         #endregion
@@ -1300,20 +1326,39 @@ namespace XControlComponents.Controls
 
             HandleLastGridColumnBorder();
         }
+
+        private List<Grid> GetGridRows()
+        {
+            var gridRows = new List<Grid>();
+            var grids = GR_Data.FindChilds<Grid>(x => !x.Tag.IsNullOrEmpty());
+            foreach (var item in xGridData.Rows)
+            {
+                var getGridRow = grids.FirstOrDefault(x => x.Tag?.ToString() == item.Key);
+                gridRows.Add(getGridRow);
+            }
+
+            return gridRows;
+        }
         #endregion
 
         #region Grid Row Events
         private void CellBorder_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (!_rowSelectable.Value && !_rowMultiSelectable.Value)
+            if (_rowIndicator.Value || (!_rowSelectable.Value && !_rowMultiSelectable.Value))
                 return;
 
             var border = sender as Border;
+            HandleSelectedCellBorder(border, e);
+        }
+
+        private void HandleSelectedCellBorder(Border border, MouseButtonEventArgs e)
+        {
             var getKey = border.Tag.ToString();
             var getSlcRow = xGridData.Rows.FirstOrDefault(x => x.Key == getKey);
             if (e.ClickCount == 1)
             {
-                RemoveLastSelected();
+                RemoveLastRowSelected(getSlcRow.Key);
+
                 if (getSlcRow.IsSelected)
                 {
                     getSlcRow.IsSelected = false;
@@ -1327,25 +1372,27 @@ namespace XControlComponents.Controls
             }
             else if (e.ClickCount == 2)
             {
-                RemoveLastSelected();
+                RemoveLastRowSelected(getSlcRow.Key);
 
                 EnableRowBackground(getSlcRow.Key);
                 getSlcRow.IsSelected = true;
 
                 if (!_rowMultiSelectable.Value)
-                    RowDoubleClick?.Invoke(sender, getSlcRow);
+                    RowDoubleClick?.Invoke(border, getSlcRow);
             }
 
-            void RemoveLastSelected()
+        }
+
+        private void RemoveLastRowSelected(string Key)
+        {
+            if (!_rowMultiSelectable.Value)
             {
-                if (!_rowMultiSelectable.Value)
+                var getSlcRow = xGridData.Rows.FirstOrDefault(x => x.Key == Key);
+                var getLastSlcRow = xGridData.Rows.FirstOrDefault(x => x.IsSelected);
+                if (getLastSlcRow != null && getLastSlcRow.Key != getSlcRow.Key)
                 {
-                    var getLastSlcRow = xGridData.Rows.FirstOrDefault(x => x.IsSelected);
-                    if (getLastSlcRow != null && getLastSlcRow.Key != getSlcRow.Key)
-                    {
-                        RemoveRowBackground(getLastSlcRow.Key);
-                        getLastSlcRow.IsSelected = false;
-                    }
+                    RemoveRowBackground(getLastSlcRow.Key);
+                    getLastSlcRow.IsSelected = false;
                 }
             }
         }
@@ -1375,14 +1422,32 @@ namespace XControlComponents.Controls
 
         private void RemoveRowBackground(string Key)
         {
-            var getBorder = GR_Data.FindChildByTag<Border>(Key);
+            var getBorders = GR_Data.FindChilds<Border>(x => x.Tag?.ToString() == Key || x.Uid?.ToString() == Key);
+
+            var getBorder = getBorders.FirstOrDefault(x => x.Tag?.ToString() == Key);
             getBorder.Background = Colors.Transparent.GetBrushColor();
+
+            if (_rowIndicator.Value)
+            {
+                var getIndicatorBorder = getBorders.FirstOrDefault(x => x.Uid?.ToString() == Key);
+                getIndicatorBorder.Tag = "";
+                getIndicatorBorder.Background = Colors.Transparent.GetBrushColor();
+            }
         }
 
         private void EnableRowBackground(string Key)
         {
-            var getBorder = GR_Data.FindChildByTag<Border>(Key);
+            var getBorders = GR_Data.FindChilds<Border>(x => x.Tag?.ToString() == Key || x.Uid?.ToString() == Key);
+
+            var getBorder = getBorders.FirstOrDefault(x => x.Tag?.ToString() == Key);
             getBorder.Background = _rowSelectedBackground;
+
+            if (_rowIndicator.Value)
+            {
+                var getIndicatorBorder = getBorders.FirstOrDefault(x => x.Uid?.ToString() == Key);
+                getIndicatorBorder.Tag = "Selected";
+                getIndicatorBorder.Background = _rowSelectedBackground;
+            }
         }
         #endregion
 

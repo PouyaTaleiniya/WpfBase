@@ -149,6 +149,29 @@ namespace XControlComponents.Tools
             return parents;
         }
 
+        public static T? FindChild<T>(this DependencyObject parent, Func<T, bool>? predicate = null) where T : DependencyObject
+        {
+            if (parent == null)
+                return null;
+
+            int count = VisualTreeHelper.GetChildrenCount(parent);
+
+            for (int i = 0; i < count; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+
+                if (child is T t && (predicate == null || predicate(t)))
+                    return t;
+
+                var result = FindChild<T>(child, predicate);
+
+                if (result != null)
+                    return result;
+            }
+
+            return null;
+        }
+
         public static List<T> FindChilds<T>(this DependencyObject parent, Func<T, bool>? predicate = null) where T : DependencyObject
         {
             var children = new List<T>();
@@ -173,39 +196,6 @@ namespace XControlComponents.Tools
             }
 
             return children.Where(x => predicate == null || predicate(x)).ToList();
-        }
-
-        public static T FindParent<T>(this DependencyObject child) where T : DependencyObject
-        {
-            var parent = VisualTreeHelper.GetParent(child);
-
-            while (parent != null)
-            {
-                if (parent is T parentAsT)
-                    return parentAsT;
-
-                parent = VisualTreeHelper.GetParent(parent);
-            }
-            return null;
-        }
-
-        public static T FindParentByTag<T>(this DependencyObject child, string Tag) where T : DependencyObject
-        {
-            var parent = VisualTreeHelper.GetParent(child);
-
-            while (parent != null)
-            {
-                if (parent is T parentAsT)
-                {
-                    var tag = (parent as FrameworkElement)?.Tag;
-                    if (!tag.IsNullOrEmpty() && tag.ToString() == Tag)
-                        return parentAsT;
-                }
-
-                parent = VisualTreeHelper.GetParent(parent);
-            }
-
-            return null;
         }
 
         public static T FindParentByName<T>(this DependencyObject child, string Name) where T : DependencyObject
@@ -241,19 +231,34 @@ namespace XControlComponents.Tools
             return parents;
         }
 
-        public static List<DependencyObject> FindParents<T>(this DependencyObject child)
+        public static List<T> FindParents<T>(this DependencyObject child, Func<T, bool>? predicate = null)
         {
-            var parents = new List<DependencyObject>();
+            var parents = new List<T>();
             DependencyObject parent = VisualTreeHelper.GetParent(child);
 
             while (parent != null)
             {
                 if (parent is T t)
-                    parents.Add(parent);
+                    parents.Add(t);
                 parent = VisualTreeHelper.GetParent(parent);
             }
 
-            return parents;
+            return parents.Where(x => predicate == null || predicate(x)).ToList();
+        }
+
+        public static T? FindParent<T>(this DependencyObject child, Func<T, bool>? predicate = null)
+        {
+            var parent = VisualTreeHelper.GetParent(child);
+
+            while (parent != null)
+            {
+                if (parent is T t && (predicate == null || predicate(t)))
+                    return t;
+
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+
+            return default;
         }
 
         public static T GetElement<T>(this List<DependencyObject> dependencies, Func<T, bool> predicate)

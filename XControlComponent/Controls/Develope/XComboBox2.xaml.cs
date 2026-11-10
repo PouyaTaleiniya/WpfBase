@@ -617,11 +617,11 @@ public partial class XComboBox2 : XComboBoxDataControl
                 {
                     var getClickedElement = k.OriginalSource as FrameworkElement;
 
-                    var getBorder = XElementHelper.FindParentByName<Border>(getClickedElement, "BR_TextBox");
+                    var getBorder = getClickedElement.FindParent<Border>(x => x.Name == "BR_TextBox");
                     if (getBorder != null)
                         return;
 
-                    var getGrid = XElementHelper.FindParentByName<Grid>(getClickedElement, "GR_Data");
+                    var getGrid = getClickedElement.FindParent<Grid>(x => x.Name == "GR_Data");
                     if (getGrid != null)
                         return;
 

@@ -26,6 +26,21 @@ namespace XControlComponents.Tools
             return Application.Current.TryFindResource("Color_Red_de0030") as Brush;
         }
 
+        public static Brush Color_Gray_D9D9D9()
+        {
+            return Application.Current.TryFindResource("Color_Gray_D9D9D9") as Brush;
+        }
+
+        public static Brush Color_Gray_D1D1D1()
+        {
+            return Application.Current.TryFindResource("Color_Gray_D1D1D1") as Brush;
+        }
+
+        public static Brush Color_Gray_EDEDED()
+        {
+            return Application.Current.TryFindResource("Color_Gray_EDEDED") as Brush;
+        }
+
         public static Brush Color_Red_FFE6E6()
         {
             return Application.Current.TryFindResource("Color_Red_FFE6E6") as Brush;
